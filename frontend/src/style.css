@@ -621,6 +621,9 @@ ol {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
+.compare-head > .panel > .badge {
+  transform: translateY(-8px);
+}
 .caveats {
   padding: 20px 24px;
   border: 1px solid var(--line);
