@@ -152,6 +152,8 @@ def test_premature_goodbye_cites_the_instruction():
     [f] = premature_goodbye(s)
     assert f.status == "confirmed" and f.root_cause.confidence == "likely"
     assert any(e.kind == "config" and "goodbye" in e.value for e in f.evidence)
+    assert "agreement" not in f.root_cause.statement.lower()
+    assert "may have contributed" in f.root_cause.statement.lower()
 
 
 def test_goodbye_after_closing_cue_is_not_premature():

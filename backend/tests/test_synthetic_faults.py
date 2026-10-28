@@ -93,6 +93,9 @@ def test_known_fault_produces_only_the_expected_traceable_finding(fault_case):
     else:
         assert "directions" in turns["t001"].text and "?" in turns["t001"].text
         assert turns["t002"].text == "Goodbye."
+        assert "agreement" not in finding.root_cause.statement.lower()
+        assert "may" in finding.root_cause.statement.lower()
+        assert "instructions mention" not in finding.root_cause.statement.lower()
         assert "main entrance" in turns["t003"].text
         assert len(turns["t003"].text.split()) >= 3
 

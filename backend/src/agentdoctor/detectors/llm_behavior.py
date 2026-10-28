@@ -78,8 +78,9 @@ def premature_goodbye(session: Session) -> list[Finding]:
             evidence=[*([quote(before, "User's previous turn (no closing)")] if before else []),
                       quote(turn, "Agent said goodbye"), quote(after, "Conversation continued"), *rule],
             root_cause=RootCause(
-                statement="The agent treated agreement on a detail as the end of the call" + (
-                    "; its instructions tie goodbye to that moment." if rule else "."),
+                statement="The agent may have inferred that the conversation was complete and triggered "
+                          "its closing behavior too early." + (
+                    " Its instructions mention saying goodbye and may have contributed." if rule else ""),
                 confidence="likely" if rule else "possible",
                 missing_evidence=["A re-run of the same script with the goodbye instruction rewritten"]
                 + ([] if rule else ["The agent's instructions about ending the call"]),

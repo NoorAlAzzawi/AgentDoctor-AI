@@ -80,6 +80,14 @@ def test_s01_patrick_swayze_misrecognition_is_likely():
 def test_premature_goodbyes():
     flagged = {sid for sid in SESSIONS if by_detector(sid)["premature_goodbye"]}
     assert flagged == {"s02-workshop-structured", "s04-recommended-ab-script", "s05-workshop-headphones"}
+    for sid in flagged:
+        [finding] = [f for f in FINDINGS[sid] if f.detector == "premature_goodbye"]
+        assert (finding.status, finding.category, finding.severity) == ("confirmed", "llm_behavior", "medium")
+        assert finding.root_cause.confidence == "likely"
+        assert finding.root_cause.missing_evidence
+        assert "agreement" not in finding.root_cause.statement.lower()
+        assert "may have contributed" in finding.root_cause.statement.lower()
+        assert any(e.kind == "config" and "goodbye" in e.value.lower() for e in finding.evidence)
 
 
 def test_s01_stage_direction_and_talking_after_farewell():
