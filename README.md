@@ -6,6 +6,19 @@ AgentDoctor imports [LiveKit Agents](https://docs.livekit.io/agents/) session re
 
 > AgentDoctor does not use an LLM or machine learning to diagnose sessions. Every finding comes from explicit, unit-tested rules over the session report, so the same input always produces the same findings.
 
+## Screenshots
+
+### Evidence-first investigation
+
+![Investigation view with timestamped conversation evidence and an expanded diagnostic finding](docs/screenshots/investigation.png)
+
+Trace a finding to the exact conversation evidence, with root-cause confidence, missing evidence, and practical debugging steps kept explicit.
+
+| Sessions dashboard | Session comparison |
+|---|---|
+| ![Sessions dashboard showing pipeline details, latency metrics, and confirmed versus suspected findings](docs/screenshots/sessions.png) | ![Compare view showing pipeline differences, reported metrics, and comparison caveats](docs/screenshots/compare.png) |
+| Scan session health and select two conversations to compare. | Inspect pipeline differences and observed metrics, with clear limits on what one run can prove. |
+
 ## The problem
 
 When a voice agent misbehaves, the transcript alone rarely tells you why. An agent that "ignored" the caller may have paused for a false interruption, timed out waiting for the end of a turn, or misheard a time. A pipeline comparison can be confounded by the audio setup. Debugging usually means scrolling through raw JSON reports and guessing.
@@ -112,7 +125,7 @@ To try the dashboard without the backend, start it in mock mode with `VITE_USE_M
 
 ```bash
 cd backend && uv run pytest          # 42 tests
-cd frontend && npm test              # 15 component/data tests
+cd frontend && npm test              # 19 frontend tests
 cd frontend && npm run typecheck && npm run build
 cd frontend && npm run test:live     # 12 opt-in tests against a running API + Vite server
 ```
