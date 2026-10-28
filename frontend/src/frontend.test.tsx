@@ -1,6 +1,6 @@
 import { MemoryRouter, Routes, Route } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { api, compareMock, time, winner } from "./data";
 import { EvidenceLink, Timeline, Investigation } from "./main";
 import type { FindingsResponse, Session } from "./types";
@@ -128,6 +128,9 @@ describe("session investigation integration", () => {
     );
     await screen.findByText(fa.findings[0].title);
     fireEvent.click(
+      screen.getAllByRole("button", { name: /^View investigation/ })[0],
+    );
+    fireEvent.click(
       screen.getAllByRole("button", { name: /User voice activity started/ })[0],
     );
     const event = fa.findings[0].evidence.find((e) => e.event_id)!;
@@ -153,5 +156,107 @@ describe("session investigation integration", () => {
       "true",
     );
     vi.restoreAllMocks();
+  });
+});
+
+describe("investigation progressive disclosure", () => {
+  afterEach(() => vi.restoreAllMocks());
+  async function openSession() {
+    vi.spyOn(api, "session").mockResolvedValue(a as Session);
+    vi.spyOn(api, "findings").mockResolvedValue(fa as FindingsResponse);
+    const view = render(
+      <MemoryRouter initialEntries={["/sessions/" + a.id]}>
+        <Routes>
+          <Route path="/sessions/:id" element={<Investigation />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    await screen.findByRole("heading", { name: a.title });
+    return view;
+  }
+  it("starts findings collapsed while preserving status, severity and diagnostic metadata", async () => {
+    const { container } = await openSession();
+    const cards = [...container.querySelectorAll<HTMLElement>(".finding")];
+    expect(cards).toHaveLength(fa.findings.length);
+    for (const [i, finding] of fa.findings.entries()) {
+      const card = within(cards[i]);
+      const toggle = card.getByRole("button", {
+        name: `View investigation ${finding.title}`,
+      });
+      expect(toggle).toHaveAttribute("aria-expanded", "false");
+      expect(
+        document.getElementById(toggle.getAttribute("aria-controls")!),
+      ).not.toBeVisible();
+      expect(card.getByText(finding.summary)).toBeVisible();
+      expect(card.getByText(finding.status)).toBeVisible();
+      expect(card.getByText(`${finding.severity} severity`)).toBeVisible();
+      expect(
+        card.getByText(`${finding.evidence.length} evidence items`),
+      ).toBeVisible();
+      expect(cards[i]).toHaveTextContent(
+        `Root-cause confidence · ${finding.root_cause.confidence}`,
+      );
+      expect(
+        card.queryByRole("heading", { name: "Observed evidence" }),
+      ).not.toBeInTheDocument();
+    }
+  });
+  it("uses a focusable native button and reveals the unchanged diagnostic content on activation", async () => {
+    await openSession();
+    const f = fa.findings[0];
+    const toggle = screen.getByRole("button", {
+      name: `View investigation ${f.title}`,
+    });
+    expect(toggle.tagName).toBe("BUTTON");
+    expect(toggle.tabIndex).toBe(0);
+    toggle.focus();
+    expect(toggle).toHaveFocus();
+    // Keyboard activation of native buttons dispatches a click with detail 0.
+    fireEvent.click(toggle, { detail: 0 });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    const panel = within(
+      document.getElementById(toggle.getAttribute("aria-controls")!)!,
+    );
+    expect(
+      panel.getByRole("heading", { name: "Observed evidence" }),
+    ).toBeVisible();
+    expect(panel.getByText(f.root_cause.statement)).toBeVisible();
+    for (const e of f.evidence) expect(panel.getByText(e.value)).toBeVisible();
+    for (const missing of f.root_cause.missing_evidence)
+      expect(panel.getByText(missing)).toBeVisible();
+    for (const step of f.next_steps)
+      expect(panel.getByText(step)).toBeVisible();
+    fireEvent.click(toggle, { detail: 0 });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(panel.getByText(f.root_cause.statement)).not.toBeVisible();
+    expect(toggle).toHaveFocus();
+  });
+  it("expands findings independently", async () => {
+    await openSession();
+    const toggles = screen.getAllByRole("button", {
+      name: /^View investigation/,
+    });
+    fireEvent.click(toggles[0]);
+    expect(toggles[0]).toHaveAttribute("aria-expanded", "true");
+    expect(toggles[1]).toHaveAttribute("aria-expanded", "false");
+  });
+  it("discloses the exact detector names and actual coverage count", async () => {
+    await openSession();
+    const toggle = screen.getByRole("button", {
+      name: `Detection coverage · ${fa.detectors_run.length} detectors ran`,
+    });
+    const panel = document.getElementById(
+      toggle.getAttribute("aria-controls")!,
+    )!;
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(panel).not.toBeVisible();
+    toggle.focus();
+    fireEvent.click(toggle, { detail: 0 });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    const names = within(panel).getAllByRole("listitem");
+    expect(names.map((item) => item.textContent)).toEqual(fa.detectors_run);
+    expect(panel).toBeVisible();
+    fireEvent.click(toggle);
+    expect(panel).not.toBeVisible();
   });
 });

@@ -72,3 +72,18 @@ For manual browser inspection, open `http://localhost:5173`:
 4. Check all three views at narrow/mobile widths and in both themes. Tab through controls and evidence links; check for clipping and visible keyboard focus. Check DevTools → Console for runtime or CORS errors.
 
 The integration run passed all backend tests (42), frontend tests (15), live tests (12), typechecking and production build. Browser automation was unavailable in the execution environment, so visual/browser QA remains a manual check.
+
+## Final frontend polish
+
+Findings start collapsed. Each card retains its original summary and shows status, category, severity, timestamp, evidence count and root-cause confidence. **View investigation** reveals all original diagnostic details and evidence links. Independent native buttons expose `aria-expanded`/`aria-controls`; hidden details stay out of keyboard navigation until opened. Detection coverage uses the same disclosure pattern and displays the exact detector identifiers.
+
+The compact Findings controls are sticky only above 1000px wide and at least 700px tall. They remain in normal flow on narrow/short viewports to avoid consuming reading space. No new nested scrolling was added. Existing desktop layouts, typography, colors, conversation navigation and comparison caveats remain intact. Both comparison tables have named, keyboard-focusable overflow regions. Long source strings wrap within their columns.
+
+Source review covered the existing desktop/laptop/tablet/mobile breakpoints. Text palette checks passed 4.5:1 against the three main surfaces in both themes. The latest checks passed typecheck, 19 frontend tests, production build and 12 live API tests. No frontend robot/widget/overlay was found, so no unrelated tooling was removed. No data, metrics, findings, API logic or dependencies changed.
+
+Browser automation was unavailable; rendered responsive behavior remains a manual check. Inspect **1440px**, **1280px**, **768px**, **390px** and **320px** widths:
+
+- Sessions: keep the existing wide card grid; check narrow cards, search/compare controls and absence of page-level horizontal scrolling.
+- Investigation: check two columns above 1000px and stacked panes below; open/close a finding, follow transcript/event evidence, and confirm the desktop sticky controls never cover the focused content. Test a session with many findings, such as s01 or s02.
+- Compare: check all values/caveats and use the deliberate table overflow on mobile; the page itself should not scroll horizontally.
+- In both themes, Tab to the disclosure buttons, activate them with Enter and Space, verify visible focus and expanded/collapsed state, and expand detector coverage. Check status/severity text and unchanged diagnostic content.

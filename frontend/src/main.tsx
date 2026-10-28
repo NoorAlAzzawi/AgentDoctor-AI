@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   BrowserRouter,
@@ -266,43 +266,79 @@ function FindingCard({
   f: Finding;
   onNavigate: (id: string) => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const disclosureId = useId();
+  const titleId = `${disclosureId}-title`;
   return (
-    <article className="finding">
+    <article className={`finding finding-${f.severity}`}>
       <div className="tags">
         <Badge tone={f.status === "confirmed" ? "red" : "amber"}>
           {f.status}
         </Badge>
         <Badge>{human(f.category)}</Badge>
+        <Badge tone={`severity-badge ${f.severity}`}>
+          {f.severity} severity
+        </Badge>
         <span className="mono muted">
           {f.time_range ? time(f.time_range.start_s) : "n/a"}
         </span>
       </div>
-      <h3>{f.title}</h3>
+      <h4 className="finding-title" id={titleId}>
+        {f.title}
+      </h4>
       <p>{f.summary}</p>
-      <h4>Observed evidence</h4>
-      {f.evidence.map((e, i) => (
-        <EvidenceLink key={i} e={e} onNavigate={onNavigate} />
-      ))}
-      <div className="hypothesis">
-        <h4>Root cause · {f.root_cause.confidence}</h4>
-        <p>{f.root_cause.statement}</p>
-        {f.root_cause.missing_evidence.length > 0 && (
-          <>
-            <h4>Missing evidence</h4>
-            <ul>
-              {f.root_cause.missing_evidence.map((x) => (
-                <li key={x}>{x}</li>
-              ))}
-            </ul>
-          </>
-        )}
+      <div className="finding-meta">
+        <span>
+          {f.evidence.length} evidence{" "}
+          {f.evidence.length === 1 ? "item" : "items"}
+        </span>
+        <span>
+          Root-cause confidence · <strong>{f.root_cause.confidence}</strong>
+        </span>
       </div>
-      <h4>Suggested debugging steps</h4>
-      <ol>
-        {f.next_steps.map((x) => (
-          <li key={x}>{x}</li>
+      <button
+        type="button"
+        className="finding-toggle"
+        aria-expanded={expanded}
+        aria-controls={`${disclosureId}-details`}
+        aria-labelledby={`${disclosureId}-label ${titleId}`}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        <span id={`${disclosureId}-label`}>
+          {expanded ? "Hide investigation" : "View investigation"}
+        </span>
+        <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+      </button>
+      <div
+        className="finding-details"
+        id={`${disclosureId}-details`}
+        hidden={!expanded}
+      >
+        <h5>Observed evidence</h5>
+        {f.evidence.map((e, i) => (
+          <EvidenceLink key={i} e={e} onNavigate={onNavigate} />
         ))}
-      </ol>
+        <div className="hypothesis">
+          <h5>Root cause · {f.root_cause.confidence}</h5>
+          <p>{f.root_cause.statement}</p>
+          {f.root_cause.missing_evidence.length > 0 && (
+            <>
+              <h5>Missing evidence</h5>
+              <ul>
+                {f.root_cause.missing_evidence.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+        <h5>Suggested debugging steps</h5>
+        <ol>
+          {f.next_steps.map((x) => (
+            <li key={x}>{x}</li>
+          ))}
+        </ol>
+      </div>
     </article>
   );
 }
@@ -340,6 +376,33 @@ export function Timeline({
           <small>{e.id}</small>
         </div>
       ))}
+    </div>
+  );
+}
+function DetectorCoverage({ detectors }: { detectors: string[] }) {
+  const [expanded, setExpanded] = useState(false);
+  const panelId = useId();
+  return (
+    <div className="detector-coverage">
+      <button
+        type="button"
+        className="coverage-toggle"
+        aria-expanded={expanded}
+        aria-controls={panelId}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        <span>
+          Detection coverage · <strong>{detectors.length} detectors ran</strong>
+        </span>
+        <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+      </button>
+      <ul id={panelId} hidden={!expanded}>
+        {detectors.map((detector) => (
+          <li key={detector}>
+            <code>{detector}</code>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -499,24 +562,26 @@ export function Investigation() {
           </div>
         </section>
         <section className="findings">
-          <div className="section-head">
-            <h2>
-              Findings <span className="muted">/ {f.findings.length}</span>
-            </h2>
-            <select
-              aria-label="Filter findings"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <option value="all">All statuses</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="suspected">Suspected</option>
-            </select>
+          <div className="findings-toolbar">
+            <div className="section-head">
+              <h2>
+                Findings <span className="muted">/ {f.findings.length}</span>
+              </h2>
+              <select
+                aria-label="Filter findings"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              >
+                <option value="all">All statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="suspected">Suspected</option>
+              </select>
+            </div>
+            <p className="note">
+              Failure status describes what happened. Root-cause confidence
+              describes why.
+            </p>
           </div>
-          <p className="note">
-            Failure status describes what happened. Root-cause confidence
-            describes why.
-          </p>
           {(["high", "medium", "low"] as const).map((severity) => {
             const items = f.findings.filter(
               (x) =>
@@ -526,6 +591,9 @@ export function Investigation() {
             return items.length ? (
               <div key={severity}>
                 <h3 className={`severity ${severity}`}>
+                  <span className="severity-mark" aria-hidden="true">
+                    {"▮".repeat({ high: 3, medium: 2, low: 1 }[severity])}
+                  </span>
                   {severity} severity · {items.length}
                 </h3>
                 {items.map((item) => (
@@ -537,10 +605,7 @@ export function Investigation() {
           {!f.findings.some((x) => filter === "all" || x.status === filter) && (
             <p className="state">No findings for this selection.</p>
           )}
-          <small className="muted">
-            {f.detectors_run.length} detector functions ran:{" "}
-            {f.detectors_run.map(human).join(", ")}.
-          </small>
+          <DetectorCoverage detectors={f.detectors_run} />
         </section>
       </div>
     </>
@@ -637,7 +702,12 @@ export function Compare() {
             )
             .join(" · ")}
         </p>
-        <div className="table-wrap">
+        <div
+          className="table-wrap"
+          role="region"
+          aria-label="Comparison metrics"
+          tabIndex={0}
+        >
           <table>
             <caption>
               Reported metrics · highlighted values follow the API’s better
@@ -678,24 +748,31 @@ export function Compare() {
           establish quality.
         </p>
         {Object.keys(c.findings_by_category).length ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Session A</th>
-                <th>Session B</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(c.findings_by_category).map(([k, v]) => (
-                <tr key={k}>
-                  <th scope="row">{human(k)}</th>
-                  <td>{v.a}</td>
-                  <td>{v.b}</td>
+          <div
+            className="table-wrap"
+            role="region"
+            aria-label="Finding category comparison"
+            tabIndex={0}
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Session A</th>
+                  <th>Session B</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {Object.entries(c.findings_by_category).map(([k, v]) => (
+                  <tr key={k}>
+                    <th scope="row">{human(k)}</th>
+                    <td>{v.a}</td>
+                    <td>{v.b}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <p>No findings in either session.</p>
         )}

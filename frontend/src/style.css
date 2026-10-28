@@ -85,7 +85,8 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible,
-summary:focus-visible {
+summary:focus-visible,
+.table-wrap:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 4px;
 }
@@ -242,7 +243,8 @@ h3 {
   line-height: 1.5;
   font-weight: 550;
 }
-h4 {
+h4,
+.finding-details h5 {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.9px;
@@ -568,8 +570,14 @@ pre {
   align-items: center;
   flex-wrap: wrap;
 }
-.finding h3 {
+.finding-title {
   font-size: 17px;
+  font-weight: 550;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
+  margin: 16px 0 12px;
 }
 .finding > p {
   color: var(--muted);
@@ -699,6 +707,150 @@ footer {
 .skip:focus {
   top: 10px;
 }
+/* Keep long source text inside its column rather than hiding overflow. */
+.page-title,
+.session-card,
+.panel,
+.findings,
+.turn,
+.event > div,
+.compare-head > *,
+.section-head > *,
+.tools {
+  min-width: 0;
+}
+.eyebrow,
+.finding,
+.turn,
+.event,
+.caveats,
+pre,
+.compare-head h2 {
+  overflow-wrap: anywhere;
+}
+.findings-toolbar {
+  background: var(--bg);
+  padding: 12px 0;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.findings-toolbar .section-head {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.findings-toolbar h2,
+.findings-toolbar .note {
+  margin: 0;
+}
+.finding {
+  scroll-margin-top: 130px;
+}
+.finding-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 16px 0;
+}
+.finding-meta strong {
+  font-weight: 550;
+  text-transform: capitalize;
+}
+.finding-toggle,
+.coverage-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  min-height: 44px;
+  font-size: 12px;
+}
+.finding-toggle {
+  color: var(--accent);
+  scroll-margin-top: 130px;
+}
+.finding-toggle[aria-expanded="true"] {
+  background: var(--panel2);
+}
+.finding-details {
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+}
+.finding-details[hidden],
+.detector-coverage ul[hidden] {
+  display: none;
+}
+.severity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.severity-mark {
+  font-size: 12px;
+  letter-spacing: 2px;
+  width: 30px;
+}
+.severity.medium,
+.severity-badge.medium {
+  color: var(--amber);
+}
+.severity-badge.high {
+  color: var(--red);
+}
+.finding-high {
+  border-left: 3px solid var(--red);
+}
+.finding-medium {
+  border-left: 3px solid var(--amber);
+}
+.finding-low {
+  border-left: 3px solid var(--line);
+}
+.detector-coverage {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  margin-top: 24px;
+}
+.coverage-toggle {
+  border: 0;
+  background: transparent;
+  padding: 16px;
+  color: var(--muted);
+}
+.coverage-toggle strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.detector-coverage ul {
+  border-top: 1px solid var(--line);
+  margin: 0;
+  padding: 12px 20px 16px 32px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.detector-coverage code {
+  overflow-wrap: anywhere;
+}
+.table-wrap table {
+  min-width: 480px;
+}
+/* Only pin the compact toolbar when there is room for both columns. */
+@media (min-width: 1001px) and (min-height: 700px) {
+  .findings-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
 @media (min-width: 1500px) {
   .session-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -727,6 +879,9 @@ footer {
   }
   .session-card {
     padding: 18px;
+  }
+  .session-card .metrics strong {
+    font-size: 14px;
   }
 }
 @media (max-width: 680px) {
@@ -794,6 +949,14 @@ footer {
   }
   .metrics {
     gap: 8px;
+  }
+  .finding-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .turn dl > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
   .metrics strong {
     font-size: 14px;

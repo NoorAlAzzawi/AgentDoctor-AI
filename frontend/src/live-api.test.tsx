@@ -74,13 +74,22 @@ describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
           expect(
             within(card).getByRole("heading", { name: finding.title }),
           ).toBeInTheDocument();
+          const toggle = within(card).getByRole("button", {
+            name: /^View investigation/,
+          });
+          expect(toggle).toHaveAttribute("aria-expanded", "false");
+          fireEvent.click(toggle);
+          expect(toggle).toHaveAttribute("aria-expanded", "true");
           expect(
             within(card).getByText(finding.root_cause.statement),
-          ).toBeInTheDocument();
+          ).toBeVisible();
           const linked = finding.evidence.filter(
             (e) => e.turn_id || e.event_id,
           );
-          const buttons = within(card).queryAllByRole("button");
+          const details = document.getElementById(
+            toggle.getAttribute("aria-controls")!,
+          )!;
+          const buttons = within(details).queryAllByRole("button");
           expect(buttons).toHaveLength(linked.length);
           for (const [i, e] of linked.entries()) {
             if (e.turn_id)
