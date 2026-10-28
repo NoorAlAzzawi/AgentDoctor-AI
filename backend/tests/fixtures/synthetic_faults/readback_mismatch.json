@@ -1,0 +1,127 @@
+{
+  "fixture_id": "synthetic-fault-readback-mismatch",
+  "injected_fault_type": "stale_appointment_readback",
+  "description": "The user explicitly replaces Tuesday with Thursday. After a separate readback request, only the final agent weekday is intentionally changed back to Tuesday; the hour stays 8 AM.",
+  "injection": {
+    "turn_id": "t006",
+    "baseline_text": "Your appointment is Thursday at 8 AM.",
+    "injected_text": "Your appointment is Tuesday at 8 AM."
+  },
+  "expected": {
+    "detector": "readback_mismatch",
+    "category": "conversation_state",
+    "status": "confirmed",
+    "evidence_turn_ids": [
+      "t003",
+      "t005",
+      "t006"
+    ]
+  },
+  "session": {
+    "id": "synthetic-fault-readback-mismatch",
+    "title": "SYNTHETIC FAULT FIXTURE - Conversation state: intentionally stale weekday",
+    "notes": "Test-only authored normalized session, not a recording or production call. Turn times use an artificial schedule; no measured latencies, model outputs, or transcript confidence scores are supplied.",
+    "pipeline_label": null,
+    "models": {},
+    "synthetic": true,
+    "source": {
+      "sdk_version": null,
+      "original_name": "synthetic-fault-readback-mismatch",
+      "imported_at": "2026-01-01T00:00:00+00:00",
+      "synthetic": true
+    },
+    "config": {},
+    "speaker_labels": {
+      "user": "Synthetic user",
+      "agent": "Synthetic agent"
+    },
+    "agent_instructions": null,
+    "turns": [
+      {
+        "id": "t001",
+        "index": 0,
+        "speaker": "user",
+        "text": "Tuesday at 8 AM works.",
+        "start_s": 1.0,
+        "end_s": 4.0,
+        "committed_s": 4.2
+      },
+      {
+        "id": "t002",
+        "index": 1,
+        "speaker": "agent",
+        "text": "I have noted Tuesday at 8 AM.",
+        "start_s": 6.0,
+        "end_s": 9.0,
+        "committed_s": 5.8
+      },
+      {
+        "id": "t003",
+        "index": 2,
+        "speaker": "user",
+        "text": "Change the appointment to Thursday at 8 AM instead.",
+        "start_s": 11.0,
+        "end_s": 14.0,
+        "committed_s": 14.2
+      },
+      {
+        "id": "t004",
+        "index": 3,
+        "speaker": "agent",
+        "text": "I have noted your change.",
+        "start_s": 16.0,
+        "end_s": 19.0,
+        "committed_s": 15.8
+      },
+      {
+        "id": "t005",
+        "index": 4,
+        "speaker": "user",
+        "text": "Could you repeat the appointment day and time?",
+        "start_s": 21.0,
+        "end_s": 24.0,
+        "committed_s": 24.2
+      },
+      {
+        "id": "t006",
+        "index": 5,
+        "speaker": "agent",
+        "text": "Your appointment is Tuesday at 8 AM.",
+        "start_s": 26.0,
+        "end_s": 29.0,
+        "committed_s": 25.8
+      }
+    ],
+    "events": [],
+    "usage": [],
+    "stats": {
+      "duration_s": null,
+      "user_turns": 3,
+      "agent_turns": 3,
+      "e2e_latency": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "llm_ttft": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "tts_ttfb": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "end_of_turn_delay": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 0
+    }
+  }
+}

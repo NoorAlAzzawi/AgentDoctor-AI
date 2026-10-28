@@ -1,0 +1,100 @@
+{
+  "fixture_id": "synthetic-fault-premature-goodbye",
+  "injected_fault_type": "farewell_before_request_resolved",
+  "description": "A helpful agent reply is intentionally replaced with Goodbye. The user has not signaled closure and continues with a substantive unresolved directions request.",
+  "injection": {
+    "turn_id": "t002",
+    "baseline_text": "I can help with directions. Which entrance are you planning to use?",
+    "injected_text": "Goodbye."
+  },
+  "expected": {
+    "detector": "premature_goodbye",
+    "category": "llm_behavior",
+    "status": "confirmed",
+    "evidence_turn_ids": [
+      "t001",
+      "t002",
+      "t003"
+    ]
+  },
+  "session": {
+    "id": "synthetic-fault-premature-goodbye",
+    "title": "SYNTHETIC FAULT FIXTURE - Conversation ending: intentionally premature farewell",
+    "notes": "Test-only authored normalized session, not a recording or production call. Turn times use an artificial schedule; no measured latencies, model outputs, or transcript confidence scores are supplied.",
+    "pipeline_label": null,
+    "models": {},
+    "synthetic": true,
+    "source": {
+      "sdk_version": null,
+      "original_name": "synthetic-fault-premature-goodbye",
+      "imported_at": "2026-01-01T00:00:00+00:00",
+      "synthetic": true
+    },
+    "config": {},
+    "speaker_labels": {
+      "user": "Synthetic user",
+      "agent": "Synthetic agent"
+    },
+    "agent_instructions": null,
+    "turns": [
+      {
+        "id": "t001",
+        "index": 0,
+        "speaker": "user",
+        "text": "I still need directions to the main entrance. Can you help?",
+        "start_s": 1.0,
+        "end_s": 4.0,
+        "committed_s": 4.2
+      },
+      {
+        "id": "t002",
+        "index": 1,
+        "speaker": "agent",
+        "text": "Goodbye.",
+        "start_s": 6.0,
+        "end_s": 9.0,
+        "committed_s": 5.8
+      },
+      {
+        "id": "t003",
+        "index": 2,
+        "speaker": "user",
+        "text": "Please tell me how to reach the main entrance.",
+        "start_s": 11.0,
+        "end_s": 14.0,
+        "committed_s": 14.2
+      }
+    ],
+    "events": [],
+    "usage": [],
+    "stats": {
+      "duration_s": null,
+      "user_turns": 2,
+      "agent_turns": 1,
+      "e2e_latency": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "llm_ttft": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "tts_ttfb": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "end_of_turn_delay": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 0
+    }
+  }
+}

@@ -123,8 +123,16 @@ To try the dashboard without the backend, start it in mock mode with `VITE_USE_M
 
 ## Tests
 
+### Validation strategy
+
+- **Recorded sessions** — observed failures from seven sanitized voice-agent sessions, with evidence and uncertainty preserved.
+- **Controlled synthetic fault fixtures** — three test-only, intentionally injected failures with known expected detector outcomes: a missing STT time number, a stale appointment readback, and a premature goodbye. Each has a matched clean control and remains separate from the recorded dataset.
+- **Regression tests** — validate the session schema, expected findings and linked evidence, and ensure the known faults remain detectable after changes.
+
+These [synthetic fixtures](backend/tests/fixtures/synthetic_faults/) are authored validation data, **not real production sessions**; they are not loaded into the application. The STT omission is known by construction, but the detector still reports `suspected` because it does not receive the test's reference ground truth. Controlled tests do not establish real-world accuracy or prove a root cause.
+
 ```bash
-cd backend && uv run pytest          # 42 tests
+cd backend && uv run pytest          # 58 tests
 cd frontend && npm test              # 19 frontend tests
 cd frontend && npm run typecheck && npm run build
 cd frontend && npm run test:live     # 12 opt-in tests against a running API + Vite server

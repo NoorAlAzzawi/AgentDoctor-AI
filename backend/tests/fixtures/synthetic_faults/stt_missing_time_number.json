@@ -1,0 +1,90 @@
+{
+  "fixture_id": "synthetic-fault-stt-missing-time-number",
+  "injected_fault_type": "numeric_time_omission",
+  "description": "The authored reference utterance is Thursday at 8 AM. Only the numeral 8 is intentionally removed from the simulated STT transcript. No speech or transcription engine was run.",
+  "injection": {
+    "turn_id": "t001",
+    "baseline_text": "Thursday at 8 AM.",
+    "injected_text": "Thursday at AM."
+  },
+  "expected": {
+    "detector": "stt_missing_time_number",
+    "category": "speech_recognition",
+    "status": "suspected",
+    "evidence_turn_ids": [
+      "t001",
+      "t002"
+    ]
+  },
+  "session": {
+    "id": "synthetic-fault-stt-missing-time-number",
+    "title": "SYNTHETIC FAULT FIXTURE - Speech recognition: intentionally omitted hour",
+    "notes": "Test-only authored normalized session, not a recording or production call. Turn times use an artificial schedule; no measured latencies, model outputs, or transcript confidence scores are supplied.",
+    "pipeline_label": null,
+    "models": {},
+    "synthetic": true,
+    "source": {
+      "sdk_version": null,
+      "original_name": "synthetic-fault-stt-missing-time-number",
+      "imported_at": "2026-01-01T00:00:00+00:00",
+      "synthetic": true
+    },
+    "config": {},
+    "speaker_labels": {
+      "user": "Synthetic user",
+      "agent": "Synthetic agent"
+    },
+    "agent_instructions": null,
+    "turns": [
+      {
+        "id": "t001",
+        "index": 0,
+        "speaker": "user",
+        "text": "Thursday at AM.",
+        "start_s": 1.0,
+        "end_s": 4.0,
+        "committed_s": 4.2
+      },
+      {
+        "id": "t002",
+        "index": 1,
+        "speaker": "agent",
+        "text": "Could you tell me the exact hour?",
+        "start_s": 6.0,
+        "end_s": 9.0,
+        "committed_s": 5.8
+      }
+    ],
+    "events": [],
+    "usage": [],
+    "stats": {
+      "duration_s": null,
+      "user_turns": 1,
+      "agent_turns": 1,
+      "e2e_latency": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "llm_ttft": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "tts_ttfb": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "end_of_turn_delay": {
+        "n": 0,
+        "median_s": null,
+        "p90_s": null
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 0
+    }
+  }
+}
