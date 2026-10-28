@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[oc]
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+coverage/
+
+# Secrets and local env
+.env
+.env.*
+*.local.json
+
+# Raw recordings and unsanitized LiveKit reports are never stored in this repo
+*.ogg
+*.wav
+*.mp3
+*.m4a
+*.flac
+console-recordings/
+session_report.json
+!backend/tests/fixtures/synthetic_session/session_report.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

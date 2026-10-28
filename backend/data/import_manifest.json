@@ -1,0 +1,48 @@
+{
+  "description": "Local console test sessions of a voice agent playing a fictional patient calling a fictional medical office. A human tester role-played the receptionist. All names, dates of birth and phone numbers are fictional. Audio is not imported.",
+  "blocked_terms": [],
+  "sessions": [
+    {
+      "id": "s01-workshop-improvised",
+      "source": "session-10-26-001847",
+      "title": "Workshop pipeline · improvised role-play",
+      "notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded."
+    },
+    {
+      "id": "s02-workshop-structured",
+      "source": "session-10-26-003123",
+      "title": "Workshop pipeline · semi-structured role-play",
+      "notes": "Loosely structured (name spelling, date changes). Audio setup not recorded."
+    },
+    {
+      "id": "s03-workshop-ab-script",
+      "source": "session-10-26-005228",
+      "title": "Workshop pipeline · A/B script (run A)",
+      "notes": "Same receptionist script as s04. MacBook speakers (tester's note)."
+    },
+    {
+      "id": "s04-recommended-ab-script",
+      "source": "session-10-26-010012",
+      "title": "Recommended pipeline · A/B script (run B)",
+      "notes": "Same receptionist script as s03. Audio setup not recorded."
+    },
+    {
+      "id": "s05-workshop-headphones",
+      "source": "session-10-27-010903",
+      "title": "Workshop pipeline · A/B script with headphones",
+      "notes": "Headphones (tester's note)."
+    },
+    {
+      "id": "s06-hybrid-script",
+      "source": "session-10-27-013813",
+      "title": "Hybrid pipeline · scripted run",
+      "notes": "Audio setup not recorded."
+    },
+    {
+      "id": "s07-workshop-persona-v2",
+      "source": "session-10-27-015134",
+      "title": "Workshop pipeline · persona v2 with revised call ending",
+      "notes": "Headphones (tester's note). Persona changed to Michael Lopez; goodbye rules rewritten."
+    }
+  ]
+}

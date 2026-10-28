@@ -1,0 +1,349 @@
+{
+  "session_id": "s04-recommended-ab-script",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s04-recommended-ab-script:stt_missing_time_number:t036",
+      "session_id": "s04-recommended-ab-script",
+      "detector": "stt_missing_time_number",
+      "title": "Time of day transcribed without its number: 'at AM.'",
+      "summary": "The transcript contains a time of day with no hour, so the agent never received the actual time.",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 216.464,
+        "end_s": 223.549
+      },
+      "turn_ids": [
+        "t036",
+        "t037"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User transcript",
+          "value": "I have a, uh, Thursday at AM. Two weeks from now. Would you like the appointment instead?",
+          "turn_id": "t036",
+          "event_id": null,
+          "t_s": 216.464
+        },
+        {
+          "kind": "transcript",
+          "label": "Time without a number",
+          "value": "at AM.",
+          "turn_id": "t036",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "STT transcript confidence",
+          "value": "1.00",
+          "turn_id": "t036",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent's next reply (what it understood)",
+          "value": "Thanks, but I really need to see Dr. Patel next week if possible. Could you check again for any other Tuesday morning openings?",
+          "turn_id": "t037",
+          "event_id": null,
+          "t_s": 224.547
+        },
+        {
+          "kind": "metric",
+          "label": "Same pattern in this session",
+          "value": "3 user turns",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "Speech-to-text likely dropped a spoken number (for example \"8\" in \"8 AM\").",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the turn, or a reference transcript of what was said"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to confirm what was said.",
+        "Re-run the same script with a different STT model and compare the transcript.",
+        "Add the expected times as STT keyterms, or have the agent ask for the exact time when it's missing."
+      ]
+    },
+    {
+      "id": "s04-recommended-ab-script:stt_missing_time_number:t042",
+      "session_id": "s04-recommended-ab-script",
+      "detector": "stt_missing_time_number",
+      "title": "Time of day transcribed without its number: 'at AM.'",
+      "summary": "The transcript contains a time of day with no hour, so the agent never received the actual time.",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 262.959,
+        "end_s": 268.352
+      },
+      "turn_ids": [
+        "t042",
+        "t043"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User transcript",
+          "value": "Okay. Let's go with Thursday at AM. Two weeks from now.",
+          "turn_id": "t042",
+          "event_id": null,
+          "t_s": 262.959
+        },
+        {
+          "kind": "transcript",
+          "label": "Time without a number",
+          "value": "at AM.",
+          "turn_id": "t042",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "STT transcript confidence",
+          "value": "1.00",
+          "turn_id": "t042",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent's next reply (what it understood)",
+          "value": "That works for me. Thank you for scheduling it. Goodbye!",
+          "turn_id": "t043",
+          "event_id": null,
+          "t_s": 269.548
+        },
+        {
+          "kind": "metric",
+          "label": "Same pattern in this session",
+          "value": "3 user turns",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "Speech-to-text likely dropped a spoken number (for example \"8\" in \"8 AM\").",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the turn, or a reference transcript of what was said"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to confirm what was said.",
+        "Re-run the same script with a different STT model and compare the transcript.",
+        "Add the expected times as STT keyterms, or have the agent ask for the exact time when it's missing."
+      ]
+    },
+    {
+      "id": "s04-recommended-ab-script:stt_missing_time_number:t064",
+      "session_id": "s04-recommended-ab-script",
+      "detector": "stt_missing_time_number",
+      "title": "Time of day transcribed without its number: 'at AM.'",
+      "summary": "The transcript contains a time of day with no hour, so the agent never received the actual time.",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 378.864,
+        "end_s": 387.846
+      },
+      "turn_ids": [
+        "t064",
+        "t065"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User transcript",
+          "value": "Thank you, Maria. Your appointment is scheduled for Thursday at AM. Two weeks from now. Is there anything else I could help you with today?",
+          "turn_id": "t064",
+          "event_id": null,
+          "t_s": 378.864
+        },
+        {
+          "kind": "transcript",
+          "label": "Time without a number",
+          "value": "at AM.",
+          "turn_id": "t064",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "STT transcript confidence",
+          "value": "1.00",
+          "turn_id": "t064",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent's next reply (what it understood)",
+          "value": "No, that's all for now. Thank you very much. Goodbye!",
+          "turn_id": "t065",
+          "event_id": null,
+          "t_s": 388.948
+        },
+        {
+          "kind": "metric",
+          "label": "Same pattern in this session",
+          "value": "3 user turns",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "Speech-to-text likely dropped a spoken number (for example \"8\" in \"8 AM\").",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the turn, or a reference transcript of what was said"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to confirm what was said.",
+        "Re-run the same script with a different STT model and compare the transcript.",
+        "Add the expected times as STT keyterms, or have the agent ask for the exact time when it's missing."
+      ]
+    },
+    {
+      "id": "s04-recommended-ab-script:premature_goodbye:t043",
+      "session_id": "s04-recommended-ab-script",
+      "detector": "premature_goodbye",
+      "title": "Agent said goodbye at 4:29.5 while the call was still going",
+      "summary": "The agent ended its side of the conversation although the other side had not wrapped up; the conversation continued afterwards.",
+      "category": "llm_behavior",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 262.959,
+        "end_s": 275.359
+      },
+      "turn_ids": [
+        "t042",
+        "t043",
+        "t044"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User's previous turn (no closing)",
+          "value": "Okay. Let's go with Thursday at AM. Two weeks from now.",
+          "turn_id": "t042",
+          "event_id": null,
+          "t_s": 262.959
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent said goodbye",
+          "value": "That works for me. Thank you for scheduling it. Goodbye!",
+          "turn_id": "t043",
+          "event_id": null,
+          "t_s": 269.548
+        },
+        {
+          "kind": "transcript",
+          "label": "Conversation continued",
+          "value": "One moment, please. I am checking your information.",
+          "turn_id": "t044",
+          "event_id": null,
+          "t_s": 275.359
+        },
+        {
+          "kind": "config",
+          "label": "Agent instruction about goodbyes",
+          "value": "Once your appointment is confirmed, thank them and say goodbye.",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The agent treated agreement on a detail as the end of the call; its instructions tie goodbye to that moment.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "A re-run of the same script with the goodbye instruction rewritten"
+        ]
+      },
+      "next_steps": [
+        "Instruct the agent to say goodbye only after the other side wraps up.",
+        "Re-run the same script and check that the goodbye moves to the end."
+      ]
+    },
+    {
+      "id": "s04-recommended-ab-script:endpointing_timeout:session",
+      "session_id": "s04-recommended-ab-script",
+      "detector": "endpointing_timeout",
+      "title": "1 of 35 user turns ended by the 2.5s endpointing timeout",
+      "summary": "For these turns the turn detector never judged the user finished, so the agent waited the full 2.5s before replying.",
+      "category": "latency",
+      "severity": "low",
+      "status": "confirmed",
+      "time_range": null,
+      "turn_ids": [
+        "t038"
+      ],
+      "evidence": [
+        {
+          "kind": "config",
+          "label": "max_endpointing_delay",
+          "value": "2.5s",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 3:53.8",
+          "value": "2.5s: \"There is no opening next week. I'm sorry.\"",
+          "turn_id": "t038",
+          "event_id": null,
+          "t_s": 233.761
+        },
+        {
+          "kind": "metric",
+          "label": "Agent response latency after these turns",
+          "value": "median 2.899s (n=1)",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused or trailed off mid-thought, so end-of-turn prediction stayed uncertain until the maximum delay.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the pauses",
+          "Turn-detector probabilities for these turns"
+        ]
+      },
+      "next_steps": [
+        "Read the timed-out turns: are they fragments or complete sentences?",
+        "If complete, check turn-detector settings; if fragments, the wait was correct.",
+        "Avoid lowering max_endpointing_delay blindly: it would cut users off mid-sentence."
+      ]
+    }
+  ]
+}

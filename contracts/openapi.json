@@ -1,0 +1,1247 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AgentDoctor AI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "summary": "Sessions",
+        "operationId": "sessions_api_sessions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SessionSummary"
+                  },
+                  "type": "array",
+                  "title": "Response Sessions Api Sessions Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}": {
+      "get": {
+        "summary": "Session",
+        "operationId": "session_api_sessions__session_id__get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions/{session_id}/findings": {
+      "get": {
+        "summary": "Findings",
+        "operationId": "findings_api_sessions__session_id__findings_get",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/compare": {
+      "get": {
+        "summary": "Compare",
+        "operationId": "compare_api_compare_get",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "A"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "B"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comparison"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ComparedMetric": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "s",
+              "count"
+            ],
+            "title": "Unit"
+          },
+          "a": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "A"
+          },
+          "b": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "B"
+          },
+          "better": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "lower",
+                  "higher"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Better"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "unit",
+          "a",
+          "b",
+          "better"
+        ],
+        "title": "ComparedMetric"
+      },
+      "Comparison": {
+        "properties": {
+          "a": {
+            "$ref": "#/components/schemas/SessionSummary"
+          },
+          "b": {
+            "$ref": "#/components/schemas/SessionSummary"
+          },
+          "same_models": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Same Models"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/ComparedMetric"
+            },
+            "type": "array",
+            "title": "Metrics"
+          },
+          "findings_by_category": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "propertyNames": {
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              },
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Findings By Category"
+          },
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Caveats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "a",
+          "b",
+          "same_models",
+          "metrics",
+          "findings_by_category",
+          "caveats"
+        ],
+        "title": "Comparison"
+      },
+      "Evidence": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "transcript",
+              "metric",
+              "event",
+              "config"
+            ],
+            "title": "Kind"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turn Id"
+          },
+          "event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Id"
+          },
+          "t_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "T S"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "label",
+          "value"
+        ],
+        "title": "Evidence"
+      },
+      "Finding": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "detector": {
+            "type": "string",
+            "title": "Detector"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "speech_recognition",
+              "llm_behavior",
+              "conversation_state",
+              "turn_taking",
+              "tool_execution",
+              "missing_or_incorrect_info",
+              "latency"
+            ],
+            "title": "Category"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Severity"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "suspected"
+            ],
+            "title": "Status"
+          },
+          "time_range": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "turn_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Turn Ids"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "root_cause": {
+            "$ref": "#/components/schemas/RootCause"
+          },
+          "next_steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Next Steps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "session_id",
+          "detector",
+          "title",
+          "summary",
+          "category",
+          "severity",
+          "status",
+          "time_range",
+          "turn_ids",
+          "evidence",
+          "root_cause",
+          "next_steps"
+        ],
+        "title": "Finding"
+      },
+      "FindingsResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "detectors_run": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Detectors Run"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            },
+            "type": "array",
+            "title": "Findings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "detectors_run",
+          "findings"
+        ],
+        "title": "FindingsResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LatencyStats": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "median_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median S"
+          },
+          "p90_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P90 S"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "median_s",
+          "p90_s"
+        ],
+        "title": "LatencyStats"
+      },
+      "Models": {
+        "properties": {
+          "stt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stt"
+          },
+          "llm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm"
+          },
+          "tts": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tts"
+          },
+          "turn_detector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turn Detector"
+          },
+          "interruption_detector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interruption Detector"
+          }
+        },
+        "type": "object",
+        "title": "Models"
+      },
+      "RootCause": {
+        "properties": {
+          "statement": {
+            "type": "string",
+            "title": "Statement"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "likely",
+              "possible"
+            ],
+            "title": "Confidence"
+          },
+          "missing_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Evidence",
+            "description": "What would confirm or rule out this cause."
+          }
+        },
+        "type": "object",
+        "required": [
+          "statement",
+          "confidence"
+        ],
+        "title": "RootCause"
+      },
+      "Session": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "pipeline_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pipeline Label",
+            "description": "Known preset name, or None if unrecognized."
+          },
+          "models": {
+            "$ref": "#/components/schemas/Models"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/SessionStats"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceInfo"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SessionConfig"
+          },
+          "speaker_labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "user",
+                "agent"
+              ]
+            },
+            "type": "object",
+            "title": "Speaker Labels"
+          },
+          "agent_instructions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agent Instructions",
+            "description": "System prompt recorded in the report."
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/Turn"
+            },
+            "type": "array",
+            "title": "Turns"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "usage": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Usage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "notes",
+          "pipeline_label",
+          "models",
+          "synthetic",
+          "stats",
+          "source",
+          "config",
+          "speaker_labels",
+          "agent_instructions",
+          "turns",
+          "events",
+          "usage"
+        ],
+        "title": "Session"
+      },
+      "SessionConfig": {
+        "properties": {
+          "allow_interruptions": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allow Interruptions"
+          },
+          "min_interruption_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Interruption Duration S"
+          },
+          "min_endpointing_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Endpointing Delay S"
+          },
+          "max_endpointing_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Endpointing Delay S"
+          },
+          "preemptive_generation": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preemptive Generation"
+          }
+        },
+        "type": "object",
+        "title": "SessionConfig",
+        "description": "Agent settings recorded in the report."
+      },
+      "SessionStats": {
+        "properties": {
+          "duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration S"
+          },
+          "user_turns": {
+            "type": "integer",
+            "title": "User Turns"
+          },
+          "agent_turns": {
+            "type": "integer",
+            "title": "Agent Turns"
+          },
+          "e2e_latency": {
+            "$ref": "#/components/schemas/LatencyStats"
+          },
+          "llm_ttft": {
+            "$ref": "#/components/schemas/LatencyStats"
+          },
+          "tts_ttfb": {
+            "$ref": "#/components/schemas/LatencyStats"
+          },
+          "end_of_turn_delay": {
+            "$ref": "#/components/schemas/LatencyStats"
+          },
+          "endpointing_timeouts": {
+            "type": "integer",
+            "title": "Endpointing Timeouts",
+            "description": "User turns whose end_of_turn_delay reached max_endpointing_delay."
+          },
+          "false_interruptions": {
+            "type": "integer",
+            "title": "False Interruptions"
+          },
+          "interrupted_agent_turns": {
+            "type": "integer",
+            "title": "Interrupted Agent Turns"
+          },
+          "overlapping_speech_events": {
+            "type": "integer",
+            "title": "Overlapping Speech Events"
+          }
+        },
+        "type": "object",
+        "required": [
+          "duration_s",
+          "user_turns",
+          "agent_turns",
+          "e2e_latency",
+          "llm_ttft",
+          "tts_ttfb",
+          "end_of_turn_delay",
+          "endpointing_timeouts",
+          "false_interruptions",
+          "interrupted_agent_turns",
+          "overlapping_speech_events"
+        ],
+        "title": "SessionStats",
+        "description": "Counts and timings computed directly from the report (no inference)."
+      },
+      "SessionSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "pipeline_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pipeline Label",
+            "description": "Known preset name, or None if unrecognized."
+          },
+          "models": {
+            "$ref": "#/components/schemas/Models"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/SessionStats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "notes",
+          "pipeline_label",
+          "models",
+          "synthetic",
+          "stats"
+        ],
+        "title": "SessionSummary"
+      },
+      "SourceInfo": {
+        "properties": {
+          "format": {
+            "type": "string",
+            "const": "livekit_session_report",
+            "title": "Format",
+            "default": "livekit_session_report"
+          },
+          "sdk_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sdk Version"
+          },
+          "original_name": {
+            "type": "string",
+            "title": "Original Name"
+          },
+          "imported_at": {
+            "type": "string",
+            "title": "Imported At"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "sdk_version",
+          "original_name",
+          "imported_at"
+        ],
+        "title": "SourceInfo"
+      },
+      "TimeRange": {
+        "properties": {
+          "start_s": {
+            "type": "number",
+            "title": "Start S"
+          },
+          "end_s": {
+            "type": "number",
+            "title": "End S"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start_s",
+          "end_s"
+        ],
+        "title": "TimeRange"
+      },
+      "TimelineEvent": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Stable id, e.g. 'e042'."
+          },
+          "t_s": {
+            "type": "number",
+            "title": "T S"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent_state",
+              "user_state",
+              "false_interruption",
+              "overlapping_speech",
+              "session_close"
+            ],
+            "title": "Type"
+          },
+          "data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data",
+            "description": "agent_state/user_state: {from, to}; false_interruption: {resumed}; overlapping_speech: {is_interruption, probability, detection_delay_s}; session_close: {reason, error}."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "t_s",
+          "type",
+          "data"
+        ],
+        "title": "TimelineEvent"
+      },
+      "Turn": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Stable id, e.g. 't007'."
+          },
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "speaker": {
+            "type": "string",
+            "enum": [
+              "user",
+              "agent"
+            ],
+            "title": "Speaker"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "start_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start S",
+            "description": "When speech started (LiveKit started_speaking_at). For user turns this can be anchored to an earlier voice-activity blip, so compare with committed_s."
+          },
+          "end_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End S",
+            "description": "When speech stopped, if reported."
+          },
+          "committed_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Committed S",
+            "description": "When the turn was added to the chat history. Agent turns: when the reply was created, usually before its audio starts. User turns: after the final transcript."
+          },
+          "interrupted": {
+            "type": "boolean",
+            "title": "Interrupted",
+            "default": false
+          },
+          "transcript_confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcript Confidence"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/TurnMetrics",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "index",
+          "speaker",
+          "text",
+          "start_s",
+          "end_s",
+          "committed_s"
+        ],
+        "title": "Turn"
+      },
+      "TurnMetrics": {
+        "properties": {
+          "e2e_latency_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "E2E Latency S"
+          },
+          "end_of_turn_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Of Turn Delay S"
+          },
+          "transcription_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcription Delay S"
+          },
+          "llm_ttft_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Ttft S"
+          },
+          "tts_ttfb_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tts Ttfb S"
+          },
+          "playback_latency_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Playback Latency S"
+          }
+        },
+        "type": "object",
+        "title": "TurnMetrics",
+        "description": "Per-turn timings reported by LiveKit Agents. Agent turns carry LLM/TTS timings,\nuser turns carry STT/endpointing timings."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

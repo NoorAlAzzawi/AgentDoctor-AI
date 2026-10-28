@@ -1,0 +1,213 @@
+{
+  "session_id": "s06-hybrid-script",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s06-hybrid-script:false_interruption_pause:e132",
+      "session_id": "s06-hybrid-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent paused mid-reply for 2.4s, then resumed",
+      "summary": "At 3:47.1 the agent stopped speaking because of user voice activity that never produced a transcript, then resumed the same reply 2.4s later.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 226.555,
+        "end_s": 229.525
+      },
+      "turn_ids": [
+        "t045"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply affected",
+          "value": "Two weeks from now seems like a long time. Is there really nothing available next week in the morning?",
+          "turn_id": "t045",
+          "event_id": null,
+          "t_s": 225.962
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.39s burst, no transcript followed",
+          "turn_id": null,
+          "event_id": "e128",
+          "t_s": 226.555
+        },
+        {
+          "kind": "event",
+          "label": "Agent held its reply",
+          "value": "speaking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e130",
+          "t_s": 227.122
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, reply resumed",
+          "value": "after 2.4s",
+          "turn_id": null,
+          "event_id": "e132",
+          "t_s": 229.525
+        },
+        {
+          "kind": "event",
+          "label": "Agent had just started speaking",
+          "value": "0.59s before the trigger",
+          "turn_id": null,
+          "event_id": "e127",
+          "t_s": 225.963
+        }
+      ],
+      "root_cause": {
+        "statement": "Possible acoustic echo: the trigger began 0.59s after the agent started speaking, which fits the agent's own voice reaching the microphone.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time",
+          "The same script re-run with headphones"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel at the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Lower false_interruption_timeout (default 2.0s) to shorten the gap, or raise min_interruption_duration if short sounds are the trigger."
+      ]
+    },
+    {
+      "id": "s06-hybrid-script:false_interruption_pause:e075",
+      "session_id": "s06-hybrid-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent held its reply for 2.3s before speaking",
+      "summary": "At 2:15.0 the agent held its prepared reply because of user voice activity that never produced a transcript, adding 2.3s before it spoke.",
+      "category": "turn_taking",
+      "severity": "low",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 134.219,
+        "end_s": 137.349
+      },
+      "turn_ids": [
+        "t025"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply affected",
+          "value": "Yes, that is correct.",
+          "turn_id": "t025",
+          "event_id": null,
+          "t_s": 137.362
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.54s burst, no transcript followed",
+          "turn_id": null,
+          "event_id": "e071",
+          "t_s": 134.219
+        },
+        {
+          "kind": "event",
+          "label": "Agent held its reply",
+          "value": "thinking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e073",
+          "t_s": 135.045
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, reply resumed",
+          "value": "after 2.3s",
+          "turn_id": null,
+          "event_id": "e075",
+          "t_s": 137.349
+        }
+      ],
+      "root_cause": {
+        "statement": "A short sound on the user's side (breath, filler, noise) was treated as a possible interruption.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel at the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Lower false_interruption_timeout (default 2.0s) to shorten the gap, or raise min_interruption_duration if short sounds are the trigger."
+      ]
+    },
+    {
+      "id": "s06-hybrid-script:endpointing_timeout:session",
+      "session_id": "s06-hybrid-script",
+      "detector": "endpointing_timeout",
+      "title": "2 of 25 user turns ended by the 2.5s endpointing timeout",
+      "summary": "For these turns the turn detector never judged the user finished, so the agent waited the full 2.5s before replying.",
+      "category": "latency",
+      "severity": "low",
+      "status": "confirmed",
+      "time_range": null,
+      "turn_ids": [
+        "t008",
+        "t009"
+      ],
+      "evidence": [
+        {
+          "kind": "config",
+          "label": "max_endpointing_delay",
+          "value": "2.5s",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 0:39.1",
+          "value": "2.5s: 'May I'",
+          "turn_id": "t008",
+          "event_id": null,
+          "t_s": 39.125
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 0:42.1",
+          "value": "2.501s: 'Yes, please.'",
+          "turn_id": "t009",
+          "event_id": null,
+          "t_s": 42.125
+        },
+        {
+          "kind": "metric",
+          "label": "Agent response latency after these turns",
+          "value": "median 3.179s (n=1)",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused or trailed off mid-thought, so end-of-turn prediction stayed uncertain until the maximum delay.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the pauses",
+          "Turn-detector probabilities for these turns"
+        ]
+      },
+      "next_steps": [
+        "Read the timed-out turns: are they fragments or complete sentences?",
+        "If complete, check turn-detector settings; if fragments, the wait was correct.",
+        "Avoid lowering max_endpointing_delay blindly: it would cut users off mid-sentence."
+      ]
+    }
+  ]
+}

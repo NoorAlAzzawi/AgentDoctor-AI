@@ -1,0 +1,26 @@
+[project]
+name = "agentdoctor"
+version = "0.1.0"
+description = "Evidence-based failure detective for AI voice agent sessions."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+]
+
+[project.scripts]
+agentdoctor = "agentdoctor.cli:main"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+# Starlette's TestClient prefers httpx2 and warns when it falls back to httpx (dev-only; tests are unaffected).
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient` is deprecated:UserWarning"]
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"

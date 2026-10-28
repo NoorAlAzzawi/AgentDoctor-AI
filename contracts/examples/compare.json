@@ -1,0 +1,197 @@
+{
+  "a": {
+    "id": "s03-workshop-ab-script",
+    "title": "Workshop pipeline \u00b7 A/B script (run A)",
+    "notes": "Same receptionist script as s04. MacBook speakers (tester's note).",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 411.406,
+      "user_turns": 35,
+      "agent_turns": 33,
+      "e2e_latency": {
+        "n": 33,
+        "median_s": 1.198,
+        "p90_s": 1.594
+      },
+      "llm_ttft": {
+        "n": 33,
+        "median_s": 0.191,
+        "p90_s": 0.259
+      },
+      "tts_ttfb": {
+        "n": 33,
+        "median_s": 0.511,
+        "p90_s": 0.58
+      },
+      "end_of_turn_delay": {
+        "n": 35,
+        "median_s": 0.581,
+        "p90_s": 0.582
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 2,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 3
+    }
+  },
+  "b": {
+    "id": "s04-recommended-ab-script",
+    "title": "Recommended pipeline \u00b7 A/B script (run B)",
+    "notes": "Same receptionist script as s03. Audio setup not recorded.",
+    "pipeline_label": "recommended",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-mini",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 406.18,
+      "user_turns": 35,
+      "agent_turns": 32,
+      "e2e_latency": {
+        "n": 32,
+        "median_s": 1.299,
+        "p90_s": 1.585
+      },
+      "llm_ttft": {
+        "n": 32,
+        "median_s": 0.427,
+        "p90_s": 0.626
+      },
+      "tts_ttfb": {
+        "n": 32,
+        "median_s": 0.198,
+        "p90_s": 0.229
+      },
+      "end_of_turn_delay": {
+        "n": 35,
+        "median_s": 0.581,
+        "p90_s": 0.582
+      },
+      "endpointing_timeouts": 1,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 2
+    }
+  },
+  "same_models": {
+    "stt": false,
+    "llm": false,
+    "tts": false
+  },
+  "metrics": [
+    {
+      "key": "duration_s",
+      "label": "Session duration",
+      "unit": "s",
+      "a": 411.406,
+      "b": 406.18,
+      "better": null
+    },
+    {
+      "key": "agent_turns",
+      "label": "Agent turns",
+      "unit": "count",
+      "a": 33.0,
+      "b": 32.0,
+      "better": null
+    },
+    {
+      "key": "e2e_latency_median",
+      "label": "Response latency (median)",
+      "unit": "s",
+      "a": 1.198,
+      "b": 1.299,
+      "better": "lower"
+    },
+    {
+      "key": "e2e_latency_p90",
+      "label": "Response latency (p90)",
+      "unit": "s",
+      "a": 1.594,
+      "b": 1.585,
+      "better": "lower"
+    },
+    {
+      "key": "llm_ttft_median",
+      "label": "LLM time to first token (median)",
+      "unit": "s",
+      "a": 0.191,
+      "b": 0.427,
+      "better": "lower"
+    },
+    {
+      "key": "tts_ttfb_median",
+      "label": "TTS time to first audio (median)",
+      "unit": "s",
+      "a": 0.511,
+      "b": 0.198,
+      "better": "lower"
+    },
+    {
+      "key": "end_of_turn_median",
+      "label": "End-of-turn delay (median)",
+      "unit": "s",
+      "a": 0.581,
+      "b": 0.581,
+      "better": "lower"
+    },
+    {
+      "key": "endpointing_timeouts",
+      "label": "Turns ended by endpointing timeout",
+      "unit": "count",
+      "a": 0.0,
+      "b": 1.0,
+      "better": "lower"
+    },
+    {
+      "key": "false_interruptions",
+      "label": "False interruptions",
+      "unit": "count",
+      "a": 2.0,
+      "b": 0.0,
+      "better": "lower"
+    },
+    {
+      "key": "interrupted_agent_turns",
+      "label": "Agent turns interrupted",
+      "unit": "count",
+      "a": 2.0,
+      "b": 2.0,
+      "better": null
+    }
+  ],
+  "findings_by_category": {
+    "turn_taking": {
+      "a": 2,
+      "b": 0
+    },
+    "speech_recognition": {
+      "a": 0,
+      "b": 3
+    },
+    "llm_behavior": {
+      "a": 0,
+      "b": 1
+    },
+    "latency": {
+      "a": 0,
+      "b": 1
+    }
+  },
+  "caveats": [
+    "One session per side: differences may be run-to-run variation, not the pipeline.",
+    "More than one pipeline component differs, so a difference can't be attributed to a single component."
+  ]
+}

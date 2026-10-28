@@ -1,0 +1,202 @@
+{
+  "session_id": "s03-workshop-ab-script",
+  "detectors_run": [
+    "false_interruption_pause",
+    "short_transcript_interrupt"
+  ],
+  "findings": [
+    {
+      "id": "s03-workshop-ab-script:false-interruption:e098",
+      "session_id": "s03-workshop-ab-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent paused mid-reply for 2.21s, then resumed",
+      "summary": "A 0.18s burst of user voice activity paused the agent's reply. No transcript followed, so the agent resumed after 2.21s.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 195.007,
+        "end_s": 198.089
+      },
+      "turn_ids": [
+        "t031"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply that was paused",
+          "value": "Yes, that works perfectly. I'll take the Tuesday at 8 AM.",
+          "turn_id": "t031",
+          "event_id": null,
+          "t_s": 195.006
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.32s after the agent started speaking",
+          "turn_id": null,
+          "event_id": "e094",
+          "t_s": 195.331
+        },
+        {
+          "kind": "event",
+          "label": "Agent audio paused",
+          "value": "speaking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e096",
+          "t_s": 195.882
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, speech resumed",
+          "value": "resumed=true",
+          "turn_id": null,
+          "event_id": "e098",
+          "t_s": 198.089
+        }
+      ],
+      "root_cause": {
+        "statement": "Possible acoustic echo: the microphone may have picked up the agent's own voice shortly after it started speaking.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time (voice, noise, or echo?)",
+          "A repeat of the same script with headphones"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel around the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Consider lowering false_interruption_timeout to shorten the audible gap."
+      ]
+    },
+    {
+      "id": "s03-workshop-ab-script:false-interruption:e160",
+      "session_id": "s03-workshop-ab-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent paused mid-reply for 2.31s, then resumed",
+      "summary": "A 0.28s burst of user voice activity paused the agent's reply. No transcript followed, so the agent resumed after 2.31s.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 311.013,
+        "end_s": 314.19
+      },
+      "turn_ids": [
+        "t052"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply that was paused",
+          "value": "Yes, I'm still here.",
+          "turn_id": "t052",
+          "event_id": null,
+          "t_s": 311.007
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.31s after the agent started speaking",
+          "turn_id": null,
+          "event_id": "e156",
+          "t_s": 311.323
+        },
+        {
+          "kind": "event",
+          "label": "Agent audio paused",
+          "value": "speaking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e158",
+          "t_s": 311.881
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, speech resumed",
+          "value": "resumed=true",
+          "turn_id": null,
+          "event_id": "e160",
+          "t_s": 314.19
+        }
+      ],
+      "root_cause": {
+        "statement": "Possible acoustic echo: the microphone may have picked up the agent's own voice shortly after it started speaking.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time (voice, noise, or echo?)",
+          "A repeat of the same script with headphones"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel around the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Consider lowering false_interruption_timeout to shorten the audible gap."
+      ]
+    },
+    {
+      "id": "s03-workshop-ab-script:short-transcript:t034",
+      "session_id": "s03-workshop-ab-script",
+      "detector": "short_transcript_interrupt",
+      "title": "One-word transcript 'Hi,' cut off the agent and changed its reply",
+      "summary": "The agent was interrupted by a very short user transcript, then answered it as if the caller had gone silent.",
+      "category": "speech_recognition",
+      "severity": "low",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 210.606,
+        "end_s": 215.809
+      },
+      "turn_ids": [
+        "t033",
+        "t034",
+        "t035"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply cut off",
+          "value": "Oh,",
+          "turn_id": "t033",
+          "event_id": null,
+          "t_s": 210.606
+        },
+        {
+          "kind": "transcript",
+          "label": "Short user transcript",
+          "value": "Hi,",
+          "turn_id": "t034",
+          "event_id": null,
+          "t_s": 210.625
+        },
+        {
+          "kind": "metric",
+          "label": "User speech duration",
+          "value": "0.28s",
+          "turn_id": "t034",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent's next reply",
+          "value": "Hello? Are you still there? Is there anything else available on Tuesday or Thursday morning?",
+          "turn_id": "t035",
+          "event_id": null,
+          "t_s": 212.306
+        }
+      ],
+      "root_cause": {
+        "statement": "Speech-to-text may have transcribed a brief sound as a word. The data can't tell whether the tester actually said it.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio for this turn",
+          "STT confidence for the word"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel for this turn.",
+        "Check whether a minimum interruption word count would have prevented the cut-off."
+      ]
+    }
+  ]
+}

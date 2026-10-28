@@ -1,0 +1,160 @@
+{
+  "session_id": "s03-workshop-ab-script",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s03-workshop-ab-script:false_interruption_pause:e098",
+      "session_id": "s03-workshop-ab-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent paused mid-reply for 2.21s, then resumed",
+      "summary": "At 3:15.9 the agent stopped speaking because of user voice activity that never produced a transcript, then resumed the same reply 2.21s later.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 195.331,
+        "end_s": 198.089
+      },
+      "turn_ids": [
+        "t031"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply affected",
+          "value": "Yes, that works perfectly. I'll take the Tuesday at 8 AM.",
+          "turn_id": "t031",
+          "event_id": null,
+          "t_s": 195.006
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.18s burst, no transcript followed",
+          "turn_id": null,
+          "event_id": "e094",
+          "t_s": 195.331
+        },
+        {
+          "kind": "event",
+          "label": "Agent held its reply",
+          "value": "speaking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e096",
+          "t_s": 195.882
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, reply resumed",
+          "value": "after 2.21s",
+          "turn_id": null,
+          "event_id": "e098",
+          "t_s": 198.089
+        },
+        {
+          "kind": "event",
+          "label": "Agent had just started speaking",
+          "value": "0.32s before the trigger",
+          "turn_id": null,
+          "event_id": "e093",
+          "t_s": 195.007
+        }
+      ],
+      "root_cause": {
+        "statement": "Possible acoustic echo: the trigger began 0.32s after the agent started speaking, which fits the agent's own voice reaching the microphone.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time",
+          "The same script re-run with headphones"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel at the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Lower false_interruption_timeout (default 2.0s) to shorten the gap, or raise min_interruption_duration if short sounds are the trigger."
+      ]
+    },
+    {
+      "id": "s03-workshop-ab-script:false_interruption_pause:e160",
+      "session_id": "s03-workshop-ab-script",
+      "detector": "false_interruption_pause",
+      "title": "Agent paused mid-reply for 2.31s, then resumed",
+      "summary": "At 5:11.9 the agent stopped speaking because of user voice activity that never produced a transcript, then resumed the same reply 2.31s later.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 311.323,
+        "end_s": 314.19
+      },
+      "turn_ids": [
+        "t052"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "Agent reply affected",
+          "value": "Yes, I'm still here.",
+          "turn_id": "t052",
+          "event_id": null,
+          "t_s": 311.007
+        },
+        {
+          "kind": "event",
+          "label": "User voice activity started",
+          "value": "0.28s burst, no transcript followed",
+          "turn_id": null,
+          "event_id": "e156",
+          "t_s": 311.323
+        },
+        {
+          "kind": "event",
+          "label": "Agent held its reply",
+          "value": "speaking \u2192 listening",
+          "turn_id": null,
+          "event_id": "e158",
+          "t_s": 311.881
+        },
+        {
+          "kind": "event",
+          "label": "False interruption, reply resumed",
+          "value": "after 2.31s",
+          "turn_id": null,
+          "event_id": "e160",
+          "t_s": 314.19
+        },
+        {
+          "kind": "event",
+          "label": "Agent had just started speaking",
+          "value": "0.31s before the trigger",
+          "turn_id": null,
+          "event_id": "e155",
+          "t_s": 311.013
+        }
+      ],
+      "root_cause": {
+        "statement": "Possible acoustic echo: the trigger began 0.31s after the agent started speaking, which fits the agent's own voice reaching the microphone.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Microphone audio at the trigger time",
+          "The same script re-run with headphones"
+        ]
+      },
+      "next_steps": [
+        "Listen to the microphone channel at the trigger time.",
+        "Re-run the same script with headphones and compare false-interruption counts.",
+        "Lower false_interruption_timeout (default 2.0s) to shorten the gap, or raise min_interruption_duration if short sounds are the trigger."
+      ]
+    }
+  ]
+}

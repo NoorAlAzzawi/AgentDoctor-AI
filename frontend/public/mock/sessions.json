@@ -1,0 +1,303 @@
+[
+  {
+    "id": "s01-workshop-improvised",
+    "title": "Workshop pipeline \u00b7 improvised role-play",
+    "notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 416.929,
+      "user_turns": 37,
+      "agent_turns": 31,
+      "e2e_latency": {
+        "n": 30,
+        "median_s": 1.355,
+        "p90_s": 3.162
+      },
+      "llm_ttft": {
+        "n": 31,
+        "median_s": 0.189,
+        "p90_s": 0.308
+      },
+      "tts_ttfb": {
+        "n": 31,
+        "median_s": 0.508,
+        "p90_s": 0.571
+      },
+      "end_of_turn_delay": {
+        "n": 36,
+        "median_s": 0.581,
+        "p90_s": 2.501
+      },
+      "endpointing_timeouts": 9,
+      "false_interruptions": 2,
+      "interrupted_agent_turns": 1,
+      "overlapping_speech_events": 1
+    }
+  },
+  {
+    "id": "s02-workshop-structured",
+    "title": "Workshop pipeline \u00b7 semi-structured role-play",
+    "notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": null
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 307.991,
+      "user_turns": 27,
+      "agent_turns": 24,
+      "e2e_latency": {
+        "n": 24,
+        "median_s": 1.3,
+        "p90_s": 3.097
+      },
+      "llm_ttft": {
+        "n": 24,
+        "median_s": 0.185,
+        "p90_s": 0.247
+      },
+      "tts_ttfb": {
+        "n": 24,
+        "median_s": 0.501,
+        "p90_s": 0.56
+      },
+      "end_of_turn_delay": {
+        "n": 27,
+        "median_s": 0.581,
+        "p90_s": 2.501
+      },
+      "endpointing_timeouts": 7,
+      "false_interruptions": 3,
+      "interrupted_agent_turns": 1,
+      "overlapping_speech_events": 0
+    }
+  },
+  {
+    "id": "s03-workshop-ab-script",
+    "title": "Workshop pipeline \u00b7 A/B script (run A)",
+    "notes": "Same receptionist script as s04. MacBook speakers (tester's note).",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 411.406,
+      "user_turns": 35,
+      "agent_turns": 33,
+      "e2e_latency": {
+        "n": 33,
+        "median_s": 1.198,
+        "p90_s": 1.594
+      },
+      "llm_ttft": {
+        "n": 33,
+        "median_s": 0.191,
+        "p90_s": 0.259
+      },
+      "tts_ttfb": {
+        "n": 33,
+        "median_s": 0.511,
+        "p90_s": 0.58
+      },
+      "end_of_turn_delay": {
+        "n": 35,
+        "median_s": 0.581,
+        "p90_s": 0.582
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 2,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 3
+    }
+  },
+  {
+    "id": "s04-recommended-ab-script",
+    "title": "Recommended pipeline \u00b7 A/B script (run B)",
+    "notes": "Same receptionist script as s03. Audio setup not recorded.",
+    "pipeline_label": "recommended",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-mini",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 406.18,
+      "user_turns": 35,
+      "agent_turns": 32,
+      "e2e_latency": {
+        "n": 32,
+        "median_s": 1.299,
+        "p90_s": 1.585
+      },
+      "llm_ttft": {
+        "n": 32,
+        "median_s": 0.427,
+        "p90_s": 0.626
+      },
+      "tts_ttfb": {
+        "n": 32,
+        "median_s": 0.198,
+        "p90_s": 0.229
+      },
+      "end_of_turn_delay": {
+        "n": 35,
+        "median_s": 0.581,
+        "p90_s": 0.582
+      },
+      "endpointing_timeouts": 1,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 2
+    }
+  },
+  {
+    "id": "s05-workshop-headphones",
+    "title": "Workshop pipeline \u00b7 A/B script with headphones",
+    "notes": "Headphones (tester's note).",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": null
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 354.371,
+      "user_turns": 30,
+      "agent_turns": 30,
+      "e2e_latency": {
+        "n": 30,
+        "median_s": 1.329,
+        "p90_s": 3.083
+      },
+      "llm_ttft": {
+        "n": 30,
+        "median_s": 0.183,
+        "p90_s": 0.53
+      },
+      "tts_ttfb": {
+        "n": 30,
+        "median_s": 0.51,
+        "p90_s": 0.772
+      },
+      "end_of_turn_delay": {
+        "n": 30,
+        "median_s": 0.579,
+        "p90_s": 0.699
+      },
+      "endpointing_timeouts": 2,
+      "false_interruptions": 2,
+      "interrupted_agent_turns": 1,
+      "overlapping_speech_events": 0
+    }
+  },
+  {
+    "id": "s06-hybrid-script",
+    "title": "Hybrid pipeline \u00b7 scripted run",
+    "notes": "Audio setup not recorded.",
+    "pipeline_label": "hybrid",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 256.84,
+      "user_turns": 25,
+      "agent_turns": 22,
+      "e2e_latency": {
+        "n": 22,
+        "median_s": 1.117,
+        "p90_s": 1.611
+      },
+      "llm_ttft": {
+        "n": 22,
+        "median_s": 0.193,
+        "p90_s": 0.246
+      },
+      "tts_ttfb": {
+        "n": 22,
+        "median_s": 0.209,
+        "p90_s": 0.223
+      },
+      "end_of_turn_delay": {
+        "n": 25,
+        "median_s": 0.58,
+        "p90_s": 0.602
+      },
+      "endpointing_timeouts": 2,
+      "false_interruptions": 2,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 3
+    }
+  },
+  {
+    "id": "s07-workshop-persona-v2",
+    "title": "Workshop pipeline \u00b7 persona v2 with revised call ending",
+    "notes": "Headphones (tester's note). Persona changed to Michael Lopez; goodbye rules rewritten.",
+    "pipeline_label": "workshop",
+    "models": {
+      "stt": "assemblyai/universal-3-6-pro",
+      "llm": "google/gemma-4-31b-it",
+      "tts": "fishaudio/s2.1-pro",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 364.842,
+      "user_turns": 29,
+      "agent_turns": 29,
+      "e2e_latency": {
+        "n": 29,
+        "median_s": 1.279,
+        "p90_s": 1.981
+      },
+      "llm_ttft": {
+        "n": 29,
+        "median_s": 0.211,
+        "p90_s": 0.764
+      },
+      "tts_ttfb": {
+        "n": 29,
+        "median_s": 0.501,
+        "p90_s": 0.589
+      },
+      "end_of_turn_delay": {
+        "n": 29,
+        "median_s": 0.579,
+        "p90_s": 0.584
+      },
+      "endpointing_timeouts": 2,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 1,
+      "overlapping_speech_events": 1
+    }
+  }
+]

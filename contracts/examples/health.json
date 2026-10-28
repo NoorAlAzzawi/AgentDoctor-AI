@@ -1,0 +1,15 @@
+{
+  "status": "ok",
+  "version": "0.1.0",
+  "detectors": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "session_id": "s07-workshop-persona-v2",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s07-workshop-persona-v2:endpointing_timeout:session",
+      "session_id": "s07-workshop-persona-v2",
+      "detector": "endpointing_timeout",
+      "title": "2 of 29 user turns ended by the 2.5s endpointing timeout",
+      "summary": "For these turns the turn detector never judged the user finished, so the agent waited the full 2.5s before replying.",
+      "category": "latency",
+      "severity": "low",
+      "status": "confirmed",
+      "time_range": null,
+      "turn_ids": [
+        "t031",
+        "t051"
+      ],
+      "evidence": [
+        {
+          "kind": "config",
+          "label": "max_endpointing_delay",
+          "value": "2.5s",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 2:53.2",
+          "value": "2.501s: \"No, I'm sorry.\"",
+          "turn_id": "t031",
+          "event_id": null,
+          "t_s": 173.157
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 4:35.6",
+          "value": "2.5s: 'Thank you, Maria.'",
+          "turn_id": "t051",
+          "event_id": null,
+          "t_s": 275.554
+        },
+        {
+          "kind": "metric",
+          "label": "Agent response latency after these turns",
+          "value": "median 3.086s (n=2)",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused or trailed off mid-thought, so end-of-turn prediction stayed uncertain until the maximum delay.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the pauses",
+          "Turn-detector probabilities for these turns"
+        ]
+      },
+      "next_steps": [
+        "Read the timed-out turns: are they fragments or complete sentences?",
+        "If complete, check turn-detector settings; if fragments, the wait was correct.",
+        "Avoid lowering max_endpointing_delay blindly: it would cut users off mid-sentence."
+      ]
+    }
+  ]
+}

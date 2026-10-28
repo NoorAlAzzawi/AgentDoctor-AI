@@ -1,0 +1,52 @@
+{
+  "_comment": "SYNTHETIC test fixture in LiveKit Agents session_report.json shape. Not a real session.",
+  "job_id": "AJ_synthetic123",
+  "room_id": "RM_synthetic123",
+  "room": "console-room",
+  "audio_recording_path": "/Users/someone/private/recordings/audio.ogg",
+  "audio_recording_started_at": 1000.0,
+  "sdk_version": "1.8.8",
+  "options": {
+    "allow_interruptions": true,
+    "min_interruption_duration": 0.5,
+    "min_endpointing_delay": 0.3,
+    "max_endpointing_delay": 2.5,
+    "preemptive_generation": {"enabled": true}
+  },
+  "usage": [
+    {"provider": "livekit", "model": "google/gemma-4-31b-it", "input_tokens": 100, "output_tokens": 20},
+    {"provider": "livekit", "model": "fishaudio/s2.1-pro", "characters_count": 80, "audio_duration": 5.0},
+    {"provider": "livekit", "model": "assemblyai/universal-3-6-pro", "audio_duration": 12.0},
+    {"provider": "livekit", "model": "turn-detector-v1", "total_requests": 3}
+  ],
+  "chat_history": {
+    "items": [
+      {"type": "agent_config_update", "id": "c1", "created_at": 1000.0, "instructions": "You are a fictional test patient."},
+      {"type": "message", "id": "m1", "role": "user", "created_at": 1003.0, "interrupted": false,
+       "transcript_confidence": 0.95, "content": ["Thanks for calling, how can I help?"],
+       "metrics": {"started_speaking_at": 1001.0, "stopped_speaking_at": 1002.5,
+                   "transcription_delay": 0.3, "end_of_turn_delay": 0.58,
+                   "stt_metadata": {"provider_request_ids": ["secret-request-id"]}}},
+      {"type": "message", "id": "m2", "role": "assistant", "created_at": 1006.0, "interrupted": false,
+       "content": ["Hi, I'd like to book an appointment."],
+       "metrics": {"started_speaking_at": 1004.0, "stopped_speaking_at": 1006.0,
+                   "llm_node_ttft": 0.2, "tts_node_ttfb": 0.5, "e2e_latency": 1.2, "playback_latency": 0.05}},
+      {"type": "message", "id": "m3", "role": "user", "created_at": 1010.0, "interrupted": false,
+       "transcript_confidence": 0.7, "content": ["Could you please tell me your"],
+       "metrics": {"started_speaking_at": 1007.0, "stopped_speaking_at": 1007.5,
+                   "transcription_delay": 0.4, "end_of_turn_delay": 2.5}},
+      {"type": "message", "id": "m4", "role": "assistant", "created_at": 1012.0, "interrupted": true,
+       "content": ["My name"],
+       "metrics": {"started_speaking_at": 1011.0, "llm_node_ttft": 0.3, "tts_node_ttfb": 0.6, "e2e_latency": 3.0}}
+    ]
+  },
+  "events": [
+    {"type": "session_usage_updated", "created_at": 1001.0},
+    {"type": "agent_state_changed", "created_at": 1004.0, "old_state": "thinking", "new_state": "speaking"},
+    {"type": "user_state_changed", "created_at": 1001.0, "old_state": "listening", "new_state": "speaking"},
+    {"type": "agent_false_interruption", "created_at": 1005.0, "resumed": true},
+    {"type": "overlapping_speech", "created_at": 1011.5, "is_interruption": true, "probability": 0.9, "detection_delay": 0.4},
+    {"type": "user_input_transcribed", "created_at": 1002.0, "transcript": "Thanks", "is_final": false},
+    {"type": "close", "created_at": 1015.0, "reason": "user_initiated", "error": null}
+  ]
+}
