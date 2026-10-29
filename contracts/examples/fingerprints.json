@@ -1,0 +1,2119 @@
+{
+  "rule_version": "1",
+  "recorded_session_count": 7,
+  "finding_count": 34,
+  "grouped_finding_count": 28,
+  "excluded_synthetic_session_count": 0,
+  "fingerprints": [
+    {
+      "id": "fp-v1-confusion-without-correction",
+      "name": "Agent signals confusion after a user transcript",
+      "detector": "stt_misunderstanding",
+      "category": "speech_recognition",
+      "characteristics": [
+        "Linked agent transcript matches the existing confusion rule after a user turn.",
+        "The next user turn does not match the detector's explicit correction rule; this does not prove an STT error."
+      ],
+      "occurrence_count": 3,
+      "affected_session_count": 2,
+      "session_ids": [
+        "s01-workshop-improvised",
+        "s02-workshop-structured"
+      ],
+      "pipelines": [
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 0,
+        "medium": 0,
+        "low": 3
+      },
+      "status_counts": {
+        "confirmed": 0,
+        "suspected": 3
+      },
+      "occurrences": [
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:stt_misunderstanding:t007",
+          "title": "Agent could not make sense of 'where?'",
+          "severity": "low",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 39.574,
+            "end_s": 41.426
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "What the agent heard",
+              "value": "where?",
+              "turn_id": "t007",
+              "event_id": null,
+              "t_s": 39.574
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "0.70 (low)",
+              "turn_id": "t007",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent could not make sense of it",
+              "value": "I'm sorry, I think I missed something. What was that?",
+              "turn_id": "t008",
+              "event_id": null,
+              "t_s": 41.426
+            }
+          ]
+        },
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:stt_misunderstanding:t011",
+          "title": "Agent could not make sense of 'Say something else.'",
+          "severity": "low",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 55.169,
+            "end_s": 59.626
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "What the agent heard",
+              "value": "Say something else.",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": 55.169
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "0.95",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent could not make sense of it",
+              "value": "Um, I'm not sure what you mean. I just want to schedule that appointment for my back. Do you have anything available?",
+              "turn_id": "t012",
+              "event_id": null,
+              "t_s": 59.626
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:stt_misunderstanding:t018",
+          "title": "Agent could not make sense of \"No. Can you tell me I'm like, what? And\"",
+          "severity": "low",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 99.342,
+            "end_s": 107.627
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "What the agent heard",
+              "value": "No. Can you tell me I'm like, what? And",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": 99.342
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "0.87",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent could not make sense of it",
+              "value": "I'm sorry, I'm not sure what you mean. Do you still need me to spell my name?",
+              "turn_id": "t019",
+              "event_id": null,
+              "t_s": 107.627
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-endpointing-at-limit",
+      "name": "User turns reach the configured endpointing limit",
+      "detector": "endpointing_timeout",
+      "category": "latency",
+      "characteristics": [
+        "Linked user-turn delay metrics reach the configured maximum within the detector's 0.05s tolerance.",
+        "One occurrence is one session-level detector finding, not one timed-out turn."
+      ],
+      "occurrence_count": 6,
+      "affected_session_count": 6,
+      "session_ids": [
+        "s01-workshop-improvised",
+        "s02-workshop-structured",
+        "s04-recommended-ab-script",
+        "s05-workshop-headphones",
+        "s06-hybrid-script",
+        "s07-workshop-persona-v2"
+      ],
+      "pipelines": [
+        "hybrid",
+        "recommended",
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 0,
+        "medium": 2,
+        "low": 4
+      },
+      "status_counts": {
+        "confirmed": 6,
+        "suspected": 0
+      },
+      "occurrences": [
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:endpointing_timeout:session",
+          "title": "9 of 37 user turns ended by the 2.5s endpointing timeout",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:32.7",
+              "value": "2.501s: \"I don't\"",
+              "turn_id": "t005",
+              "event_id": null,
+              "t_s": 32.671
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:55.2",
+              "value": "2.5s: 'Say something else.'",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": 55.169
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:06.8",
+              "value": "2.501s: 'Hmm.'",
+              "turn_id": "t013",
+              "event_id": null,
+              "t_s": 66.767
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 2:49.5",
+              "value": "2.5s: 'In 3 weeks, Tuesday\u2014 sorry, um, Monday,'",
+              "turn_id": "t027",
+              "event_id": null,
+              "t_s": 169.475
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 3:05.6",
+              "value": "2.501s: '9 AM.'",
+              "turn_id": "t029",
+              "event_id": null,
+              "t_s": 185.577
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 4:30.4",
+              "value": "2.501s: 'Okay, okay. Um, no worries. So we are buying Patrick Swayze.'",
+              "turn_id": "t050",
+              "event_id": null,
+              "t_s": 270.368
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 5:40.6",
+              "value": "2.503s: 'Okay.'",
+              "turn_id": "t061",
+              "event_id": null,
+              "t_s": 340.573
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 5:45.9",
+              "value": "2.501s: 'Hi, hello?'",
+              "turn_id": "t063",
+              "event_id": null,
+              "t_s": 345.875
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 6:01.3",
+              "value": "2.5s: 'Hello?'",
+              "turn_id": "t065",
+              "event_id": null,
+              "t_s": 361.275
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 3.069s (n=8)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:endpointing_timeout:session",
+          "title": "7 of 27 user turns ended by the 2.5s endpointing timeout",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:23.2",
+              "value": "2.501s: 'Could you please tell me your'",
+              "turn_id": "t003",
+              "event_id": null,
+              "t_s": 23.242
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:16.8",
+              "value": "2.501s: 'Um, you said N? M? Or, um,'",
+              "turn_id": "t014",
+              "event_id": null,
+              "t_s": 76.845
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:29.8",
+              "value": "2.501s: 'M like in Mary. I I sent'",
+              "turn_id": "t016",
+              "event_id": null,
+              "t_s": 89.842
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:39.3",
+              "value": "2.501s: \"No. Can you tell me I'm like, what? And\"",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": 99.342
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:51.7",
+              "value": "2.501s: \"Yes, spell it slowly and say I'm like, Maria I like ice. Are like fine.\"",
+              "turn_id": "t020",
+              "event_id": null,
+              "t_s": 111.746
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 2:50.9",
+              "value": "2.501s: 'Um, wait a second.'",
+              "turn_id": "t026",
+              "event_id": null,
+              "t_s": 170.94
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 3:24.4",
+              "value": "2.501s: \"Wait, I'm sorry, I meant Thursday, not a Tuesday.\"",
+              "turn_id": "t031",
+              "event_id": null,
+              "t_s": 204.443
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 3.097s (n=6)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s04-recommended-ab-script",
+          "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+          "session_notes": "Same receptionist script as s03. Audio setup not recorded.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s04-recommended-ab-script:endpointing_timeout:session",
+          "title": "1 of 35 user turns ended by the 2.5s endpointing timeout",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 3:53.8",
+              "value": "2.5s: \"There is no opening next week. I'm sorry.\"",
+              "turn_id": "t038",
+              "event_id": null,
+              "t_s": 233.761
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 2.899s (n=1)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s05-workshop-headphones",
+          "session_title": "Workshop pipeline \u00b7 A/B script with headphones",
+          "session_notes": "Headphones (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s05-workshop-headphones:endpointing_timeout:session",
+          "title": "2 of 30 user turns ended by the 2.5s endpointing timeout",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:52.0",
+              "value": "2.501s: 'Could you please spell your first and last name for me?'",
+              "turn_id": "t009",
+              "event_id": null,
+              "t_s": 52.011
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 3:54.4",
+              "value": "2.501s: \"No, I'm sorry.\"",
+              "turn_id": "t039",
+              "event_id": null,
+              "t_s": 234.411
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 3.083s (n=2)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s06-hybrid-script",
+          "session_title": "Hybrid pipeline \u00b7 scripted run",
+          "session_notes": "Audio setup not recorded.",
+          "pipeline_label": "hybrid",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s06-hybrid-script:endpointing_timeout:session",
+          "title": "2 of 25 user turns ended by the 2.5s endpointing timeout",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:39.1",
+              "value": "2.5s: 'May I'",
+              "turn_id": "t008",
+              "event_id": null,
+              "t_s": 39.125
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:42.1",
+              "value": "2.501s: 'Yes, please.'",
+              "turn_id": "t009",
+              "event_id": null,
+              "t_s": 42.125
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 3.179s (n=1)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s07-workshop-persona-v2",
+          "session_title": "Workshop pipeline \u00b7 persona v2 with revised call ending",
+          "session_notes": "Headphones (tester's note). Persona changed to Michael Lopez; goodbye rules rewritten.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s07-workshop-persona-v2:endpointing_timeout:session",
+          "title": "2 of 29 user turns ended by the 2.5s endpointing timeout",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 2:53.2",
+              "value": "2.501s: \"No, I'm sorry.\"",
+              "turn_id": "t031",
+              "event_id": null,
+              "t_s": 173.157
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 4:35.6",
+              "value": "2.5s: 'Thank you, Maria.'",
+              "turn_id": "t051",
+              "event_id": null,
+              "t_s": 275.554
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 3.086s (n=2)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-interruption-before-reply",
+      "name": "Agent holds a reply before speaking after user voice activity",
+      "detector": "false_interruption_pause",
+      "category": "turn_taking",
+      "characteristics": [
+        "Linked resumed false-interruption event and user speaking-state trigger.",
+        "Linked agent state changes from thinking to listening."
+      ],
+      "occurrence_count": 3,
+      "affected_session_count": 2,
+      "session_ids": [
+        "s05-workshop-headphones",
+        "s06-hybrid-script"
+      ],
+      "pipelines": [
+        "hybrid",
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 0,
+        "medium": 0,
+        "low": 3
+      },
+      "status_counts": {
+        "confirmed": 3,
+        "suspected": 0
+      },
+      "occurrences": [
+        {
+          "session_id": "s05-workshop-headphones",
+          "session_title": "Workshop pipeline \u00b7 A/B script with headphones",
+          "session_notes": "Headphones (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s05-workshop-headphones:false_interruption_pause:e014",
+          "title": "Agent held its reply for 2.21s before speaking",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 20.511,
+            "end_s": 23.284
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Hi Sarah. I need to schedule a follow-up appointment with Dr. Patel. My lower back pain has come back over the last two weeks.",
+              "turn_id": "t004",
+              "event_id": null,
+              "t_s": 23.378
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.2s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e010",
+              "t_s": 20.511
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "thinking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e012",
+              "t_s": 21.072
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.21s",
+              "turn_id": null,
+              "event_id": "e014",
+              "t_s": 23.284
+            }
+          ]
+        },
+        {
+          "session_id": "s05-workshop-headphones",
+          "session_title": "Workshop pipeline \u00b7 A/B script with headphones",
+          "session_notes": "Headphones (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s05-workshop-headphones:false_interruption_pause:e133",
+          "title": "Agent held its reply for 2.28s before speaking",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 273.113,
+            "end_s": 275.978
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "I'd like to see Dr. Patel.",
+              "turn_id": "t048",
+              "event_id": null,
+              "t_s": 275.979
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.28s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e129",
+              "t_s": 273.113
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "thinking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e131",
+              "t_s": 273.695
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.28s",
+              "turn_id": null,
+              "event_id": "e133",
+              "t_s": 275.978
+            }
+          ]
+        },
+        {
+          "session_id": "s06-hybrid-script",
+          "session_title": "Hybrid pipeline \u00b7 scripted run",
+          "session_notes": "Audio setup not recorded.",
+          "pipeline_label": "hybrid",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s06-hybrid-script:false_interruption_pause:e075",
+          "title": "Agent held its reply for 2.3s before speaking",
+          "severity": "low",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 134.219,
+            "end_s": 137.349
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Yes, that is correct.",
+              "turn_id": "t025",
+              "event_id": null,
+              "t_s": 137.362
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.54s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e071",
+              "t_s": 134.219
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "thinking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e073",
+              "t_s": 135.045
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.3s",
+              "turn_id": null,
+              "event_id": "e075",
+              "t_s": 137.349
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-interruption-mid-reply",
+      "name": "Agent pauses mid-reply after user voice activity",
+      "detector": "false_interruption_pause",
+      "category": "turn_taking",
+      "characteristics": [
+        "Linked resumed false-interruption event and user speaking-state trigger.",
+        "Linked agent state changes from speaking to listening."
+      ],
+      "occurrence_count": 8,
+      "affected_session_count": 4,
+      "session_ids": [
+        "s01-workshop-improvised",
+        "s02-workshop-structured",
+        "s03-workshop-ab-script",
+        "s06-hybrid-script"
+      ],
+      "pipelines": [
+        "hybrid",
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 4,
+        "medium": 4,
+        "low": 0
+      },
+      "status_counts": {
+        "confirmed": 8,
+        "suspected": 0
+      },
+      "occurrences": [
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:false_interruption_pause:e151",
+          "title": "Agent paused mid-reply for 2.2s, then resumed",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 270.368,
+            "end_s": 273.045
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Oh, I see. Um, let me just check... I'm so sorry, I really don't have it on me. Could we maybe just use my date of birth and phone number to confirm? Or I can call you back in a few minutes once I'm at my desk?",
+              "turn_id": "t049",
+              "event_id": null,
+              "t_s": 270.026
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.1s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e147",
+              "t_s": 270.368
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e149",
+              "t_s": 270.849
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.2s",
+              "turn_id": null,
+              "event_id": "e151",
+              "t_s": 273.045
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.34s before the trigger",
+              "turn_id": null,
+              "event_id": "e146",
+              "t_s": 270.028
+            }
+          ]
+        },
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:false_interruption_pause:e177",
+          "title": "Agent paused mid-reply for 2.31s, then resumed",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 315.372,
+            "end_s": 318.143
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Thank you so much for your help. Goodbye.",
+              "turn_id": "t056",
+              "event_id": null,
+              "t_s": 315.026
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.19s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e173",
+              "t_s": 315.372
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e175",
+              "t_s": 315.837
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.31s",
+              "turn_id": null,
+              "event_id": "e177",
+              "t_s": 318.143
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.35s before the trigger",
+              "turn_id": null,
+              "event_id": "e172",
+              "t_s": 315.027
+            },
+            {
+              "kind": "transcript",
+              "label": "User then asked the agent to repeat",
+              "value": "What did you say?",
+              "turn_id": "t057",
+              "event_id": null,
+              "t_s": 315.372
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:false_interruption_pause:e070",
+          "title": "Agent paused mid-reply for 2.29s, then resumed",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 151.854,
+            "end_s": 154.607
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Um, that's a bit late for me. Do you have anything in the morning next week? Tuesday or Thursday mornings would be best.",
+              "turn_id": "t023",
+              "event_id": null,
+              "t_s": 151.528
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.17s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e066",
+              "t_s": 151.854
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e068",
+              "t_s": 152.313
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.29s",
+              "turn_id": null,
+              "event_id": "e070",
+              "t_s": 154.607
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.32s before the trigger",
+              "turn_id": null,
+              "event_id": "e065",
+              "t_s": 151.533
+            },
+            {
+              "kind": "transcript",
+              "label": "User then asked the agent to repeat",
+              "value": "What did you say?",
+              "turn_id": "t024",
+              "event_id": null,
+              "t_s": 151.854
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:false_interruption_pause:e137",
+          "title": "Agent paused mid-reply for 2.2s, then resumed",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 269.046,
+            "end_s": 271.712
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "It's March 14, 1973.",
+              "turn_id": "t045",
+              "event_id": null,
+              "t_s": 268.727
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.09s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e133",
+              "t_s": 269.046
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e135",
+              "t_s": 269.508
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.2s",
+              "turn_id": null,
+              "event_id": "e137",
+              "t_s": 271.712
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.32s before the trigger",
+              "turn_id": null,
+              "event_id": "e132",
+              "t_s": 268.728
+            },
+            {
+              "kind": "transcript",
+              "label": "User then asked the agent to repeat",
+              "value": "I did not hear you. Can you say that again? Peace.",
+              "turn_id": "t046",
+              "event_id": null,
+              "t_s": 269.046
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:false_interruption_pause:e142",
+          "title": "Agent paused mid-reply for 2.1s, then resumed",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 271.944,
+            "end_s": 274.612
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "It's March 14, 1973.",
+              "turn_id": "t045",
+              "event_id": null,
+              "t_s": 268.727
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.09s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e138",
+              "t_s": 271.944
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e140",
+              "t_s": 272.509
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.1s",
+              "turn_id": null,
+              "event_id": "e142",
+              "t_s": 274.612
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.24s before the trigger",
+              "turn_id": null,
+              "event_id": "e136",
+              "t_s": 271.709
+            },
+            {
+              "kind": "transcript",
+              "label": "User then asked the agent to repeat",
+              "value": "I did not hear you. Can you say that again? Peace.",
+              "turn_id": "t046",
+              "event_id": null,
+              "t_s": 269.046
+            }
+          ]
+        },
+        {
+          "session_id": "s03-workshop-ab-script",
+          "session_title": "Workshop pipeline \u00b7 A/B script (run A)",
+          "session_notes": "Same receptionist script as s04. MacBook speakers (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s03-workshop-ab-script:false_interruption_pause:e098",
+          "title": "Agent paused mid-reply for 2.21s, then resumed",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 195.331,
+            "end_s": 198.089
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Yes, that works perfectly. I'll take the Tuesday at 8 AM.",
+              "turn_id": "t031",
+              "event_id": null,
+              "t_s": 195.006
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.18s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e094",
+              "t_s": 195.331
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e096",
+              "t_s": 195.882
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.21s",
+              "turn_id": null,
+              "event_id": "e098",
+              "t_s": 198.089
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.32s before the trigger",
+              "turn_id": null,
+              "event_id": "e093",
+              "t_s": 195.007
+            }
+          ]
+        },
+        {
+          "session_id": "s03-workshop-ab-script",
+          "session_title": "Workshop pipeline \u00b7 A/B script (run A)",
+          "session_notes": "Same receptionist script as s04. MacBook speakers (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s03-workshop-ab-script:false_interruption_pause:e160",
+          "title": "Agent paused mid-reply for 2.31s, then resumed",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 311.323,
+            "end_s": 314.19
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Yes, I'm still here.",
+              "turn_id": "t052",
+              "event_id": null,
+              "t_s": 311.007
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.28s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e156",
+              "t_s": 311.323
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e158",
+              "t_s": 311.881
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.31s",
+              "turn_id": null,
+              "event_id": "e160",
+              "t_s": 314.19
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.31s before the trigger",
+              "turn_id": null,
+              "event_id": "e155",
+              "t_s": 311.013
+            }
+          ]
+        },
+        {
+          "session_id": "s06-hybrid-script",
+          "session_title": "Hybrid pipeline \u00b7 scripted run",
+          "session_notes": "Audio setup not recorded.",
+          "pipeline_label": "hybrid",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s06-hybrid-script:false_interruption_pause:e132",
+          "title": "Agent paused mid-reply for 2.4s, then resumed",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 226.555,
+            "end_s": 229.525
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "Agent reply affected",
+              "value": "Two weeks from now seems like a long time. Is there really nothing available next week in the morning?",
+              "turn_id": "t045",
+              "event_id": null,
+              "t_s": 225.962
+            },
+            {
+              "kind": "event",
+              "label": "User voice activity started",
+              "value": "0.39s burst, no transcript followed",
+              "turn_id": null,
+              "event_id": "e128",
+              "t_s": 226.555
+            },
+            {
+              "kind": "event",
+              "label": "Agent held its reply",
+              "value": "speaking \u2192 listening",
+              "turn_id": null,
+              "event_id": "e130",
+              "t_s": 227.122
+            },
+            {
+              "kind": "event",
+              "label": "False interruption, reply resumed",
+              "value": "after 2.4s",
+              "turn_id": null,
+              "event_id": "e132",
+              "t_s": 229.525
+            },
+            {
+              "kind": "event",
+              "label": "Agent had just started speaking",
+              "value": "0.59s before the trigger",
+              "turn_id": null,
+              "event_id": "e127",
+              "t_s": 225.963
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-premature-goodbye",
+      "name": "Agent says goodbye before the user finishes the conversation",
+      "detector": "premature_goodbye",
+      "category": "llm_behavior",
+      "characteristics": [
+        "Linked agent farewell with no preceding user closing cue.",
+        "A linked substantive user turn follows without a farewell."
+      ],
+      "occurrence_count": 3,
+      "affected_session_count": 3,
+      "session_ids": [
+        "s02-workshop-structured",
+        "s04-recommended-ab-script",
+        "s05-workshop-headphones"
+      ],
+      "pipelines": [
+        "recommended",
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 0,
+        "medium": 3,
+        "low": 0
+      },
+      "status_counts": {
+        "confirmed": 3,
+        "suspected": 0
+      },
+      "occurrences": [
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:premature_goodbye:t043",
+          "title": "Agent said goodbye at 4:18.4 while the call was still going",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 256.642,
+            "end_s": 263.248
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User's previous turn (no closing)",
+              "value": "Yes.",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": 256.642
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent said goodbye",
+              "value": "Thank you. I have it written down. Goodbye.",
+              "turn_id": "t043",
+              "event_id": null,
+              "t_s": 258.427
+            },
+            {
+              "kind": "transcript",
+              "label": "Conversation continued",
+              "value": "Um, what is\u2014 wait, what is your date of birth?",
+              "turn_id": "t044",
+              "event_id": null,
+              "t_s": 263.248
+            },
+            {
+              "kind": "config",
+              "label": "Agent instruction about goodbyes",
+              "value": "Once your appointment is confirmed, thank them and say goodbye.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s04-recommended-ab-script",
+          "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+          "session_notes": "Same receptionist script as s03. Audio setup not recorded.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s04-recommended-ab-script:premature_goodbye:t043",
+          "title": "Agent said goodbye at 4:29.5 while the call was still going",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 262.959,
+            "end_s": 275.359
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User's previous turn (no closing)",
+              "value": "Okay. Let's go with Thursday at AM. Two weeks from now.",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": 262.959
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent said goodbye",
+              "value": "That works for me. Thank you for scheduling it. Goodbye!",
+              "turn_id": "t043",
+              "event_id": null,
+              "t_s": 269.548
+            },
+            {
+              "kind": "transcript",
+              "label": "Conversation continued",
+              "value": "One moment, please. I am checking your information.",
+              "turn_id": "t044",
+              "event_id": null,
+              "t_s": 275.359
+            },
+            {
+              "kind": "config",
+              "label": "Agent instruction about goodbyes",
+              "value": "Once your appointment is confirmed, thank them and say goodbye.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s05-workshop-headphones",
+          "session_title": "Workshop pipeline \u00b7 A/B script with headphones",
+          "session_notes": "Headphones (tester's note).",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s05-workshop-headphones:premature_goodbye:t042",
+          "title": "Agent said goodbye at 4:10.7 while the call was still going",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 244.716,
+            "end_s": 253.915
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User's previous turn (no closing)",
+              "value": "Okay, let's go with Thursday at 8 AM, 2 weeks from now.",
+              "turn_id": "t041",
+              "event_id": null,
+              "t_s": 244.716
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent said goodbye",
+              "value": "Okay, that works. Thank you for your help. Goodbye.",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": 250.678
+            },
+            {
+              "kind": "transcript",
+              "label": "Conversation continued",
+              "value": "One moment, please. I'm checking your information.",
+              "turn_id": "t043",
+              "event_id": null,
+              "t_s": 253.915
+            },
+            {
+              "kind": "config",
+              "label": "Agent instruction about goodbyes",
+              "value": "Once your appointment is confirmed, thank them and say goodbye.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-reply-to-fragment",
+      "name": "Agent answers an apparently unfinished timed-out user turn",
+      "detector": "fragment_reply",
+      "category": "turn_taking",
+      "characteristics": [
+        "Linked user transcript matches the detector's unfinished-text heuristic and reaches the endpointing limit.",
+        "A linked agent reply follows; unfinished speech is suspected, not proven without audio."
+      ],
+      "occurrence_count": 5,
+      "affected_session_count": 2,
+      "session_ids": [
+        "s01-workshop-improvised",
+        "s02-workshop-structured"
+      ],
+      "pipelines": [
+        "workshop"
+      ],
+      "severity_counts": {
+        "high": 0,
+        "medium": 5,
+        "low": 0
+      },
+      "status_counts": {
+        "confirmed": 0,
+        "suspected": 5
+      },
+      "occurrences": [
+        {
+          "session_id": "s01-workshop-improvised",
+          "session_title": "Workshop pipeline \u00b7 improvised role-play",
+          "session_notes": "Unscripted: the tester improvised the receptionist. Audio setup (speakers or headphones) not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s01-workshop-improvised:fragment_reply:t027",
+          "title": "Agent replied to an unfinished sentence: 'In 3 weeks, Tuesday\u2014 sorry, um, Monday,'",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 169.475,
+            "end_s": 179.826
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "In 3 weeks, Tuesday\u2014 sorry, um, Monday,",
+              "turn_id": "t027",
+              "event_id": null,
+              "t_s": 169.475
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "2.5s (= max 2.5s)",
+              "turn_id": "t027",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "Monday in three weeks... okay. What time would that be?",
+              "turn_id": "t028",
+              "event_id": null,
+              "t_s": 179.826
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:fragment_reply:t003",
+          "title": "Agent replied to an unfinished sentence: 'Could you please tell me your'",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 23.242,
+            "end_s": 29.528
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "Could you please tell me your",
+              "turn_id": "t003",
+              "event_id": null,
+              "t_s": 23.242
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "2.501s (= max 2.5s)",
+              "turn_id": "t003",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "My name",
+              "turn_id": "t004",
+              "event_id": null,
+              "t_s": 29.528
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:fragment_reply:t014",
+          "title": "Agent replied to an unfinished sentence: 'Um, you said N? M? Or, um,'",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 76.845,
+            "end_s": 84.628
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "Um, you said N? M? Or, um,",
+              "turn_id": "t014",
+              "event_id": null,
+              "t_s": 76.845
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "2.501s (= max 2.5s)",
+              "turn_id": "t014",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "It's M. Like in Mary. M-A-R-I-A.",
+              "turn_id": "t015",
+              "event_id": null,
+              "t_s": 84.628
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:fragment_reply:t016",
+          "title": "Agent replied to an unfinished sentence: 'M like in Mary. I I sent'",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 89.842,
+            "end_s": 96.527
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "M like in Mary. I I sent",
+              "turn_id": "t016",
+              "event_id": null,
+              "t_s": 89.842
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "2.501s (= max 2.5s)",
+              "turn_id": "t016",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "Okay. Did you get it?",
+              "turn_id": "t017",
+              "event_id": null,
+              "t_s": 96.527
+            }
+          ]
+        },
+        {
+          "session_id": "s02-workshop-structured",
+          "session_title": "Workshop pipeline \u00b7 semi-structured role-play",
+          "session_notes": "Loosely structured (name spelling, date changes). Audio setup not recorded.",
+          "pipeline_label": "workshop",
+          "models": {
+            "stt": "assemblyai/universal-3-6-pro",
+            "llm": "google/gemma-4-31b-it",
+            "tts": "fishaudio/s2.1-pro",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s02-workshop-structured:fragment_reply:t018",
+          "title": "Agent replied to an unfinished sentence: \"No. Can you tell me I'm like, what? And\"",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 99.342,
+            "end_s": 107.627
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "No. Can you tell me I'm like, what? And",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": 99.342
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "2.501s (= max 2.5s)",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "I'm sorry, I'm not sure what you mean. Do you still need me to spell my name?",
+              "turn_id": "t019",
+              "event_id": null,
+              "t_s": 107.627
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    }
+  ],
+  "ungrouped": [
+    {
+      "session_id": "s01-workshop-improvised",
+      "session_title": "Workshop pipeline \u00b7 improvised role-play",
+      "finding_id": "s01-workshop-improvised:stage_direction_spoken:t062:0",
+      "detector": "stage_direction_spoken",
+      "category": "llm_behavior",
+      "severity": "high",
+      "status": "confirmed",
+      "reason": "no_rule",
+      "explanation": "No supported observable grouping rule in version 1."
+    },
+    {
+      "session_id": "s01-workshop-improvised",
+      "session_title": "Workshop pipeline \u00b7 improvised role-play",
+      "finding_id": "s01-workshop-improvised:stt_misunderstanding:t050",
+      "detector": "stt_misunderstanding",
+      "category": "speech_recognition",
+      "severity": "medium",
+      "status": "suspected",
+      "reason": "single_session",
+      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
+    },
+    {
+      "session_id": "s01-workshop-improvised",
+      "session_title": "Workshop pipeline \u00b7 improvised role-play",
+      "finding_id": "s01-workshop-improvised:talked_after_farewell:t059",
+      "detector": "talked_after_farewell",
+      "category": "conversation_state",
+      "severity": "medium",
+      "status": "confirmed",
+      "reason": "no_rule",
+      "explanation": "No supported observable grouping rule in version 1."
+    },
+    {
+      "session_id": "s04-recommended-ab-script",
+      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t036",
+      "detector": "stt_missing_time_number",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "reason": "single_session",
+      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
+    },
+    {
+      "session_id": "s04-recommended-ab-script",
+      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t042",
+      "detector": "stt_missing_time_number",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "reason": "single_session",
+      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
+    },
+    {
+      "session_id": "s04-recommended-ab-script",
+      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t064",
+      "detector": "stt_missing_time_number",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "reason": "single_session",
+      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
+    }
+  ],
+  "caveats": [
+    "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal.",
+    "Some recorded sessions repeat or share scripts/questions. Recurrence across them is not fully independent evidence; scenario independence is not quantified.",
+    "Counts are existing findings, not independent trials, failure rates or raw events. An endpointing-timeout finding can summarize multiple turns, and different findings can overlap on the same turn.",
+    "At least two distinct recorded sessions must support a fingerprint. Both synthetic provenance flags are checked; synthetic validation fixtures are excluded."
+  ]
+}

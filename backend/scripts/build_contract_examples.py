@@ -132,6 +132,7 @@ def main() -> None:
     write("examples/session.json", client.get(f"/api/sessions/{SESSION_A}").json())
     write("examples/findings.json", client.get(f"/api/sessions/{SESSION_A}/findings").json())
     write("examples/compare.json", client.get(f"/api/compare?a={SESSION_A}&b={SESSION_B}").json())
+    write("examples/fingerprints.json", client.get("/api/fingerprints").json())
     # Every session's detail and findings, so the frontend's mock mode can open any session.
     for summary in client.get("/api/sessions").json():
         sid = summary["id"]

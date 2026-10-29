@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { api, compareMock, mockMode, seconds, winner } from "./data";
-import { Compare, Dashboard, Investigation } from "./main";
+import { Compare, Dashboard, Investigation, Fingerprints } from "./main";
 
 // Opt-in tests use actual HTTP responses, never mocked fetches or fixture data.
 const base = (import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000").replace(
@@ -22,6 +28,71 @@ const ids = [
 describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
   "live FastAPI integration",
   () => {
+    it("serves deterministic recorded fingerprints with exact references and no synthetic recurrence", async () => {
+      const first = await api.fingerprints();
+      expect(await api.fingerprints()).toEqual(first);
+      expect(first.recorded_session_count).toBe(7);
+      expect(first.finding_count).toBe(34);
+      expect(first.grouped_finding_count).toBe(28);
+      expect(first.fingerprints).toHaveLength(6);
+      expect(first.ungrouped).toHaveLength(6);
+      const source = new Map(
+        await Promise.all(
+          ids.map(async (id) => [id, await api.findings(id)] as const),
+        ),
+      );
+      for (const fp of first.fingerprints) {
+        expect(new Set(fp.occurrences.map((o) => o.session_id)).size).toBe(
+          fp.affected_session_count,
+        );
+        for (const o of fp.occurrences) {
+          expect(ids).toContain(o.session_id);
+          expect(
+            source
+              .get(o.session_id)!
+              .findings.find((f) => f.id === o.finding_id)?.evidence,
+          ).toEqual(o.evidence);
+        }
+      }
+      const response = await fetch(base + "/api/fingerprints", {
+        headers: { Origin: "http://localhost:5173" },
+      });
+      expect(response.headers.get("access-control-allow-origin")).toBe(
+        "http://localhost:5173",
+      );
+    });
+
+    it("renders live fingerprints and follows representative evidence into an expanded investigation", async () => {
+      const { container } = render(
+        <MemoryRouter initialEntries={["/fingerprints"]}>
+          <Routes>
+            <Route path="/fingerprints" element={<Fingerprints />} />
+            <Route path="/sessions/:id" element={<Investigation />} />
+          </Routes>
+        </MemoryRouter>,
+      );
+      await screen.findByRole("heading", { name: "Failure Fingerprints" });
+      const first = container.querySelector(".fingerprint-card") as HTMLElement;
+      const link = within(first).getAllByRole("link")[0];
+      const params = new URL(link.getAttribute("href")!, "http://localhost")
+        .searchParams;
+      fireEvent.click(link);
+      await waitFor(() =>
+        expect(
+          document.getElementById(`finding-${params.get("finding")}`),
+        ).toHaveClass("highlight"),
+      );
+      expect(
+        screen.getByRole("button", { name: /^Hide investigation/ }),
+      ).toHaveAttribute("aria-expanded", "true");
+      await waitFor(() =>
+        expect(
+          document.getElementById(`evidence-${params.get("evidence")}`),
+        ).toHaveFocus(),
+      );
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+
     it("loads the dashboard's seven sessions and all 34 findings", async () => {
       expect(mockMode).toBe(false);
       const summaries = await api.sessions();

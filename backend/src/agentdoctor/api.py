@@ -8,7 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import __version__
 from .compare import compare_sessions
 from .detectors import DETECTORS, run_detectors
-from .models import Comparison, Finding, FindingsResponse, Session, SessionSummary
+from .models import Comparison, Finding, FindingsResponse, FingerprintsResponse, Session, SessionSummary
+from .fingerprints import build_fingerprints
 from .store import list_sessions, load_session
 
 app = FastAPI(title="AgentDoctor AI", version=__version__)
@@ -60,3 +61,8 @@ def findings(session_id: str) -> FindingsResponse:
 def compare(a: str, b: str) -> Comparison:
     sa, sb = _get(a), _get(b)
     return compare_sessions(sa, sb, _findings(sa), _findings(sb))
+
+
+@app.get("/api/fingerprints", response_model=FingerprintsResponse)
+def fingerprints() -> FingerprintsResponse:
+    return build_fingerprints([_get(s.id) for s in list_sessions()])

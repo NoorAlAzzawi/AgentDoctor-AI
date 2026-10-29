@@ -1016,3 +1016,94 @@ pre,
     transition: none !important;
   }
 }
+
+/* Fingerprints reuse the existing panels, palette and evidence controls. */
+nav {
+  display: flex;
+  gap: 22px;
+}
+nav a {
+  border-bottom-color: transparent;
+}
+nav a.active {
+  border-bottom-color: var(--accent);
+}
+.fingerprint-summary {
+  margin: 24px 0;
+}
+.fingerprint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.fingerprint-card {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.fingerprint-card h2 {
+  margin: 18px 0 10px;
+  line-height: 1.45;
+}
+.fingerprint-card h3 {
+  margin: 22px 0 10px;
+  font-size: 13px;
+}
+.fingerprint-count {
+  color: var(--accent);
+}
+.fingerprint-details,
+.occurrence-context {
+  margin: 20px 0;
+}
+.fingerprint-details > summary,
+.occurrence-context > summary {
+  padding: 10px 0;
+  line-height: 1.6;
+}
+.occurrence-list,
+.fingerprint-evidence,
+.ungrouped-list {
+  list-style: none;
+  padding: 0;
+}
+.fingerprint-occurrence,
+.ungrouped-list li {
+  border-top: 1px solid var(--line);
+  padding: 18px 0;
+}
+.occurrence-link {
+  color: var(--accent);
+  font-weight: 550;
+}
+.fingerprint-caveat {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+@media (max-width: 1000px) {
+  .fingerprint-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 680px) {
+  header {
+    height: auto;
+    min-height: 66px;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    padding-top: 10px;
+  }
+  header nav {
+    order: 3;
+    width: 100%;
+    gap: 24px;
+  }
+  header nav a {
+    padding: 10px 0 12px;
+  }
+  .fingerprint-card .models > div {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+}

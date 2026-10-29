@@ -2,6 +2,7 @@ import type {
   Comparison,
   ComparedMetric,
   FindingsResponse,
+  FingerprintsResponse,
   Session,
   SessionStats,
   SessionSummary,
@@ -22,6 +23,10 @@ async function get<T>(path: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 export const api = {
+  fingerprints: () =>
+    get<FingerprintsResponse>(
+      mockMode ? "/mock/fingerprints.json" : `${base}/api/fingerprints`,
+    ),
   sessions: () =>
     get<SessionSummary[]>(
       mockMode ? "/mock/sessions.json" : `${base}/api/sessions`,

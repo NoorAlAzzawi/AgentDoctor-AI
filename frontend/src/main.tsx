@@ -19,6 +19,7 @@ import type {
   TimelineEvent,
 } from "./types";
 import "./style.css";
+import { FingerprintsView } from "./fingerprints";
 
 function useLoad<T>(load: () => Promise<T>, key: string) {
   const [state, set] = useState<{ data?: T; error?: string }>({});
@@ -262,15 +263,24 @@ export function EvidenceLink({
 function FindingCard({
   f,
   onNavigate,
+  selected = false,
 }: {
   f: Finding;
   onNavigate: (id: string) => void;
+  selected?: boolean;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(selected);
+  useEffect(() => {
+    if (selected) setExpanded(true);
+  }, [selected]);
   const disclosureId = useId();
   const titleId = `${disclosureId}-title`;
   return (
-    <article className={`finding finding-${f.severity}`}>
+    <article
+      id={`finding-${f.id}`}
+      tabIndex={-1}
+      className={`finding finding-${f.severity} ${selected ? "highlight" : ""}`}
+    >
       <div className="tags">
         <Badge tone={f.status === "confirmed" ? "red" : "amber"}>
           {f.status}
@@ -422,6 +432,28 @@ export function Investigation() {
   const [jump, setJump] = useState(0);
   const [tab, setTab] = useState<"transcript" | "timeline">("transcript");
   const [filter, setFilter] = useState("all");
+  const selectedFinding = params.get("finding");
+  const selectedEvidence = params.get("evidence");
+  useEffect(() => {
+    const finding = state.data?.f.findings.find(
+      (f) => f.id === selectedFinding,
+    );
+    if (!finding) return;
+    const element = document.getElementById(`finding-${finding.id}`);
+    element?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    element?.focus({ preventScroll: true });
+    if (
+      selectedEvidence &&
+      finding.evidence.some(
+        (e) =>
+          e.turn_id === selectedEvidence || e.event_id === selectedEvidence,
+      )
+    ) {
+      setTab(selectedEvidence.startsWith("t") ? "transcript" : "timeline");
+      setActive(selectedEvidence);
+      setJump((n) => n + 1);
+    }
+  }, [state.data, selectedFinding, selectedEvidence]);
   function navigate(target: string) {
     setTab(target.startsWith("t") ? "transcript" : "timeline");
     setActive(target);
@@ -597,7 +629,12 @@ export function Investigation() {
                   {severity} severity · {items.length}
                 </h3>
                 {items.map((item) => (
-                  <FindingCard key={item.id} f={item} onNavigate={navigate} />
+                  <FindingCard
+                    key={item.id}
+                    f={item}
+                    onNavigate={navigate}
+                    selected={item.id === selectedFinding}
+                  />
                 ))}
               </div>
             ) : null;
@@ -780,6 +817,14 @@ export function Compare() {
     </>
   );
 }
+export function Fingerprints() {
+  const state = useLoad(api.fingerprints, "fingerprints");
+  return state.data ? (
+    <FingerprintsView response={state.data} />
+  ) : (
+    <State {...state} />
+  );
+}
 function App() {
   const [dark, setDark] = useState(
     () => localStorage.getItem("agentdoctor-theme") !== "light",
@@ -798,7 +843,10 @@ function App() {
           <span className="brand-icon">✳</span> AgentDoctor <span>AI</span>
         </Link>
         <nav aria-label="Main navigation">
-          <NavLink to="/">Sessions</NavLink>
+          <NavLink to="/" end>
+            Sessions
+          </NavLink>
+          <NavLink to="/fingerprints">Fingerprints</NavLink>
         </nav>
         <div className="header-right">
           <span className="environment">LOCAL WORKSPACE</span>
@@ -813,6 +861,7 @@ function App() {
       <main id="main">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/fingerprints" element={<Fingerprints />} />
           <Route path="/sessions/:id" element={<Investigation />} />
           <Route path="/sessions" element={<Investigation />} />
           <Route path="/compare" element={<Compare />} />

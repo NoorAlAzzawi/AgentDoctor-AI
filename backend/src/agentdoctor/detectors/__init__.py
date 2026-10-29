@@ -14,6 +14,7 @@ from .interruptions import false_interruption_pause
 from .llm_behavior import premature_goodbye, stage_direction_spoken, talked_after_farewell
 from .speech_recognition import stt_misunderstanding, stt_missing_time_number
 from .state import contradicts_instructions, readback_mismatch
+from .tool_execution import premature_end_call
 
 DETECTORS = [
     false_interruption_pause,
@@ -21,6 +22,7 @@ DETECTORS = [
     stt_missing_time_number,
     stt_misunderstanding,
     premature_goodbye,
+    premature_end_call,
     talked_after_farewell,
     stage_direction_spoken,
     contradicts_instructions,

@@ -27,7 +27,7 @@ Example: `examples/health.json`. `detectors` lists the detector functions that r
 Example: `examples/sessions.json`. Summaries only, without turns or events. Sorted by `id`.
 
 ### `GET /api/sessions/{id}` → `Session`
-Example: `examples/session.json` (`s03-workshop-ab-script`). Contains `turns` (the transcript) and `events` (timeline: agent and user speaking states, false interruptions, overlapping speech, session close), sorted by time. Unknown id returns `404 {"detail": "..."}`.
+Example: `examples/session.json` (`s03-workshop-ab-script`). Contains `turns` (the transcript) and `events` (timeline: agent and user speaking states, false interruptions, overlapping speech, tool execution, session close), sorted by time. Unknown id returns `404 {"detail": "..."}`.
 
 ### `GET /api/sessions/{id}/findings` → `FindingsResponse`
 - **Real detector output:** `examples/findings.json` (s03) and `examples/by-session/<id>.findings.json` (every session). Findings are sorted by severity (high first), then time. A session with no problems returns `findings: []`.
@@ -78,4 +78,35 @@ A finding separates **what happened** from **why it happened**:
 - **Demo data:** 7 sanitized local console sessions. They contain no audio, file paths, job or room IDs, or provider request IDs. All patient details are fictional.
 - **User turn start times:** `start_s` for a user turn can be anchored to an earlier voice-activity blip, so it can start before the real speech. `committed_s` is when the transcript was finalized.
 - **Console recordings don't show agent pauses.** Pauses are inferred from `agent_state` events, not audio.
-- **Tool calls:** no demo session contains any. `tool_execution` findings will only come from synthetic test data.
+- **Tool calls:** none of the seven demo sessions contains tool telemetry. A separate sanitized real Nano regression excerpt remains test-only and is not loaded into the application. Tool findings require recorded execution telemetry; function-call requests and session closure alone are insufficient.
+
+## Tool-execution telemetry
+
+A normalized `TimelineEvent` with `type: "tool_execution"` has a stable event ID,
+relative `t_s`, and allowlisted `data`: `tool_name`, session-local `call_ref`,
+`phase: "started" | "ended"`, and `status: "done" | "error" | "cancelled"` only
+when ended. Started events omit status; ended events require it. No extra tool
+payload fields are accepted. Names match `^[A-Za-z_][A-Za-z0-9_-]{0,63}$` and
+references match `^tc[0-9]{3,}$`. Tool-event timestamps must be finite.
+
+The importer uses `tool_execution_updated` dispatch/completion records and replaces
+raw call IDs with deterministic session-local references. It does not copy arguments,
+outputs or raw identifiers, duplicate request/batch records, or infer execution from
+closure. Dispatch, completion, transcript commitment and audio delivery remain distinct.
+
+`premature_end_call` is confirmed/high/tool_execution only when actual dispatch
+violates a recognized recorded both-sides-goodbye policy under conservative transcript
+timing checks. A committed assistant goodbye can precede dispatch even when its audio
+plays later. Unknown/conflicting policies abstain. Repeated premature dispatches share
+one finding; root cause remains possible, and dispatch does not prove audible disconnection.
+
+## Failure Fingerprints
+
+`GET /api/fingerprints` returns deterministic observed-pattern groups, their original
+findings/evidence, and explicit ungrouped reasons. A rule needs at least two distinct
+recorded session IDs. `fp-v1-premature-end-call-dispatch` groups confirmed dispatch
+violations only after revalidating source-linked evidence with the unchanged detector.
+One occurrence is one finding, including repeated dispatches within that finding.
+Unsupported, insufficiently evidenced or single-session findings remain ungrouped.
+Recurrence is not a shared root cause or a failure rate; pipeline associations are
+descriptive and repeated/shared scripts are not independent trials.

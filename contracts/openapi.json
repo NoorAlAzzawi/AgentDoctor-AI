@@ -172,6 +172,24 @@
           }
         }
       }
+    },
+    "/api/fingerprints": {
+      "get": {
+        "summary": "Fingerprints",
+        "operationId": "fingerprints_api_fingerprints_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FingerprintsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -362,6 +380,126 @@
         ],
         "title": "Evidence"
       },
+      "FailureFingerprint": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "detector": {
+            "type": "string",
+            "title": "Detector"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "speech_recognition",
+              "llm_behavior",
+              "conversation_state",
+              "turn_taking",
+              "tool_execution",
+              "missing_or_incorrect_info",
+              "latency"
+            ],
+            "title": "Category"
+          },
+          "characteristics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Characteristics"
+          },
+          "occurrence_count": {
+            "type": "integer",
+            "title": "Occurrence Count"
+          },
+          "affected_session_count": {
+            "type": "integer",
+            "title": "Affected Session Count"
+          },
+          "session_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Session Ids"
+          },
+          "pipelines": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Pipelines"
+          },
+          "severity_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "propertyNames": {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "type": "object",
+            "title": "Severity Counts"
+          },
+          "status_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "propertyNames": {
+              "enum": [
+                "confirmed",
+                "suspected"
+              ]
+            },
+            "type": "object",
+            "title": "Status Counts"
+          },
+          "occurrences": {
+            "items": {
+              "$ref": "#/components/schemas/FingerprintOccurrence"
+            },
+            "type": "array",
+            "title": "Occurrences"
+          },
+          "caveat": {
+            "type": "string",
+            "title": "Caveat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "detector",
+          "category",
+          "characteristics",
+          "occurrence_count",
+          "affected_session_count",
+          "session_ids",
+          "pipelines",
+          "severity_counts",
+          "status_counts",
+          "occurrences",
+          "caveat"
+        ],
+        "title": "FailureFingerprint"
+      },
       "Finding": {
         "properties": {
           "id": {
@@ -495,6 +633,162 @@
           "findings"
         ],
         "title": "FindingsResponse"
+      },
+      "FingerprintOccurrence": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "session_title": {
+            "type": "string",
+            "title": "Session Title"
+          },
+          "session_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Notes"
+          },
+          "pipeline_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pipeline Label"
+          },
+          "models": {
+            "$ref": "#/components/schemas/Models"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SessionConfig"
+          },
+          "finding_id": {
+            "type": "string",
+            "title": "Finding Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Severity"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "suspected"
+            ],
+            "title": "Status"
+          },
+          "time_range": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "session_title",
+          "session_notes",
+          "pipeline_label",
+          "models",
+          "config",
+          "finding_id",
+          "title",
+          "severity",
+          "status",
+          "time_range",
+          "evidence"
+        ],
+        "title": "FingerprintOccurrence"
+      },
+      "FingerprintsResponse": {
+        "properties": {
+          "rule_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Rule Version",
+            "default": "1"
+          },
+          "recorded_session_count": {
+            "type": "integer",
+            "title": "Recorded Session Count"
+          },
+          "finding_count": {
+            "type": "integer",
+            "title": "Finding Count"
+          },
+          "grouped_finding_count": {
+            "type": "integer",
+            "title": "Grouped Finding Count"
+          },
+          "excluded_synthetic_session_count": {
+            "type": "integer",
+            "title": "Excluded Synthetic Session Count"
+          },
+          "fingerprints": {
+            "items": {
+              "$ref": "#/components/schemas/FailureFingerprint"
+            },
+            "type": "array",
+            "title": "Fingerprints"
+          },
+          "ungrouped": {
+            "items": {
+              "$ref": "#/components/schemas/UngroupedFinding"
+            },
+            "type": "array",
+            "title": "Ungrouped"
+          },
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Caveats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recorded_session_count",
+          "finding_count",
+          "grouped_finding_count",
+          "excluded_synthetic_session_count",
+          "fingerprints",
+          "ungrouped",
+          "caveats"
+        ],
+        "title": "FingerprintsResponse"
       },
       "HTTPValidationError": {
         "properties": {
@@ -1017,7 +1311,8 @@
               "user_state",
               "false_interruption",
               "overlapping_speech",
-              "session_close"
+              "session_close",
+              "tool_execution"
             ],
             "title": "Type"
           },
@@ -1025,7 +1320,7 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Data",
-            "description": "agent_state/user_state: {from, to}; false_interruption: {resumed}; overlapping_speech: {is_interruption, probability, detection_delay_s}; session_close: {reason, error}."
+            "description": "agent_state/user_state: {from, to}; false_interruption: {resumed}; overlapping_speech: {is_interruption, probability, detection_delay_s}; session_close: {reason, error}; tool_execution: {tool_name, call_ref, phase, status?}."
           }
         },
         "type": "object",
@@ -1201,6 +1496,82 @@
         "type": "object",
         "title": "TurnMetrics",
         "description": "Per-turn timings reported by LiveKit Agents. Agent turns carry LLM/TTS timings,\nuser turns carry STT/endpointing timings."
+      },
+      "UngroupedFinding": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "session_title": {
+            "type": "string",
+            "title": "Session Title"
+          },
+          "finding_id": {
+            "type": "string",
+            "title": "Finding Id"
+          },
+          "detector": {
+            "type": "string",
+            "title": "Detector"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "speech_recognition",
+              "llm_behavior",
+              "conversation_state",
+              "turn_taking",
+              "tool_execution",
+              "missing_or_incorrect_info",
+              "latency"
+            ],
+            "title": "Category"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Severity"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "suspected"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "no_rule",
+              "insufficient_evidence",
+              "single_session"
+            ],
+            "title": "Reason"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "session_title",
+          "finding_id",
+          "detector",
+          "category",
+          "severity",
+          "status",
+          "reason",
+          "explanation"
+        ],
+        "title": "UngroupedFinding"
       },
       "ValidationError": {
         "properties": {

@@ -5,6 +5,7 @@ Audio, file paths, job/room ids, provider request ids and usage-update noise are
 """
 
 import json
+import math
 import re
 import statistics
 from datetime import datetime, timezone
@@ -18,6 +19,7 @@ from .models import (
     SessionStats,
     SourceInfo,
     TimelineEvent,
+    ToolExecutionData,
     Turn,
     TurnMetrics,
 )
@@ -79,9 +81,9 @@ def load_livekit_report(
     raw = json.loads(Path(path).read_text())
     items = raw.get("chat_history", {}).get("items", [])
     events = raw.get("events", [])
-    t0 = raw.get("audio_recording_started_at") or min(
-        (e["created_at"] for e in events if "created_at" in e), default=None
-    )
+    t0 = raw.get("audio_recording_started_at")
+    if t0 is None:
+        t0 = min((e["created_at"] for e in events if "created_at" in e), default=None)
 
     def rel(t: float | None) -> float | None:
         return round(t - t0, 3) if t is not None and t0 is not None else None
@@ -91,6 +93,11 @@ def load_livekit_report(
     instructions = next(
         (i.get("instructions") for i in items if i.get("type") == "agent_config_update"), None
     )
+
+    # Tool names are the only copied tool text. Scan them too, without exposing rejected values.
+    tool_names = [e.data["tool_name"] for e in timeline if e.type == "tool_execution"]
+    if privacy_scan(tool_names, blocked_terms):
+        raise PrivacyError("Refusing to import: tool names failed privacy validation")
 
     problems = privacy_scan([t.text for t in turns] + [instructions or ""], blocked_terms)
     if problems:
@@ -156,9 +163,61 @@ def _turns(items: list[dict], rel) -> list[Turn]:
     return turns
 
 
+def _tool_lifecycle_data(events: list[dict]) -> dict[int, dict]:
+    """Join only dispatched lifecycles, never chat requests or batch summaries.
+
+    Local references follow dispatch time, breaking ties by source-event order.
+    Duplicate identical lifecycle exports are ignored. Ambiguous metadata is
+    rejected with payload-free errors; a start without an end remains a start.
+    """
+    starts, ends = {}, {}
+    for index, event in enumerate(events):
+        if event.get("type") != "tool_execution_updated":
+            continue
+        update = event.get("update")
+        if not isinstance(update, dict) or update.get("type") not in ("tool_call_started", "tool_call_ended"):
+            continue  # progress/tool-reply text is deliberately not retained
+        timestamp = event.get("created_at")
+        if isinstance(timestamp, bool) or not isinstance(timestamp, (int, float)) or not math.isfinite(timestamp):
+            raise ValueError("Tool lifecycle event requires a finite execution timestamp")
+        started = update["type"] == "tool_call_started"
+        call = update.get("function_call") if started else update
+        if not isinstance(call, dict) or not isinstance(call.get("call_id"), str) or not call["call_id"]:
+            raise ValueError("Tool lifecycle event requires a correlation ID")
+        call_id = call["call_id"]  # retained only in this import-local map
+        value = call.get("name") if started else update.get("status")
+        if started:
+            if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]{0,63}", value):
+                raise ValueError("Tool dispatch requires a valid tool name")
+        elif value not in ("done", "error", "cancelled"):
+            raise ValueError("Tool completion requires a supported terminal status")
+        target = starts if started else ends
+        record = (index, timestamp, value)
+        if call_id in target:
+            if target[call_id][1:] != record[1:]:
+                raise ValueError("Conflicting tool lifecycle records")
+            continue
+        target[call_id] = record
+    if ends.keys() - starts.keys():
+        raise ValueError("Tool completion has no matching dispatch")
+    data = {}
+    for number, (call_id, (index, timestamp, name)) in enumerate(
+        sorted(starts.items(), key=lambda item: (item[1][1], item[1][0])), 1
+    ):
+        call_ref = f"tc{number:03d}"
+        data[index] = ToolExecutionData(tool_name=name, call_ref=call_ref, phase="started").model_dump(exclude_none=True)
+        if call_id in ends:
+            end_index, end_time, status = ends[call_id]
+            if end_time < timestamp:
+                raise ValueError("Tool completion precedes dispatch")
+            data[end_index] = ToolExecutionData(tool_name=name, call_ref=call_ref, phase="ended", status=status).model_dump()
+    return data
+
+
 def _events(events: list[dict], rel) -> list[TimelineEvent]:
+    tool_data = _tool_lifecycle_data(events)
     kept = []
-    for e in events:
+    for index, e in enumerate(events):
         kind, data = e.get("type"), None
         if kind == "agent_state_changed":
             kind, data = "agent_state", {"from": e.get("old_state"), "to": e.get("new_state")}
@@ -174,6 +233,8 @@ def _events(events: list[dict], rel) -> list[TimelineEvent]:
             }
         elif kind == "close":
             kind, data = "session_close", {"reason": e.get("reason"), "error": e.get("error")}
+        elif index in tool_data:
+            kind, data = "tool_execution", tool_data[index]
         if data is not None and e.get("created_at") is not None:
             kept.append((rel(e["created_at"]), kind, data))
     kept.sort(key=lambda x: x[0])  # raw events are not strictly time-ordered

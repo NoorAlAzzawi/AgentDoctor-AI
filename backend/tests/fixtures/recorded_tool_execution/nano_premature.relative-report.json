@@ -1,0 +1,205 @@
+{
+  "_comment": "SANITIZED REAL RECORDED EXCERPT, NOT SYNTHETIC. Test-only and excluded from demo sessions. All times are seconds relative to recording start (zero origin), not wall-clock dates. Persona/profile metadata is omitted; one clinician name is redacted. Lifecycle call IDs are normalized session-local references, not original IDs.",
+  "sdk_version": "1.8.8",
+  "audio_recording_started_at": 0.0,
+  "options": {
+    "allow_interruptions": true,
+    "min_interruption_duration": 0.5,
+    "min_endpointing_delay": 0.3,
+    "max_endpointing_delay": 2.5,
+    "preemptive_generation": {
+      "enabled": true
+    }
+  },
+  "usage": [
+    {
+      "model": "openai/gpt-4.1-nano",
+      "input_tokens": 1759,
+      "output_tokens": 74
+    },
+    {
+      "model": "cartesia/sonic-3",
+      "characters_count": 77,
+      "audio_duration": 3.2972500000000005
+    },
+    {
+      "model": "deepgram/nova-3",
+      "audio_duration": 47.14999999999994
+    },
+    {
+      "model": "turn-detector-v1",
+      "total_requests": 2
+    }
+  ],
+  "chat_history": {
+    "items": [
+      {
+        "type": "agent_config_update",
+        "instructions": "Ending the call:\n- Agreeing to a time does not end the call. Don't say goodbye yet; the\n  receptionist may still need to verify details or ask more questions.\n- Keep answering naturally until the receptionist wraps up, for example by\n  asking if there's anything else or saying goodbye.\n- Only then thank them and say goodbye.\n- After you have both said goodbye, use the end_call tool to hang up.\n  Never use it earlier."
+      },
+      {
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Hi. I'm calling to schedule a follow-up appointment with [clinician]."
+        ],
+        "created_at": 32.399,
+        "interrupted": false,
+        "metrics": {
+          "end_of_turn_delay": 2.501,
+          "transcription_delay": 0.309,
+          "started_speaking_at": 28.103,
+          "stopped_speaking_at": 32.089
+        },
+        "transcript_confidence": 0.99934897
+      },
+      {
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello, thank you for calling. Do you have a preferred day and time next week?"
+        ],
+        "created_at": 34.622,
+        "interrupted": false,
+        "metrics": {
+          "e2e_latency": 2.914,
+          "llm_node_ttft": 0.81,
+          "tts_node_ttfb": 0.178,
+          "playback_latency": 0.204,
+          "started_speaking_at": 35.004,
+          "stopped_speaking_at": 38.207
+        }
+      },
+      {
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Next week would be good."
+        ],
+        "created_at": 47.496,
+        "interrupted": false,
+        "metrics": {
+          "end_of_turn_delay": 0.581,
+          "transcription_delay": 0.302,
+          "started_speaking_at": 45.805,
+          "stopped_speaking_at": 47.193
+        },
+        "transcript_confidence": 0.99902344
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "agent_state_changed",
+      "old_state": "initializing",
+      "new_state": "listening",
+      "created_at": 0.043
+    },
+    {
+      "type": "user_state_changed",
+      "old_state": "listening",
+      "new_state": "away",
+      "created_at": 15.046
+    },
+    {
+      "type": "user_state_changed",
+      "old_state": "away",
+      "new_state": "speaking",
+      "created_at": 28.103
+    },
+    {
+      "type": "user_state_changed",
+      "old_state": "speaking",
+      "new_state": "listening",
+      "created_at": 32.088
+    },
+    {
+      "type": "agent_state_changed",
+      "old_state": "listening",
+      "new_state": "thinking",
+      "created_at": 34.613
+    },
+    {
+      "type": "agent_state_changed",
+      "old_state": "thinking",
+      "new_state": "speaking",
+      "created_at": 35.01
+    },
+    {
+      "type": "agent_state_changed",
+      "old_state": "speaking",
+      "new_state": "listening",
+      "created_at": 38.218
+    },
+    {
+      "type": "user_state_changed",
+      "old_state": "listening",
+      "new_state": "speaking",
+      "created_at": 45.805
+    },
+    {
+      "type": "user_state_changed",
+      "old_state": "speaking",
+      "new_state": "listening",
+      "created_at": 47.191
+    },
+    {
+      "type": "agent_state_changed",
+      "old_state": "listening",
+      "new_state": "thinking",
+      "created_at": 47.787
+    },
+    {
+      "type": "tool_execution_updated",
+      "update": {
+        "type": "tool_call_started",
+        "function_call": {
+          "name": "end_call",
+          "call_id": "tc001"
+        }
+      },
+      "created_at": 48.702
+    },
+    {
+      "type": "tool_execution_updated",
+      "update": {
+        "type": "tool_call_started",
+        "function_call": {
+          "name": "end_call",
+          "call_id": "tc002"
+        }
+      },
+      "created_at": 48.708
+    },
+    {
+      "type": "tool_execution_updated",
+      "update": {
+        "type": "tool_call_ended",
+        "call_id": "tc001",
+        "status": "done"
+      },
+      "created_at": 48.708
+    },
+    {
+      "type": "tool_execution_updated",
+      "update": {
+        "type": "tool_call_ended",
+        "call_id": "tc002",
+        "status": "done"
+      },
+      "created_at": 48.711
+    },
+    {
+      "type": "agent_state_changed",
+      "old_state": "thinking",
+      "new_state": "listening",
+      "created_at": 48.732
+    },
+    {
+      "type": "close",
+      "reason": "user_initiated",
+      "error": null,
+      "created_at": 50.784
+    }
+  ]
+}

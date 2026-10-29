@@ -52,6 +52,7 @@ Ten deterministic detectors live in [`backend/src/agentdoctor/detectors/`](backe
 | `stt_missing_time_number` | suspected | A transcript like "Thursday at AM": a time of day with the number missing |
 | `stt_misunderstanding` | suspected | The agent signals confusion right after a user turn, especially when the user then corrects it |
 | `premature_goodbye` | confirmed | The agent said goodbye before the other side wrapped up, and the conversation went on |
+| `premature_end_call` | confirmed | Actual end_call dispatch before a recognized recorded closing policy is satisfied; dispatch does not prove immediate audible disconnection |
 | `talked_after_farewell` | confirmed | Both sides said goodbye, but the agent kept talking |
 | `stage_direction_spoken` | confirmed | Agent text like "(End of call)" that TTS would read aloud |
 | `contradicts_instructions` | confirmed | The agent stated a date of birth or phone number that differs from its own instructions |
@@ -61,11 +62,29 @@ The full trigger rules, including severity, are in [`contracts/API.md`](contract
 
 ## Workflows
 
-The React dashboard has three views:
+The React dashboard has four views:
 
 - **Sessions:** every imported session with its pipeline, latency summary and counts of confirmed and suspected findings. Select two sessions to compare them.
 - **Investigation:** the transcript and event timeline beside the findings. Clicking an evidence item jumps to the referenced turn or event and highlights it. Each finding shows its status, root-cause confidence, missing evidence and next steps.
 - **Compare:** two sessions side by side, with which pipeline components differ, latency and turn-taking metrics, finding counts by category, and **caveats**. Examples are one session per side, more than one component differing, and synthetic data. A comparison never declares an overall "better model".
+- **Failure Fingerprints:** recurring observed patterns across sessions, linked to original findings and evidence.
+
+## Failure Fingerprints
+
+Failure Fingerprints group recurring **observed failure patterns** using deterministic,
+inspectable rules and links to the original findings and evidence. A pattern requires
+at least two distinct recorded sessions. Unsupported, insufficiently evidenced or
+insufficiently repeated findings remain ungrouped.
+
+Recurrence does not establish a shared root cause. Affected pipelines are descriptive
+associations; repeated/shared scripts are not independent trials, and finding counts
+are not failure rates. One occurrence is one finding, even when it contains multiple
+tool dispatches.
+
+`premature_end_call` grouping supports confirmed premature dispatch under the recorded
+closing policy, without implying immediate audible disconnection. The real Nano failure
+is one observed occurrence retained only as a regression excerpt, not evidence of
+recurrence in the seven-session application dataset. Synthetic fixtures remain test-only.
 
 ## Architecture
 
@@ -132,10 +151,10 @@ To try the dashboard without the backend, start it in mock mode with `VITE_USE_M
 These [synthetic fixtures](backend/tests/fixtures/synthetic_faults/) are authored validation data, **not real production sessions**; they are not loaded into the application. The STT omission is known by construction, but the detector still reports `suspected` because it does not receive the test's reference ground truth. Controlled tests do not establish real-world accuracy or prove a root cause.
 
 ```bash
-cd backend && uv run pytest          # 58 tests
-cd frontend && npm test              # 19 frontend tests
+cd backend && uv run pytest          # 159 tests
+cd frontend && npm test              # 29 frontend tests
 cd frontend && npm run typecheck && npm run build
-cd frontend && npm run test:live     # 12 opt-in tests against a running API + Vite server
+cd frontend && npm run test:live     # opt-in tests against a running API + Vite server
 ```
 
 - **Backend:**

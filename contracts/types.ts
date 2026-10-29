@@ -24,7 +24,8 @@ export type EventType =
   | "user_state"
   | "false_interruption"
   | "overlapping_speech"
-  | "session_close";
+  | "session_close"
+  | "tool_execution";
 
 // ---------- sessions ----------
 
@@ -104,6 +105,17 @@ export interface Turn {
   metrics: TurnMetrics;
 }
 
+/** Allowlisted lifecycle data. tool_name matches ^[A-Za-z_][A-Za-z0-9_-]{0,63}$;
+ * call_ref matches ^tc[0-9]{3,}$ and is local to a session, never a raw ID.
+ * Started events omit status; ended events require a terminal status. */
+export type ToolExecutionData = {
+  tool_name: string;
+  call_ref: string;
+} & (
+  | { phase: "started"; status?: never }
+  | { phase: "ended"; status: "done" | "error" | "cancelled" }
+);
+
 export interface TimelineEvent {
   id: string; // "e042"
   t_s: number;
@@ -112,6 +124,7 @@ export interface TimelineEvent {
   // false_interruption:       { resumed: boolean }
   // overlapping_speech:       { is_interruption: boolean; probability: number | null; detection_delay_s: number | null }
   // session_close:            { reason: string; error: string | null }
+  // tool_execution:           ToolExecutionData (validated by the backend)
   data: Record<string, unknown>;
 }
 
@@ -188,4 +201,60 @@ export interface Health {
   status: "ok";
   version: string;
   detectors: string[];
+}
+
+// ---------- recurring observed patterns ----------
+
+export interface FingerprintOccurrence {
+  session_id: string;
+  session_title: string;
+  session_notes: string | null;
+  pipeline_label: string | null;
+  models: Models;
+  config: SessionConfig;
+  finding_id: string;
+  title: string;
+  severity: Severity;
+  status: FindingStatus;
+  time_range: { start_s: number; end_s: number } | null;
+  evidence: Evidence[];
+}
+
+export interface FailureFingerprint {
+  id: string;
+  name: string;
+  detector: string;
+  category: Category;
+  characteristics: string[];
+  occurrence_count: number;
+  affected_session_count: number;
+  session_ids: string[];
+  pipelines: (string | null)[];
+  severity_counts: Record<Severity, number>;
+  status_counts: Record<FindingStatus, number>;
+  occurrences: FingerprintOccurrence[];
+  caveat: string;
+}
+
+export interface UngroupedFinding {
+  session_id: string;
+  session_title: string;
+  finding_id: string;
+  detector: string;
+  category: Category;
+  severity: Severity;
+  status: FindingStatus;
+  reason: "no_rule" | "insufficient_evidence" | "single_session";
+  explanation: string;
+}
+
+export interface FingerprintsResponse {
+  rule_version: "1";
+  recorded_session_count: number;
+  finding_count: number;
+  grouped_finding_count: number;
+  excluded_synthetic_session_count: number;
+  fingerprints: FailureFingerprint[];
+  ungrouped: UngroupedFinding[];
+  caveats: string[];
 }
