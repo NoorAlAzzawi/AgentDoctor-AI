@@ -8,18 +8,37 @@ AgentDoctor imports [LiveKit Agents](https://docs.livekit.io/agents/) session re
 
 ## Screenshots
 
-These screenshots illustrate the original seven-session demo; the current dataset contains 11 sessions and includes Failure Fingerprints navigation.
+Current product views using the 11-session sanitized recorded dataset.
 
-### Evidence-first investigation
+### Evidence-first Investigation
 
-![Investigation view with timestamped conversation evidence and an expanded diagnostic finding](docs/screenshots/investigation.png)
+![Investigation showing a highlighted goodbye transcript turn and an expanded premature end_call diagnosis with policy evidence and possible root cause](docs/screenshots/investigation.png)
 
-Trace a finding to the exact conversation evidence, with root-cause confidence, missing evidence, and practical debugging steps kept explicit.
+Trace confirmed premature `end_call` dispatch to the recorded closing policy and transcript, with root-cause uncertainty, missing evidence, and debugging steps kept explicit.
 
-| Sessions dashboard | Session comparison |
-|---|---|
-| ![Sessions dashboard showing pipeline details, latency metrics, and confirmed versus suspected findings](docs/screenshots/sessions.png) | ![Compare view showing pipeline differences, reported metrics, and comparison caveats](docs/screenshots/compare.png) |
-| Scan session health and select two conversations to compare. | Inspect pipeline differences and observed metrics, with clear limits on what one run can prove. |
+### Dashboard / Sessions overview
+
+![Sessions dashboard showing 11 analyzed sessions, 27 confirmed findings, 15 suspected findings, and pipeline cards](docs/screenshots/sessions.png)
+
+Scan 11 recorded sessions, pipeline configurations, and 42 findings: 27 confirmed observations and 15 suspected failures.
+
+### Failure Fingerprints overview
+
+![Failure Fingerprints overview showing eight recurring patterns, 39 of 42 findings grouped, three ungrouped findings, and recurrence limitations](docs/screenshots/fingerprints.png)
+
+Explore eight recurring observed patterns, with 39 of 42 findings grouped. Repeated behavior does not establish a shared root cause or independent reproduction.
+
+### Premature end_call fingerprint detail
+
+![Premature end_call fingerprint showing three findings across three sessions, Nano and Recommended pipelines, representative dispatch evidence, and causality caveats](docs/screenshots/fingerprint-end-call.png)
+
+Three findings across three recorded sessions share an observed dispatch pattern. The role-confounded representative and causality limits remain explicit.
+
+### Compare
+
+![Recommended and Nano session comparison showing shared STT and TTS models, different LLMs, observed metrics, and model-superiority caveats](docs/screenshots/compare.png)
+
+Compare recorded Recommended and Nano runs, models, and metrics. The Recommended run includes timing anomalies; these session differences do not establish model superiority.
 
 ## The problem
 
