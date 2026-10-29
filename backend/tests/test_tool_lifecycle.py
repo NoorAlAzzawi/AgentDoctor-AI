@@ -200,7 +200,7 @@ def test_normalized_tool_event_shape_is_validated(data):
 
 def test_existing_seven_sessions_and_findings_remain_compatible():
     examples = Path(__file__).resolve().parents[2] / "contracts" / "examples" / "by-session"
-    files = sorted(DEFAULT_DATA_DIR.glob("*.json"))
+    files = sorted(DEFAULT_DATA_DIR.glob("s0[1-7]-*.json"))
     assert len(files) == 7
     for p in files:
         raw = json.loads(p.read_text())

@@ -23,6 +23,10 @@ const ids = [
   "s05-workshop-headphones",
   "s06-hybrid-script",
   "s07-workshop-persona-v2",
+  "s08-nano-role-confounded-end-call",
+  "s09-recommended-closing-policy",
+  "s10-recommended-correction-control",
+  "s11-nano-correction-closing",
 ];
 
 describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
@@ -31,11 +35,11 @@ describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
     it("serves deterministic recorded fingerprints with exact references and no synthetic recurrence", async () => {
       const first = await api.fingerprints();
       expect(await api.fingerprints()).toEqual(first);
-      expect(first.recorded_session_count).toBe(7);
-      expect(first.finding_count).toBe(34);
-      expect(first.grouped_finding_count).toBe(28);
-      expect(first.fingerprints).toHaveLength(6);
-      expect(first.ungrouped).toHaveLength(6);
+      expect(first.recorded_session_count).toBe(11);
+      expect(first.finding_count).toBe(42);
+      expect(first.grouped_finding_count).toBe(39);
+      expect(first.fingerprints).toHaveLength(8);
+      expect(first.ungrouped).toHaveLength(3);
       const source = new Map(
         await Promise.all(
           ids.map(async (id) => [id, await api.findings(id)] as const),
@@ -93,16 +97,16 @@ describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
-    it("loads the dashboard's seven sessions and all 34 findings", async () => {
+    it("loads the dashboard's eleven sessions and all 42 findings", async () => {
       expect(mockMode).toBe(false);
       const summaries = await api.sessions();
       expect(summaries.map((s) => s.id)).toEqual(ids);
       const findings = (
         await Promise.all(ids.map((id) => api.findings(id)))
       ).flatMap((r) => r.findings);
-      expect(findings).toHaveLength(34);
-      expect(findings.filter((f) => f.status === "confirmed")).toHaveLength(22);
-      expect(findings.filter((f) => f.status === "suspected")).toHaveLength(12);
+      expect(findings).toHaveLength(42);
+      expect(findings.filter((f) => f.status === "confirmed")).toHaveLength(27);
+      expect(findings.filter((f) => f.status === "suspected")).toHaveLength(15);
       render(
         <MemoryRouter>
           <Dashboard />
@@ -182,7 +186,7 @@ describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
       30000,
     );
 
-    it("matches backend comparisons for all 21 distinct pairs", async () => {
+    it("matches backend comparisons for all 55 distinct pairs", async () => {
       const sessions = await Promise.all(ids.map((id) => api.session(id)));
       const findings = await Promise.all(ids.map((id) => api.findings(id)));
       for (let a = 0; a < ids.length; a++)
@@ -252,9 +256,10 @@ describe.skipIf(import.meta.env.VITE_RUN_LIVE_TESTS !== "true")(
       }
     });
 
-    it("serves all three Vite routes in live mode and displays API 404 errors", async () => {
+    it("serves all four Vite routes in live mode and displays API 404 errors", async () => {
       for (const path of [
         "/",
+        "/fingerprints",
         `/sessions/${ids[2]}`,
         `/compare?a=${ids[2]}&b=${ids[3]}`,
       ]) {

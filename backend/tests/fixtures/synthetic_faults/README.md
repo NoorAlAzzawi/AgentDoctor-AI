@@ -1,6 +1,6 @@
 # Controlled synthetic fault fixtures
 
-These three **test-only, authored normalized sessions** are not recordings, production calls, or additions to the seven recorded/sanitized demo sessions. They exercise the existing `Session` schema and deterministic detectors directly; no raw LiveKit importer, model, STT engine, audio, or external service is run.
+These three **test-only, authored normalized sessions** are not recordings, production calls, or additions to the recorded/sanitized application sessions. They exercise the existing `Session` schema and deterministic detectors directly; no raw LiveKit importer, model, STT engine, audio, or external service is run.
 
 Each JSON document separates the test oracle from the detector input:
 

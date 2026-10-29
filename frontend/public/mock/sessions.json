@@ -299,5 +299,177 @@
       "interrupted_agent_turns": 1,
       "overlapping_speech_events": 1
     }
+  },
+  {
+    "id": "s08-nano-role-confounded-end-call",
+    "title": "Nano pipeline \u00b7 role-confounded premature end_call",
+    "notes": "Role-confounded: the human spoke as a patient and the AI answered as a receptionist, contrary to its recorded patient role. Two premature end_call dispatches form one finding. This is not a normal baseline or evidence that Nano is generally worse. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+    "pipeline_label": "nano",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-nano",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": null
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 50.784,
+      "user_turns": 2,
+      "agent_turns": 1,
+      "e2e_latency": {
+        "n": 1,
+        "median_s": 2.914,
+        "p90_s": 2.914
+      },
+      "llm_ttft": {
+        "n": 1,
+        "median_s": 0.81,
+        "p90_s": 0.81
+      },
+      "tts_ttfb": {
+        "n": 1,
+        "median_s": 0.178,
+        "p90_s": 0.178
+      },
+      "end_of_turn_delay": {
+        "n": 2,
+        "median_s": 1.541,
+        "p90_s": 2.501
+      },
+      "endpointing_timeouts": 1,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 0
+    }
+  },
+  {
+    "id": "s09-recommended-closing-policy",
+    "title": "Recommended pipeline \u00b7 readback success, closing-policy failure",
+    "notes": "Correct conversational roles. Thursday 9:15 AM readback succeeds; end_call follows the human goodbye without a recorded assistant goodbye. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+    "pipeline_label": "recommended",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-mini",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": null
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 119.017,
+      "user_turns": 10,
+      "agent_turns": 8,
+      "e2e_latency": {
+        "n": 8,
+        "median_s": 1.496,
+        "p90_s": 1.994
+      },
+      "llm_ttft": {
+        "n": 8,
+        "median_s": 0.342,
+        "p90_s": 0.666
+      },
+      "tts_ttfb": {
+        "n": 8,
+        "median_s": 0.202,
+        "p90_s": 0.38
+      },
+      "end_of_turn_delay": {
+        "n": 10,
+        "median_s": 0.581,
+        "p90_s": 1.611
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 0
+    }
+  },
+  {
+    "id": "s10-recommended-correction-control",
+    "title": "Recommended pipeline \u00b7 corrected readback and closing control",
+    "notes": "Correct conversational roles. Tuesday-to-Thursday correction is retained. Both goodbye messages are committed before dispatch, although assistant audio starts afterward. Large transcript-commit delays remain recorded; this is not a clean latency control. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+    "pipeline_label": "recommended",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-mini",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 242.99,
+      "user_turns": 10,
+      "agent_turns": 10,
+      "e2e_latency": {
+        "n": 8,
+        "median_s": 10.659,
+        "p90_s": 59.805
+      },
+      "llm_ttft": {
+        "n": 10,
+        "median_s": 0.554,
+        "p90_s": 0.692
+      },
+      "tts_ttfb": {
+        "n": 10,
+        "median_s": 0.201,
+        "p90_s": 0.275
+      },
+      "end_of_turn_delay": {
+        "n": 8,
+        "median_s": 9.607,
+        "p90_s": 58.788
+      },
+      "endpointing_timeouts": 5,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 2,
+      "overlapping_speech_events": 1
+    }
+  },
+  {
+    "id": "s11-nano-correction-closing",
+    "title": "Nano pipeline \u00b7 corrected readback, closing-policy failure",
+    "notes": "Correct conversational roles. Thursday 8 AM readback succeeds; end_call follows only the human goodbye. The transcript contains both a complete time and a later missing-hour fragment; this does not prove an STT error or lost appointment state. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+    "pipeline_label": "nano",
+    "models": {
+      "stt": "deepgram/nova-3",
+      "llm": "openai/gpt-4.1-nano",
+      "tts": "cartesia/sonic-3",
+      "turn_detector": "turn-detector-v1",
+      "interruption_detector": "adaptive interruption"
+    },
+    "synthetic": false,
+    "stats": {
+      "duration_s": 99.682,
+      "user_turns": 9,
+      "agent_turns": 7,
+      "e2e_latency": {
+        "n": 7,
+        "median_s": 1.904,
+        "p90_s": 2.202
+      },
+      "llm_ttft": {
+        "n": 7,
+        "median_s": 0.955,
+        "p90_s": 1.333
+      },
+      "tts_ttfb": {
+        "n": 7,
+        "median_s": 0.204,
+        "p90_s": 0.226
+      },
+      "end_of_turn_delay": {
+        "n": 9,
+        "median_s": 0.58,
+        "p90_s": 0.582
+      },
+      "endpointing_timeouts": 0,
+      "false_interruptions": 0,
+      "interrupted_agent_turns": 0,
+      "overlapping_speech_events": 1
+    }
   }
 ]

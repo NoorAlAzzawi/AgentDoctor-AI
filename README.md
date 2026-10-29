@@ -8,6 +8,8 @@ AgentDoctor imports [LiveKit Agents](https://docs.livekit.io/agents/) session re
 
 ## Screenshots
 
+These screenshots illustrate the original seven-session demo; the current dataset contains 11 sessions and includes Failure Fingerprints navigation.
+
 ### Evidence-first investigation
 
 ![Investigation view with timestamped conversation evidence and an expanded diagnostic finding](docs/screenshots/investigation.png)
@@ -82,9 +84,10 @@ are not failure rates. One occurrence is one finding, even when it contains mult
 tool dispatches.
 
 `premature_end_call` grouping supports confirmed premature dispatch under the recorded
-closing policy, without implying immediate audible disconnection. The real Nano failure
-is one observed occurrence retained only as a regression excerpt, not evidence of
-recurrence in the seven-session application dataset. Synthetic fixtures remain test-only.
+closing policy, without implying immediate audible disconnection. Three distinct real
+application sessions support this pattern, including a clearly labeled role-confounded
+Nano case. The separate regression excerpt duplicates that recording and
+is never counted again. Synthetic fixtures remain test-only.
 
 ## Architecture
 
@@ -106,7 +109,7 @@ React + TypeScript dashboard (Vite)   ← or mock mode from contracts/examples
 backend/            Python 3.12 · uv · FastAPI · pydantic v2
   src/agentdoctor/  models (schemas), ingest (sanitizer), store, compare, api, cli
     detectors/      one module per failure area
-  data/sessions/    7 sanitized demo sessions
+  data/sessions/    11 sanitized demo sessions
   tests/            pytest: synthetic detector cases, real-session checks, API smoke tests
   scripts/          regenerates contracts/ from the running code
 contracts/          API.md, types.ts, openapi.json, example responses (contract-first)
@@ -144,35 +147,36 @@ To try the dashboard without the backend, start it in mock mode with `VITE_USE_M
 
 ### Validation strategy
 
-- **Recorded sessions** — observed failures from seven sanitized voice-agent sessions, with evidence and uncertainty preserved.
+- **Recorded sessions** — observed failures from eleven sanitized voice-agent sessions, with evidence and uncertainty preserved.
 - **Controlled synthetic fault fixtures** — three test-only, intentionally injected failures with known expected detector outcomes: a missing STT time number, a stale appointment readback, and a premature goodbye. Each has a matched clean control and remains separate from the recorded dataset.
 - **Regression tests** — validate the session schema, expected findings and linked evidence, and ensure the known faults remain detectable after changes.
 
 These [synthetic fixtures](backend/tests/fixtures/synthetic_faults/) are authored validation data, **not real production sessions**; they are not loaded into the application. The STT omission is known by construction, but the detector still reports `suspected` because it does not receive the test's reference ground truth. Controlled tests do not establish real-world accuracy or prove a root cause.
 
 ```bash
-cd backend && uv run pytest          # 159 tests
-cd frontend && npm test              # 29 frontend tests
+cd backend && uv run pytest          # 172 tests
+cd frontend && npm test              # 31 frontend tests
 cd frontend && npm run typecheck && npm run build
 cd frontend && npm run test:live     # opt-in tests against a running API + Vite server
 ```
 
 - **Backend:**
   - Synthetic positive and negative cases for every detector.
-  - Invariants on all 7 real sessions. Every evidence ID resolves, speech-to-text findings are never confirmed, and every unconfirmed cause lists its missing evidence.
+  - Invariants on all 11 real sessions. Every evidence ID resolves, speech-to-text findings are never confirmed, and every unconfirmed cause lists its missing evidence.
   - Expected results checked manually against the transcripts.
   - Ingest, sanitization and API smoke tests.
-- **Live suite (`npm run test:live`):** opens all seven sessions, follows every evidence link, compares all 21 session pairs, and checks CORS and 404s against the real API. For setup, see [`frontend/README.md`](frontend/README.md).
+- **Live suite (`npm run test:live`):** opens all eleven sessions, follows every evidence link, compares all 55 session pairs, and checks CORS and 404s against the real API. For setup, see [`frontend/README.md`](frontend/README.md).
 
 ## Demo data and privacy
 
-The repository includes **7 sanitized console sessions** of a voice agent playing a **fictional** patient calling a fictional medical office. A human tester played the receptionist. All names, dates of birth and phone numbers are fictional; the phone numbers use the reserved 555 range.
+The repository includes **11 sanitized real console sessions** of a voice agent instructed to play a **fictional** patient. Seven original recordings are unchanged; four newer Recommended/Nano recordings add tool-execution evidence and corrected-readback controls. The human normally plays the receptionist; s08 explicitly labels an observed role inversion. New identity text is pseudonymized and DOB values are redacted. Original profile details are fictional and original phone numbers use the reserved 555 range. See [dataset provenance](backend/data/README.md).
 
 The importer is **allowlist-based**. It keeps only transcript text, timing, metrics, model names and a fixed set of event types. Audio, file paths, job and room IDs, and provider request IDs are dropped. A privacy scan rejects any import whose text contains an email address, URL or non-555 phone number, or any term on the manifest's `blocked_terms` list. Keep private blocked terms in a gitignored `*.local.json` copy of the manifest.
 
 ```bash
 cd backend
-uv run agentdoctor import <folder-of-session-dirs> --manifest data/import_manifest.local.json
+uv run agentdoctor import <folder-of-session-dirs> --manifest data/import_manifest.local.json  # original seven
+uv run python scripts/import_expanded_dataset.py <folder-of-session-dirs>  # four approved additions; refuses overwrite
 uv run python scripts/build_contract_examples.py   # refresh contracts/
 ```
 
@@ -180,9 +184,9 @@ uv run python scripts/build_contract_examples.py   # refresh contracts/
 
 - **Heuristic, English-only rules.** Detectors use explicit patterns, and the time and appointment checks assume a scheduling conversation. They miss cases, for example a one-word cut-off like "Hi,".
 - **No audio.** Pauses are inferred from agent state events, not measured from audio. Speech-to-text findings stay `suspected`.
-- **Small, self-validated sample.** The expected results for the 7 sessions come from the author's manual review, not independent ground truth.
+- **Small, self-validated sample.** The expected results for the 11 sessions come from the author's manual review, not independent ground truth.
 - **The state detectors have no positives in the real data.** `contradicts_instructions` and `readback_mismatch` are verified only on synthetic cases; on the real sessions they correctly report nothing.
-- **No tool calls in the demo data,** so no tool-execution failures are shown.
+- **Closing evidence is bounded.** Three recordings show premature end_call dispatch under their recorded policy; this does not prove immediate audible disconnection or a model cause. One is role-confounded. Repeated/shared scripts are not independent trials.
 - **One turn can appear in two findings** from different angles, such as a fragment reply that is also a likely mishearing. These aren't merged.
 - **Pipeline comparisons are anecdotal:** one session per side, and the audio setup sometimes differs. The Compare view says so.
 - **User-turn start times** can be anchored to an earlier voice-activity blip.
@@ -194,13 +198,12 @@ uv run python scripts/build_contract_examples.py   # refresh contracts/
 - 10 deterministic detectors
 - Read-only REST API with an OpenAPI contract
 - Session comparison
-- React dashboard with Sessions, Investigation and Compare views, evidence linking, mock mode, light and dark themes
+- React dashboard with Sessions, Investigation, Failure Fingerprints and Compare views, evidence linking, mock mode, light and dark themes
 - Backend, frontend and live integration tests
 
 **Not implemented:**
 - Audio analysis or playback
 - Uploading sessions through the UI (import is a CLI step)
 - LLM-assisted explanations
-- Tool-call detectors validated on real data
 - Multi-run statistical comparison
 - Authentication, persistence beyond JSON files, deployment

@@ -1,4 +1,4 @@
-"""Detectors on the 7 real, sanitized demo sessions.
+"""Detectors on the 11 real, sanitized demo sessions.
 
 Expected results were verified manually against the transcripts and event timelines.
 """
@@ -67,7 +67,7 @@ def test_s04_missing_time_numbers():
     assert len(hits) == 3
     assert all(f.status == "suspected" for f in hits)
     others = [sid for sid in SESSIONS if sid != "s04-recommended-ab-script" and by_detector(sid)["stt_missing_time_number"]]
-    assert others == []
+    assert others == ["s11-nano-correction-closing"]
 
 
 def test_s01_patrick_swayze_misrecognition_is_likely():

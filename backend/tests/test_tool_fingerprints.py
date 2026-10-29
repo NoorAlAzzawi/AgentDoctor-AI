@@ -152,8 +152,9 @@ def test_api_does_not_discover_recorded_regression_excerpts(monkeypatch):
     assert fixture.exists() and DEFAULT_DATA_DIR not in fixture.resolve().parents
     with TestClient(app) as client:
         r = client.get("/api/fingerprints").json()
-    assert (r["recorded_session_count"], r["finding_count"], r["grouped_finding_count"]) == (7, 34, 28)
-    assert all(f["id"] != FP_ID for f in r["fingerprints"])
+    assert (r["recorded_session_count"], r["finding_count"], r["grouped_finding_count"]) == (11, 42, 39)
+    assert next(f for f in r["fingerprints"] if f["id"] == FP_ID)["occurrence_count"] == 3
+    assert all(o["session_id"] != "recorded-nano-premature-end-call" for f in r["fingerprints"] for o in f["occurrences"])
     expected = Path(__file__).resolve().parents[2] / "contracts/examples/fingerprints.json"
     assert r == json.loads(expected.read_text())
-    assert len(list(DEFAULT_DATA_DIR.glob("*.json"))) == 7
+    assert len(list(DEFAULT_DATA_DIR.glob("*.json"))) == 11

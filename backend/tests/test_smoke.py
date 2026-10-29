@@ -106,7 +106,7 @@ def test_api_rejects_unknown_and_malformed_ids(client):
 
 def test_demo_data_is_valid_and_sanitized():
     files = sorted(DEFAULT_DATA_DIR.glob("*.json"))
-    assert len(files) == 7
+    assert len(files) == 11
     for path in files:
         text = path.read_text()
         session = Session.model_validate_json(text)
@@ -127,7 +127,7 @@ def test_contract_examples_match_schemas():
     for name, validate in schemas.items():
         validate(json.loads((CONTRACTS / name).read_text()))
     by_session = sorted((CONTRACTS / "by-session").glob("*.json"))
-    assert len(by_session) == 14
+    assert len(by_session) == 22
     for path in by_session:
         model = Session if path.name.endswith(".session.json") else FindingsResponse
         model.model_validate_json(path.read_text())

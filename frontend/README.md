@@ -29,7 +29,7 @@ npm test
 npm run build
 ```
 
-Mock files under `public/mock/` are verbatim copies of `contracts/examples/sessions.json` and `contracts/examples/by-session/`. They contain all seven sessions and 34 detector findings (22 confirmed, 12 suspected). The illustrative fixture is not used. To refresh, copy those source files into `frontend/public/mock/` without editing the originals. `src/types.ts` is copied unchanged from the contract.
+Mock files under `public/mock/` are verbatim copies of `contracts/examples/sessions.json` and `contracts/examples/by-session/`. They contain all eleven sessions and 42 detector findings (27 confirmed, 15 suspected). The illustrative fixture is not used. To refresh, copy those source files into `frontend/public/mock/` without editing the originals. `src/types.ts` is copied unchanged from the contract.
 
 Mock comparison follows the backend's comparison implementation; a test checks equality with its s03/s04 example. Tests also validate all evidence targets, counts, null/tie ranking, timestamp rollover, event rendering and evidence link destinations. These are component/data tests; they do not exercise a running API or substitute for browser/device QA.
 
@@ -62,14 +62,14 @@ cd frontend
 npm run test:live
 ```
 
-The 12 live tests call the actual API without stubbing fetch or loading fixtures. They render the dashboard, all seven investigations and a comparison; click every linked evidence item and check focus/highlighting; compare all 21 distinct session pairs; check actual API metric directions, both permitted CORS origins and preflights, Vite route fallback, live-mode configuration and a real API 404. Normal `npm test` skips these tests so it needs no running servers. These jsdom/HTTP tests do not verify browser layout or browser-enforced CORS; the live suite checks the server's CORS headers explicitly.
+The 18 live tests call the actual API without stubbing fetch or loading fixtures. They render the dashboard, all eleven investigations and a comparison; click every linked evidence item and check focus/highlighting; compare all 55 distinct session pairs; check actual API metric directions, both permitted CORS origins and preflights, Vite route fallback, live-mode configuration and a real API 404. Normal `npm test` skips these tests so it needs no running servers. These jsdom/HTTP tests do not verify browser layout or browser-enforced CORS; the live suite checks the server's CORS headers explicitly.
 
 For manual browser inspection, open `http://localhost:5173`:
 
-1. **Sessions:** confirm the “Live API” badge, seven sessions, 22 confirmed and 12 suspected findings. Open DevTools → Network, reload, and confirm API requests go to `127.0.0.1:8000` and succeed without CORS errors. There should be no `/mock/` requests.
+1. **Sessions:** confirm the “Live API” badge, eleven sessions, 27 confirmed and 15 suspected findings. Open DevTools → Network, reload, and confirm API requests go to `127.0.0.1:8000` and succeed without CORS errors. There should be no `/mock/` requests.
 2. **Investigation:** open `http://localhost:5173/sessions/s03-workshop-ab-script`. It has two confirmed findings. Click “Agent reply affected” to focus/highlight a transcript turn; click “User voice activity started” to switch to the timeline and focus/highlight its event. Check the separate failure status, root-cause confidence, missing evidence and debugging steps.
 3. **Compare:** select s03 and s04 from the dashboard, or open `http://localhost:5173/compare?a=s03-workshop-ab-script&b=s04-recommended-ab-script`. Confirm the pipeline/model differences, metrics, finding categories, comparison caveats and neutral ties. Model superiority must not be claimed.
-4. Check all three views at narrow/mobile widths and in both themes. Tab through controls and evidence links; check for clipping and visible keyboard focus. Check DevTools → Console for runtime or CORS errors.
+4. Check all four views at narrow/mobile widths and in both themes. Tab through controls and evidence links; check for clipping and visible keyboard focus. Check DevTools → Console for runtime or CORS errors.
 
 The integration run passed all backend tests (42), frontend tests (15), live tests (12), typechecking and production build. Browser automation was unavailable in the execution environment, so visual/browser QA remains a manual check.
 
@@ -87,3 +87,5 @@ Browser automation was unavailable; rendered responsive behavior remains a manua
 - Investigation: check two columns above 1000px and stacked panes below; open/close a finding, follow transcript/event evidence, and confirm the desktop sticky controls never cover the focused content. Test a session with many findings, such as s01 or s02.
 - Compare: check all values/caveats and use the deliberate table overflow on mobile; the page itself should not scroll horizontally.
 - In both themes, Tab to the disclosure buttons, activate them with Enter and Space, verify visible focus and expanded/collapsed state, and expand detector coverage. Check status/severity text and unchanged diagnostic content.
+
+The Nano preset is identified from its recorded STT/LLM/TTS tuple. Session s08 is explicitly role-confounded; s10 is a legitimate closing control with preserved timing anomalies. Fingerprints shows 8 patterns, 39/42 grouped findings and 3 ungrouped findings. Test-only fixtures are excluded, including the regression excerpt of the same recording used for s08.

@@ -1,0 +1,90 @@
+{
+  "session_id": "s09-recommended-closing-policy",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "premature_end_call",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s09-recommended-closing-policy:premature_end_call:e053",
+      "session_id": "s09-recommended-closing-policy",
+      "detector": "premature_end_call",
+      "title": "end_call dispatched before the recorded closing condition",
+      "summary": "The agent dispatched end_call before the recorded closing condition was satisfied. The recorded policy requires both sides to say goodbye; the available transcript did not establish that exchange before dispatch. Dispatch does not prove immediate audible disconnection.",
+      "category": "tool_execution",
+      "severity": "high",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 116.923,
+        "end_s": 116.923
+      },
+      "turn_ids": [
+        "t017",
+        "t018"
+      ],
+      "evidence": [
+        {
+          "kind": "event",
+          "label": "end_call dispatched",
+          "value": "call_ref=tc001; phase=started",
+          "turn_id": null,
+          "event_id": "e053",
+          "t_s": 116.923
+        },
+        {
+          "kind": "config",
+          "label": "Recorded end_call closing condition",
+          "value": "After you have both said goodbye, use the end_call tool to hang up.",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch agent transcript (commit time)",
+          "value": "No, that\u2019s everything for now. Thanks a lot for your help, Taylor.",
+          "turn_id": "t017",
+          "event_id": null,
+          "t_s": 108.084
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch user transcript (commit time)",
+          "value": "Okay. Have a great day. Goodbye.",
+          "turn_id": "t018",
+          "event_id": null,
+          "t_s": 116.477
+        },
+        {
+          "kind": "event",
+          "label": "Tool terminal status (not disconnection timing)",
+          "value": "call_ref=tc001; phase=ended; status=done",
+          "turn_id": null,
+          "event_id": "e054",
+          "t_s": 116.929
+        }
+      ],
+      "root_cause": {
+        "statement": "The agent may have inferred that the conversation was complete and triggered the call-ending tool too early.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "The model/tool-selection trace explaining the dispatch",
+          "Audio or playout confirmation of when farewells and disconnection occurred"
+        ]
+      },
+      "next_steps": [
+        "Review the recorded closing instruction and tool availability at dispatch.",
+        "Gate end_call on an explicit completed closing state, then repeat the scenario.",
+        "Compare dispatch, terminal status, transcript commitment and audio/playout timing separately."
+      ]
+    }
+  ]
+}

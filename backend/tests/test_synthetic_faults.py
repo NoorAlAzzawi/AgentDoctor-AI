@@ -141,7 +141,7 @@ def test_fault_fixtures_remain_outside_the_default_store_and_api(monkeypatch):
 
     monkeypatch.delenv("AGENTDOCTOR_DATA_DIR", raising=False)
     recorded = list_sessions()
-    assert len(recorded) == 7
+    assert len(recorded) == 11
     assert all(not s.synthetic for s in recorded)
     assert not FIXTURES.is_relative_to(DEFAULT_DATA_DIR)
     fixture_ids = {json.loads(p.read_text())["fixture_id"] for p in FIXTURES.glob("*.json")}

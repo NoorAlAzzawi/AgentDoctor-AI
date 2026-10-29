@@ -27,13 +27,13 @@ describe("time formatting", () => {
   ] as const)("formats %s", (value, label) => expect(time(value)).toBe(label));
 });
 describe("real detector fixtures", () => {
-  it("loads seven complete sessions and 34 real findings", () => {
-    expect(Object.keys(sessions)).toHaveLength(7);
-    expect(Object.keys(findings)).toHaveLength(7);
+  it("loads eleven complete sessions and 42 real findings", () => {
+    expect(Object.keys(sessions)).toHaveLength(11);
+    expect(Object.keys(findings)).toHaveLength(11);
     const all = Object.values(findings).flatMap((r) => r.findings);
-    expect(all).toHaveLength(34);
-    expect(all.filter((f) => f.status === "confirmed")).toHaveLength(22);
-    expect(all.filter((f) => f.status === "suspected")).toHaveLength(12);
+    expect(all).toHaveLength(42);
+    expect(all.filter((f) => f.status === "confirmed")).toHaveLength(27);
+    expect(all.filter((f) => f.status === "suspected")).toHaveLength(15);
   });
   it("resolves every evidence reference inside its own session", () => {
     for (const response of Object.values(findings)) {
@@ -49,6 +49,29 @@ describe("real detector fixtures", () => {
             expect(session.events.some((t) => t.id === e.event_id)).toBe(true);
         }
     }
+  });
+});
+describe("expanded recorded tool sessions", () => {
+  it("renders the real role-confounded Nano session and follows dispatch evidence", async () => {
+    const source = Object.values(sessions).find((s) => s.id === "s08-nano-role-confounded-end-call")!;
+    const response = Object.values(findings).find((f) => f.session_id === source.id)!;
+    vi.spyOn(api, "session").mockResolvedValue(source);
+    vi.spyOn(api, "findings").mockResolvedValue(response);
+    render(<MemoryRouter initialEntries={[`/sessions/${source.id}`]}><Routes>
+      <Route path="/sessions/:id" element={<Investigation />} />
+    </Routes></MemoryRouter>);
+    await screen.findByRole("heading", { name: source.title });
+    expect(screen.getByText(/Role-confounded: the human spoke as a patient/)).toBeVisible();
+    expect(screen.getByText("nano")).toBeVisible();
+    expect(screen.getAllByText(source.speaker_labels.user).length).toBeGreaterThan(0);
+    const finding = response.findings.find((f) => f.detector === "premature_end_call")!;
+    fireEvent.click(within(document.getElementById(`finding-${finding.id}`)!).getByRole("button", { name: /^View investigation/ }));
+    fireEvent.click(screen.getByText("end_call dispatched", { exact: true }).closest("button")!);
+    const target = document.getElementById("evidence-e011")!;
+    expect(target).toHaveClass("highlight");
+    expect(target).toHaveFocus();
+    expect(target).toHaveTextContent(/tool name: end_call.*call ref: tc001.*phase: started/i);
+    expect(screen.getByText(/Dispatch does not prove immediate audible disconnection/)).toBeVisible();
   });
 });
 describe("comparison semantics", () => {

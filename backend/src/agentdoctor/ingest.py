@@ -28,6 +28,7 @@ from .models import (
 PIPELINE_PRESETS = {
     "workshop": ("assemblyai/universal-3-6-pro", "google/gemma-4-31b-it", "fishaudio/s2.1-pro"),
     "recommended": ("deepgram/nova-3", "openai/gpt-4.1-mini", "cartesia/sonic-3"),
+    "nano": ("deepgram/nova-3", "openai/gpt-4.1-nano", "cartesia/sonic-3"),
     "hybrid": ("assemblyai/universal-3-6-pro", "google/gemma-4-31b-it", "cartesia/sonic-3"),
 }
 

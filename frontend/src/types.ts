@@ -61,7 +61,7 @@ export interface SessionSummary {
   id: string;
   title: string;
   notes: string | null;
-  pipeline_label: string | null; // "workshop" | "recommended" | "hybrid" | null
+  pipeline_label: string | null; // "workshop" | "recommended" | "hybrid" | "nano" | null
   models: Models;
   synthetic: boolean;
   stats: SessionStats;

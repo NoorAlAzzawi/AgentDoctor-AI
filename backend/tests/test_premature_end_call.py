@@ -204,7 +204,7 @@ def test_other_tools_and_missing_context_are_not_flagged():
 
 def test_all_seven_legacy_recorded_findings_are_unchanged():
     examples = Path(__file__).resolve().parents[2] / "contracts" / "examples" / "by-session"
-    files = sorted(DEFAULT_DATA_DIR.glob("*.json"))
+    files = sorted(DEFAULT_DATA_DIR.glob("s0[1-7]-*.json"))
     assert len(files) == 7
     for p in files:
         s = Session.model_validate_json(p.read_text())

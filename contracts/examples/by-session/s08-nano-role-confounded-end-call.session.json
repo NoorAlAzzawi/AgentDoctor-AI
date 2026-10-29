@@ -1,0 +1,274 @@
+{
+  "id": "s08-nano-role-confounded-end-call",
+  "title": "Nano pipeline \u00b7 role-confounded premature end_call",
+  "notes": "Role-confounded: the human spoke as a patient and the AI answered as a receptionist, contrary to its recorded patient role. Two premature end_call dispatches form one finding. This is not a normal baseline or evidence that Nano is generally worse. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+  "pipeline_label": "nano",
+  "models": {
+    "stt": "deepgram/nova-3",
+    "llm": "openai/gpt-4.1-nano",
+    "tts": "cartesia/sonic-3",
+    "turn_detector": "turn-detector-v1",
+    "interruption_detector": null
+  },
+  "synthetic": false,
+  "stats": {
+    "duration_s": 50.784,
+    "user_turns": 2,
+    "agent_turns": 1,
+    "e2e_latency": {
+      "n": 1,
+      "median_s": 2.914,
+      "p90_s": 2.914
+    },
+    "llm_ttft": {
+      "n": 1,
+      "median_s": 0.81,
+      "p90_s": 0.81
+    },
+    "tts_ttfb": {
+      "n": 1,
+      "median_s": 0.178,
+      "p90_s": 0.178
+    },
+    "end_of_turn_delay": {
+      "n": 2,
+      "median_s": 1.541,
+      "p90_s": 2.501
+    },
+    "endpointing_timeouts": 1,
+    "false_interruptions": 0,
+    "interrupted_agent_turns": 0,
+    "overlapping_speech_events": 0
+  },
+  "source": {
+    "format": "livekit_session_report",
+    "sdk_version": "1.8.8",
+    "original_name": "session-10-28-180550",
+    "imported_at": "2026-10-29T03:40:50+00:00",
+    "synthetic": false
+  },
+  "config": {
+    "allow_interruptions": true,
+    "min_interruption_duration_s": 0.5,
+    "min_endpointing_delay_s": 0.3,
+    "max_endpointing_delay_s": 2.5,
+    "preemptive_generation": true
+  },
+  "speaker_labels": {
+    "user": "Human tester \u00b7 patient role (confounded)",
+    "agent": "AI \u00b7 receptionist role (confounded)"
+  },
+  "agent_instructions": "The person you are talking to is the office receptionist. You are NOT the\nreceptionist and you are NOT an assistant. Never say you are an AI.\n\nEnding the call:\n- Agreeing to a time does not end the call. Don't say goodbye yet; the\n  receptionist may still need to verify details or ask more questions.\n- Keep answering naturally until the receptionist wraps up, for example by\n  asking if there's anything else or saying goodbye.\n- Only then thank them and say goodbye.\n- After you have both said goodbye, use the end_call tool to hang up.\n  Never use it earlier.\n\nYour goal on this call:\n- Schedule a follow-up appointment with Dr. Avery about lower back pain that\n  has come back over the last two weeks.\n- You prefer a weekday morning next week. Tuesday or Thursday works best.",
+  "turns": [
+    {
+      "id": "t001",
+      "index": 0,
+      "speaker": "user",
+      "text": "Hi. I'm calling to schedule a follow-up appointment with Dr. Avery.",
+      "start_s": 28.103,
+      "end_s": 32.089,
+      "committed_s": 32.399,
+      "interrupted": false,
+      "transcript_confidence": 0.99934897,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 2.501,
+        "transcription_delay_s": 0.309,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t002",
+      "index": 1,
+      "speaker": "agent",
+      "text": "Hello, thank you for calling. Do you have a preferred day and time next week?",
+      "start_s": 35.004,
+      "end_s": 38.207,
+      "committed_s": 34.622,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 2.914,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 0.81,
+        "tts_ttfb_s": 0.178,
+        "playback_latency_s": 0.204
+      }
+    },
+    {
+      "id": "t003",
+      "index": 2,
+      "speaker": "user",
+      "text": "Next week would be good.",
+      "start_s": 45.805,
+      "end_s": 47.193,
+      "committed_s": 47.496,
+      "interrupted": false,
+      "transcript_confidence": 0.99902344,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.581,
+        "transcription_delay_s": 0.302,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "e001",
+      "t_s": 0.043,
+      "type": "agent_state",
+      "data": {
+        "from": "initializing",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e002",
+      "t_s": 15.046,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "away"
+      }
+    },
+    {
+      "id": "e003",
+      "t_s": 28.103,
+      "type": "user_state",
+      "data": {
+        "from": "away",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e004",
+      "t_s": 32.088,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e005",
+      "t_s": 34.613,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e006",
+      "t_s": 35.01,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e007",
+      "t_s": 38.218,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e008",
+      "t_s": 45.805,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e009",
+      "t_s": 47.191,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e010",
+      "t_s": 47.787,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e011",
+      "t_s": 48.702,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc001",
+        "phase": "started"
+      }
+    },
+    {
+      "id": "e012",
+      "t_s": 48.708,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc002",
+        "phase": "started"
+      }
+    },
+    {
+      "id": "e013",
+      "t_s": 48.708,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc001",
+        "phase": "ended",
+        "status": "done"
+      }
+    },
+    {
+      "id": "e014",
+      "t_s": 48.711,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc002",
+        "phase": "ended",
+        "status": "done"
+      }
+    },
+    {
+      "id": "e015",
+      "t_s": 48.732,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e016",
+      "t_s": 50.784,
+      "type": "session_close",
+      "data": {
+        "reason": "user_initiated",
+        "error": null
+      }
+    }
+  ],
+  "usage": []
+}

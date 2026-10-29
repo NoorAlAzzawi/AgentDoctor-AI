@@ -134,9 +134,9 @@ describe("failure fingerprints", () => {
     expect(
       screen.getByRole("heading", { name: "Failure Fingerprints" }),
     ).toBeVisible();
-    expect(container.querySelectorAll(".fingerprint-card")).toHaveLength(6);
+    expect(container.querySelectorAll(".fingerprint-card")).toHaveLength(8);
     expect(container.querySelector(".fingerprint-summary")).toHaveTextContent(
-      "28 / 34",
+      "39 / 42",
     );
     expect(
       screen.getByText(/Some recorded sessions repeat or share scripts/),
@@ -166,6 +166,19 @@ describe("failure fingerprints", () => {
       for (const rule of fp.characteristics)
         expect(card.getByText(rule)).toBeVisible();
     }
+  });
+  it("counts three real premature-dispatch findings without duplicating the regression excerpt", () => {
+    const { container } = show();
+    const fp = data.fingerprints.find((f) => f.id === "fp-v1-premature-end-call-dispatch")!;
+    expect(fp.occurrence_count).toBe(3);
+    expect(fp.affected_session_count).toBe(3);
+    expect(fp.session_ids).toEqual(["s08-nano-role-confounded-end-call", "s09-recommended-closing-policy", "s11-nano-correction-closing"]);
+    expect(fp.occurrences.some((o) => o.session_id === "recorded-nano-premature-end-call")).toBe(false);
+    const card = container.querySelector(`#${fp.id}`) as HTMLElement;
+    expect(within(card).getByText("3 findings · 3 sessions")).toBeVisible();
+    const link = within(card).getAllByRole("link", { name: /end_call dispatched/ })[0];
+    expect(link).toHaveAttribute("href", findingPath(fp.occurrences[0].session_id, fp.occurrences[0].finding_id, fp.occurrences[0].evidence[0]));
+    expect(within(card).getByText(/observed associations, not causes/)).toBeVisible();
   });
   it("links representative evidence to the exact session, finding and evidence target", () => {
     const { container } = show();
@@ -217,7 +230,7 @@ describe("failure fingerprints", () => {
     const items = [
       ...container.querySelectorAll<HTMLElement>(".ungrouped-list li"),
     ];
-    expect(items).toHaveLength(6);
+    expect(items).toHaveLength(3);
     for (const [i, f] of data.ungrouped.entries()) {
       expect(within(items[i]).getByRole("link")).toHaveAttribute(
         "href",

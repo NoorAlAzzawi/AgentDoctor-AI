@@ -1,0 +1,218 @@
+{
+  "session_id": "s10-recommended-correction-control",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "premature_end_call",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s10-recommended-correction-control:fragment_reply:t007",
+      "session_id": "s10-recommended-correction-control",
+      "detector": "fragment_reply",
+      "title": "Agent replied to an unfinished sentence: 'I have a Tuesday at eight AM, a'",
+      "summary": "The user turn was closed by the endpointing timeout and its transcript looks unfinished; the agent answered it anyway.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 36.886,
+        "end_s": 49.883
+      },
+      "turn_ids": [
+        "t007",
+        "t008"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User turn (looks unfinished)",
+          "value": "I have a Tuesday at eight AM, a",
+          "turn_id": "t007",
+          "event_id": null,
+          "t_s": 36.886
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay",
+          "value": "6.877s (= max 2.5s)",
+          "turn_id": "t007",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent reply",
+          "value": "Tuesday at 8 AM sounds good to",
+          "turn_id": "t008",
+          "event_id": null,
+          "t_s": 49.883
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused longer than the maximum endpointing delay mid-sentence, or the transcript dropped the end of the sentence.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Audio of the turn",
+          "What the user said next"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to see whether the user had finished.",
+        "Check whether the next user turn completes this sentence."
+      ]
+    },
+    {
+      "id": "s10-recommended-correction-control:fragment_reply:t011",
+      "session_id": "s10-recommended-correction-control",
+      "detector": "fragment_reply",
+      "title": "Agent replied to an unfinished sentence: \"Actually, I'm sorry. I'm in Thursday. Okay? I'm not\"",
+      "summary": "The user turn was closed by the endpointing timeout and its transcript looks unfinished; the agent answered it anyway.",
+      "category": "turn_taking",
+      "severity": "medium",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 58.583,
+        "end_s": 78.783
+      },
+      "turn_ids": [
+        "t011",
+        "t012"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User turn (looks unfinished)",
+          "value": "Actually, I'm sorry. I'm in Thursday. Okay? I'm not",
+          "turn_id": "t011",
+          "event_id": null,
+          "t_s": 58.583
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay",
+          "value": "12.338s (= max 2.5s)",
+          "turn_id": "t011",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent reply",
+          "value": "Thursday is okay too. What time on Thursday",
+          "turn_id": "t012",
+          "event_id": null,
+          "t_s": 78.783
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused longer than the maximum endpointing delay mid-sentence, or the transcript dropped the end of the sentence.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "Audio of the turn",
+          "What the user said next"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to see whether the user had finished.",
+        "Check whether the next user turn completes this sentence."
+      ]
+    },
+    {
+      "id": "s10-recommended-correction-control:endpointing_timeout:session",
+      "session_id": "s10-recommended-correction-control",
+      "detector": "endpointing_timeout",
+      "title": "5 of 10 user turns ended by the 2.5s endpointing timeout",
+      "summary": "For these turns the turn detector never judged the user finished, so the agent waited the full 2.5s before replying.",
+      "category": "latency",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": null,
+      "turn_ids": [
+        "t007",
+        "t011",
+        "t015",
+        "t017",
+        "t019"
+      ],
+      "evidence": [
+        {
+          "kind": "config",
+          "label": "max_endpointing_delay",
+          "value": "2.5s",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 0:36.9",
+          "value": "6.877s: 'I have a Tuesday at eight AM, a'",
+          "turn_id": "t007",
+          "event_id": null,
+          "t_s": 36.886
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 0:58.6",
+          "value": "12.338s: \"Actually, I'm sorry. I'm in Thursday. Okay? I'm not\"",
+          "turn_id": "t011",
+          "event_id": null,
+          "t_s": 58.583
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 1:29.1",
+          "value": "34.798s: 'Great. Could you repeat the appointment day and time back to me?'",
+          "turn_id": "t015",
+          "event_id": null,
+          "t_s": 89.083
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 2:27.0",
+          "value": "58.788s: 'Perfect. Is there anything else I can help you with today?'",
+          "turn_id": "t017",
+          "event_id": null,
+          "t_s": 146.986
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 3:36.4",
+          "value": "21.852s: 'Okay. Have a great day. Goodbye.'",
+          "turn_id": "t019",
+          "event_id": null,
+          "t_s": 216.388
+        },
+        {
+          "kind": "metric",
+          "label": "Agent response latency after these turns",
+          "value": "median 23.109s (n=5)",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused or trailed off mid-thought, so end-of-turn prediction stayed uncertain until the maximum delay.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the pauses",
+          "Turn-detector probabilities for these turns"
+        ]
+      },
+      "next_steps": [
+        "Read the timed-out turns: are they fragments or complete sentences?",
+        "If complete, check turn-detector settings; if fragments, the wait was correct.",
+        "Avoid lowering max_endpointing_delay blindly: it would cut users off mid-sentence."
+      ]
+    }
+  ]
+}

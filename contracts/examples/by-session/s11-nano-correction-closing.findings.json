@@ -1,0 +1,154 @@
+{
+  "session_id": "s11-nano-correction-closing",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "premature_end_call",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s11-nano-correction-closing:stt_missing_time_number:t010",
+      "session_id": "s11-nano-correction-closing",
+      "detector": "stt_missing_time_number",
+      "title": "Time of day transcribed without its number: 'at AM.'",
+      "summary": "The transcript contains a time of day with no hour, so the agent never received the actual time.",
+      "category": "speech_recognition",
+      "severity": "high",
+      "status": "suspected",
+      "time_range": {
+        "start_s": 58.254,
+        "end_s": 67.139
+      },
+      "turn_ids": [
+        "t010",
+        "t011"
+      ],
+      "evidence": [
+        {
+          "kind": "transcript",
+          "label": "User transcript",
+          "value": "Actually, I'm sorry. I meant Thursday at eight AM, not Tuesday with that... With Thursday at AM. Works for you?",
+          "turn_id": "t010",
+          "event_id": null,
+          "t_s": 58.254
+        },
+        {
+          "kind": "transcript",
+          "label": "Time without a number",
+          "value": "at AM.",
+          "turn_id": "t010",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "STT transcript confidence",
+          "value": "0.94",
+          "turn_id": "t010",
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Agent's next reply (what it understood)",
+          "value": "Yes, Thursday at eight AM works for me. Please go ahead and book that.",
+          "turn_id": "t011",
+          "event_id": null,
+          "t_s": 69.043
+        }
+      ],
+      "root_cause": {
+        "statement": "Speech-to-text likely dropped a spoken number (for example \"8\" in \"8 AM\").",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the turn, or a reference transcript of what was said"
+        ]
+      },
+      "next_steps": [
+        "Listen to the turn to confirm what was said.",
+        "Re-run the same script with a different STT model and compare the transcript.",
+        "Add the expected times as STT keyterms, or have the agent ask for the exact time when it's missing."
+      ]
+    },
+    {
+      "id": "s11-nano-correction-closing:premature_end_call:e047",
+      "session_id": "s11-nano-correction-closing",
+      "detector": "premature_end_call",
+      "title": "end_call dispatched before the recorded closing condition",
+      "summary": "The agent dispatched end_call before the recorded closing condition was satisfied. The recorded policy requires both sides to say goodbye; the available transcript did not establish that exchange before dispatch. Dispatch does not prove immediate audible disconnection.",
+      "category": "tool_execution",
+      "severity": "high",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 97.619,
+        "end_s": 97.619
+      },
+      "turn_ids": [
+        "t015",
+        "t016"
+      ],
+      "evidence": [
+        {
+          "kind": "event",
+          "label": "end_call dispatched",
+          "value": "call_ref=tc001; phase=started",
+          "turn_id": null,
+          "event_id": "e047",
+          "t_s": 97.619
+        },
+        {
+          "kind": "config",
+          "label": "Recorded end_call closing condition",
+          "value": "After you have both said goodbye, use the end_call tool to hang up.",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch agent transcript (commit time)",
+          "value": "No, that's all. Thank you very much.",
+          "turn_id": "t015",
+          "event_id": null,
+          "t_s": 88.751
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch user transcript (commit time)",
+          "value": "Okay. Have a great day. Goodbye.",
+          "turn_id": "t016",
+          "event_id": null,
+          "t_s": 96.641
+        },
+        {
+          "kind": "event",
+          "label": "Tool terminal status (not disconnection timing)",
+          "value": "call_ref=tc001; phase=ended; status=done",
+          "turn_id": null,
+          "event_id": "e048",
+          "t_s": 97.624
+        }
+      ],
+      "root_cause": {
+        "statement": "The agent may have inferred that the conversation was complete and triggered the call-ending tool too early.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "The model/tool-selection trace explaining the dispatch",
+          "Audio or playout confirmation of when farewells and disconnection occurred"
+        ]
+      },
+      "next_steps": [
+        "Review the recorded closing instruction and tool availability at dispatch.",
+        "Gate end_call on an explicit completed closing state, then repeat the scenario.",
+        "Compare dispatch, terminal status, transcript commitment and audio/playout timing separately."
+      ]
+    }
+  ]
+}

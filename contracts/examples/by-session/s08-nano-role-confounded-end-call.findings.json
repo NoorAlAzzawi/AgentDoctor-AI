@@ -1,0 +1,159 @@
+{
+  "session_id": "s08-nano-role-confounded-end-call",
+  "detectors_run": [
+    "false_interruption_pause",
+    "endpointing_timeout",
+    "stt_missing_time_number",
+    "stt_misunderstanding",
+    "premature_goodbye",
+    "premature_end_call",
+    "talked_after_farewell",
+    "stage_direction_spoken",
+    "contradicts_instructions",
+    "readback_mismatch"
+  ],
+  "findings": [
+    {
+      "id": "s08-nano-role-confounded-end-call:premature_end_call:e011",
+      "session_id": "s08-nano-role-confounded-end-call",
+      "detector": "premature_end_call",
+      "title": "end_call dispatched before the recorded closing condition",
+      "summary": "The agent dispatched end_call before the recorded closing condition was satisfied. The recorded policy requires both sides to say goodbye; the available transcript did not establish that exchange before dispatch. Dispatch does not prove immediate audible disconnection.",
+      "category": "tool_execution",
+      "severity": "high",
+      "status": "confirmed",
+      "time_range": {
+        "start_s": 48.702,
+        "end_s": 48.708
+      },
+      "turn_ids": [
+        "t002",
+        "t003"
+      ],
+      "evidence": [
+        {
+          "kind": "event",
+          "label": "end_call dispatched",
+          "value": "call_ref=tc001; phase=started",
+          "turn_id": null,
+          "event_id": "e011",
+          "t_s": 48.702
+        },
+        {
+          "kind": "config",
+          "label": "Recorded end_call closing condition",
+          "value": "After you have both said goodbye, use the end_call tool to hang up.",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch agent transcript (commit time)",
+          "value": "Hello, thank you for calling. Do you have a preferred day and time next week?",
+          "turn_id": "t002",
+          "event_id": null,
+          "t_s": 34.622
+        },
+        {
+          "kind": "transcript",
+          "label": "Pre-dispatch user transcript (commit time)",
+          "value": "Next week would be good.",
+          "turn_id": "t003",
+          "event_id": null,
+          "t_s": 47.496
+        },
+        {
+          "kind": "event",
+          "label": "Tool terminal status (not disconnection timing)",
+          "value": "call_ref=tc001; phase=ended; status=done",
+          "turn_id": null,
+          "event_id": "e013",
+          "t_s": 48.708
+        },
+        {
+          "kind": "event",
+          "label": "Repeated end_call dispatch",
+          "value": "call_ref=tc002; phase=started",
+          "turn_id": null,
+          "event_id": "e012",
+          "t_s": 48.708
+        },
+        {
+          "kind": "event",
+          "label": "Tool terminal status (not disconnection timing)",
+          "value": "call_ref=tc002; phase=ended; status=done",
+          "turn_id": null,
+          "event_id": "e014",
+          "t_s": 48.711
+        }
+      ],
+      "root_cause": {
+        "statement": "The agent may have inferred that the conversation was complete and triggered the call-ending tool too early.",
+        "confidence": "possible",
+        "missing_evidence": [
+          "The model/tool-selection trace explaining the dispatch",
+          "Audio or playout confirmation of when farewells and disconnection occurred"
+        ]
+      },
+      "next_steps": [
+        "Review the recorded closing instruction and tool availability at dispatch.",
+        "Gate end_call on an explicit completed closing state, then repeat the scenario.",
+        "Compare dispatch, terminal status, transcript commitment and audio/playout timing separately."
+      ]
+    },
+    {
+      "id": "s08-nano-role-confounded-end-call:endpointing_timeout:session",
+      "session_id": "s08-nano-role-confounded-end-call",
+      "detector": "endpointing_timeout",
+      "title": "1 of 2 user turns ended by the 2.5s endpointing timeout",
+      "summary": "For these turns the turn detector never judged the user finished, so the agent waited the full 2.5s before replying.",
+      "category": "latency",
+      "severity": "medium",
+      "status": "confirmed",
+      "time_range": null,
+      "turn_ids": [
+        "t001"
+      ],
+      "evidence": [
+        {
+          "kind": "config",
+          "label": "max_endpointing_delay",
+          "value": "2.5s",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        },
+        {
+          "kind": "metric",
+          "label": "End-of-turn delay at 0:28.1",
+          "value": "2.501s: \"Hi. I'm calling to schedule a follow-up appointment with Dr. Avery.\"",
+          "turn_id": "t001",
+          "event_id": null,
+          "t_s": 28.103
+        },
+        {
+          "kind": "metric",
+          "label": "Agent response latency after these turns",
+          "value": "median 2.914s (n=1)",
+          "turn_id": null,
+          "event_id": null,
+          "t_s": null
+        }
+      ],
+      "root_cause": {
+        "statement": "The user paused or trailed off mid-thought, so end-of-turn prediction stayed uncertain until the maximum delay.",
+        "confidence": "likely",
+        "missing_evidence": [
+          "Audio of the pauses",
+          "Turn-detector probabilities for these turns"
+        ]
+      },
+      "next_steps": [
+        "Read the timed-out turns: are they fragments or complete sentences?",
+        "If complete, check turn-detector settings; if fragments, the wait was correct.",
+        "Avoid lowering max_endpointing_delay blindly: it would cut users off mid-sentence."
+      ]
+    }
+  ]
+}

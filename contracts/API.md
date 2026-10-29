@@ -75,10 +75,10 @@ A finding separates **what happened** from **why it happened**:
 
 ## Data notes and limitations
 
-- **Demo data:** 7 sanitized local console sessions. They contain no audio, file paths, job or room IDs, or provider request IDs. All patient details are fictional.
+- **Demo data:** 11 sanitized local console sessions. They contain no audio, file paths, job or room IDs, or provider request IDs. Original profile details are fictional; newer identities are pseudonymized and DOB values redacted. One role-confounded session is explicitly labeled.
 - **User turn start times:** `start_s` for a user turn can be anchored to an earlier voice-activity blip, so it can start before the real speech. `committed_s` is when the transcript was finalized.
 - **Console recordings don't show agent pauses.** Pauses are inferred from `agent_state` events, not audio.
-- **Tool calls:** none of the seven demo sessions contains tool telemetry. A separate sanitized real Nano regression excerpt remains test-only and is not loaded into the application. Tool findings require recorded execution telemetry; function-call requests and session closure alone are insufficient.
+- **Tool calls:** four application sessions contain normalized execution telemetry. Three have confirmed premature-dispatch findings; one is a legitimate-closing control with delayed assistant playback. The separate Nano regression excerpt remains test-only and is never counted as another application session. Tool findings require recorded execution telemetry; function-call requests and session closure alone are insufficient.
 
 ## Tool-execution telemetry
 

@@ -1,0 +1,825 @@
+{
+  "id": "s11-nano-correction-closing",
+  "title": "Nano pipeline · corrected readback, closing-policy failure",
+  "notes": "Correct conversational roles. Thursday 8 AM readback succeeds; end_call follows only the human goodbye. The transcript contains both a complete time and a later missing-hour fragment; this does not prove an STT error or lost appointment state. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+  "pipeline_label": "nano",
+  "models": {
+    "stt": "deepgram/nova-3",
+    "llm": "openai/gpt-4.1-nano",
+    "tts": "cartesia/sonic-3",
+    "turn_detector": "turn-detector-v1",
+    "interruption_detector": "adaptive interruption"
+  },
+  "synthetic": false,
+  "stats": {
+    "duration_s": 99.682,
+    "user_turns": 9,
+    "agent_turns": 7,
+    "e2e_latency": {
+      "n": 7,
+      "median_s": 1.904,
+      "p90_s": 2.202
+    },
+    "llm_ttft": {
+      "n": 7,
+      "median_s": 0.955,
+      "p90_s": 1.333
+    },
+    "tts_ttfb": {
+      "n": 7,
+      "median_s": 0.204,
+      "p90_s": 0.226
+    },
+    "end_of_turn_delay": {
+      "n": 9,
+      "median_s": 0.58,
+      "p90_s": 0.582
+    },
+    "endpointing_timeouts": 0,
+    "false_interruptions": 0,
+    "interrupted_agent_turns": 0,
+    "overlapping_speech_events": 1
+  },
+  "source": {
+    "format": "livekit_session_report",
+    "sdk_version": "1.8.8",
+    "original_name": "session-10-28-185644",
+    "imported_at": "2026-10-29T03:40:50+00:00",
+    "synthetic": false
+  },
+  "config": {
+    "allow_interruptions": true,
+    "min_interruption_duration_s": 0.5,
+    "min_endpointing_delay_s": 0.3,
+    "max_endpointing_delay_s": 2.5,
+    "preemptive_generation": true
+  },
+  "speaker_labels": {
+    "user": "Receptionist (human tester)",
+    "agent": "Patient agent"
+  },
+  "agent_instructions": "The person you are talking to is the office receptionist. You are NOT the\nreceptionist and you are NOT an assistant. Never say you are an AI.\n\nEnding the call:\n- Agreeing to a time does not end the call. Don't say goodbye yet; the\n  receptionist may still need to verify details or ask more questions.\n- Keep answering naturally until the receptionist wraps up, for example by\n  asking if there's anything else or saying goodbye.\n- Only then thank them and say goodbye.\n- After you have both said goodbye, use the end_call tool to hang up.\n  Never use it earlier.\n\nYour goal on this call:\n- Schedule a follow-up appointment with Dr. Avery about lower back pain that\n  has come back over the last two weeks.\n- You prefer a weekday morning next week. Tuesday or Thursday works best.",
+  "turns": [
+    {
+      "id": "t001",
+      "index": 0,
+      "speaker": "user",
+      "text": "Thank you for calling Example Family Practice.",
+      "start_s": 3.556,
+      "end_s": 6.642,
+      "committed_s": 6.944,
+      "interrupted": false,
+      "transcript_confidence": 1.0,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.58,
+        "transcription_delay_s": 0.301,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t002",
+      "index": 1,
+      "speaker": "user",
+      "text": "This is Taylor speaking. How may I help you today?",
+      "start_s": 7.254,
+      "end_s": 9.947,
+      "committed_s": 10.532,
+      "interrupted": false,
+      "transcript_confidence": 1.0,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.581,
+        "transcription_delay_s": 0.202,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t003",
+      "index": 2,
+      "speaker": "agent",
+      "text": "Hi Taylor, this is Alex Morgan. I’d like to schedule a follow-up appointment with Dr. Avery for my lower back pain. It’s come back over the last two weeks. Do you have any openings on a weekday morning next week? Tuesday or Thursday would work best for me.",
+      "start_s": 11.943,
+      "end_s": 25.149,
+      "committed_s": 10.546,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.996,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 0.756,
+        "tts_ttfb_s": 0.186,
+        "playback_latency_s": 0.27
+      }
+    },
+    {
+      "id": "t004",
+      "index": 3,
+      "speaker": "user",
+      "text": "Of course. May I have your full name, please?",
+      "start_s": 13.153,
+      "end_s": 28.641,
+      "committed_s": 28.851,
+      "interrupted": false,
+      "transcript_confidence": 0.9995117,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.58,
+        "transcription_delay_s": 0.209,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t005",
+      "index": 4,
+      "speaker": "agent",
+      "text": "Sure, it's Alex Morgan. A-L-E-X M-O-R-G-A-N.",
+      "start_s": 30.843,
+      "end_s": 35.846,
+      "committed_s": 29.233,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 2.202,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 1.333,
+        "tts_ttfb_s": 0.226,
+        "playback_latency_s": 0.221
+      }
+    },
+    {
+      "id": "t006",
+      "index": 5,
+      "speaker": "user",
+      "text": "Thank you. Can you verify your date of birth?",
+      "start_s": 38.555,
+      "end_s": 40.847,
+      "committed_s": 41.257,
+      "interrupted": false,
+      "transcript_confidence": 1.0,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.579,
+        "transcription_delay_s": 0.409,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t007",
+      "index": 6,
+      "speaker": "agent",
+      "text": "Yes, it's REDACTED.",
+      "start_s": 42.843,
+      "end_s": 45.246,
+      "committed_s": 41.439,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.996,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 0.955,
+        "tts_ttfb_s": 0.212,
+        "playback_latency_s": 0.19
+      }
+    },
+    {
+      "id": "t008",
+      "index": 7,
+      "speaker": "user",
+      "text": "I have a Tuesday at eight AM. Available next week. Would that work for you?",
+      "start_s": 46.652,
+      "end_s": 51.848,
+      "committed_s": 52.153,
+      "interrupted": false,
+      "transcript_confidence": 0.99658202,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.58,
+        "transcription_delay_s": 0.305,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t009",
+      "index": 8,
+      "speaker": "agent",
+      "text": "Yes, that sounds good. Please, go ahead and schedule it.",
+      "start_s": 53.343,
+      "end_s": 56.846,
+      "committed_s": 52.446,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.495,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 0.741,
+        "tts_ttfb_s": 0.216,
+        "playback_latency_s": 0.219
+      }
+    },
+    {
+      "id": "t010",
+      "index": 9,
+      "speaker": "user",
+      "text": "Actually, I'm sorry. I meant Thursday at eight AM, not Tuesday with that... With Thursday at AM. Works for you?",
+      "start_s": 58.254,
+      "end_s": 67.139,
+      "committed_s": 67.392,
+      "interrupted": false,
+      "transcript_confidence": 0.941569,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.579,
+        "transcription_delay_s": 0.252,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t011",
+      "index": 10,
+      "speaker": "agent",
+      "text": "Yes, Thursday at eight AM works for me. Please go ahead and book that.",
+      "start_s": 69.043,
+      "end_s": 72.957,
+      "committed_s": 67.73,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.904,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 1.058,
+        "tts_ttfb_s": 0.204,
+        "playback_latency_s": 0.205
+      }
+    },
+    {
+      "id": "t012",
+      "index": 11,
+      "speaker": "user",
+      "text": "Great. Could you repeat the appointment day and time back to me?",
+      "start_s": 73.957,
+      "end_s": 77.647,
+      "committed_s": 77.943,
+      "interrupted": false,
+      "transcript_confidence": 0.99072267,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.581,
+        "transcription_delay_s": 0.296,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t013",
+      "index": 12,
+      "speaker": "agent",
+      "text": "Sure. It's Thursday at eight AM.",
+      "start_s": 79.343,
+      "end_s": 81.447,
+      "committed_s": 78.246,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.696,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 0.764,
+        "tts_ttfb_s": 0.204,
+        "playback_latency_s": 0.19
+      }
+    },
+    {
+      "id": "t014",
+      "index": 13,
+      "speaker": "user",
+      "text": "Perfect. Is there anything else I can help you with?",
+      "start_s": 85.254,
+      "end_s": 88.151,
+      "committed_s": 88.355,
+      "interrupted": false,
+      "transcript_confidence": 1.0,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.582,
+        "transcription_delay_s": 0.202,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    },
+    {
+      "id": "t015",
+      "index": 14,
+      "speaker": "agent",
+      "text": "No, that's all. Thank you very much.",
+      "start_s": 90.043,
+      "end_s": 92.745,
+      "committed_s": 88.751,
+      "interrupted": false,
+      "transcript_confidence": null,
+      "metrics": {
+        "e2e_latency_s": 1.891,
+        "end_of_turn_delay_s": null,
+        "transcription_delay_s": null,
+        "llm_ttft_s": 1.073,
+        "tts_ttfb_s": 0.2,
+        "playback_latency_s": 0.152
+      }
+    },
+    {
+      "id": "t016",
+      "index": 15,
+      "speaker": "user",
+      "text": "Okay. Have a great day. Goodbye.",
+      "start_s": 94.252,
+      "end_s": 96.247,
+      "committed_s": 96.641,
+      "interrupted": false,
+      "transcript_confidence": 1.0,
+      "metrics": {
+        "e2e_latency_s": null,
+        "end_of_turn_delay_s": 0.581,
+        "transcription_delay_s": 0.394,
+        "llm_ttft_s": null,
+        "tts_ttfb_s": null,
+        "playback_latency_s": null
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "e001",
+      "t_s": 0.04,
+      "type": "agent_state",
+      "data": {
+        "from": "initializing",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e002",
+      "t_s": 3.556,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e003",
+      "t_s": 6.641,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e004",
+      "t_s": 7.231,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e005",
+      "t_s": 7.254,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e006",
+      "t_s": 7.718,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e007",
+      "t_s": 9.945,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e008",
+      "t_s": 10.544,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e009",
+      "t_s": 11.946,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e010",
+      "t_s": 13.153,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e011",
+      "t_s": 13.451,
+      "type": "overlapping_speech",
+      "data": {
+        "is_interruption": true,
+        "probability": 0.7576156854629517,
+        "detection_delay_s": 0.2944068908691406
+      }
+    },
+    {
+      "id": "e012",
+      "t_s": 13.84,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e013",
+      "t_s": 25.21,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e014",
+      "t_s": 26.154,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e015",
+      "t_s": 28.64,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e016",
+      "t_s": 29.231,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e017",
+      "t_s": 30.844,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e018",
+      "t_s": 35.853,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e019",
+      "t_s": 38.555,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e020",
+      "t_s": 40.845,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e021",
+      "t_s": 41.437,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e022",
+      "t_s": 42.844,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e023",
+      "t_s": 45.254,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e024",
+      "t_s": 46.652,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e025",
+      "t_s": 51.845,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e026",
+      "t_s": 52.443,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e027",
+      "t_s": 53.345,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e028",
+      "t_s": 56.858,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e029",
+      "t_s": 58.254,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e030",
+      "t_s": 67.137,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e031",
+      "t_s": 67.729,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e032",
+      "t_s": 69.044,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e033",
+      "t_s": 72.962,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e034",
+      "t_s": 73.957,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e035",
+      "t_s": 77.644,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e036",
+      "t_s": 78.244,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e037",
+      "t_s": 79.343,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e038",
+      "t_s": 81.454,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e039",
+      "t_s": 85.254,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e040",
+      "t_s": 88.149,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e041",
+      "t_s": 88.748,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e042",
+      "t_s": 90.044,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e043",
+      "t_s": 92.752,
+      "type": "agent_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e044",
+      "t_s": 94.252,
+      "type": "user_state",
+      "data": {
+        "from": "listening",
+        "to": "speaking"
+      }
+    },
+    {
+      "id": "e045",
+      "t_s": 96.244,
+      "type": "user_state",
+      "data": {
+        "from": "speaking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e046",
+      "t_s": 96.842,
+      "type": "agent_state",
+      "data": {
+        "from": "listening",
+        "to": "thinking"
+      }
+    },
+    {
+      "id": "e047",
+      "t_s": 97.619,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc001",
+        "phase": "started"
+      }
+    },
+    {
+      "id": "e048",
+      "t_s": 97.624,
+      "type": "tool_execution",
+      "data": {
+        "tool_name": "end_call",
+        "call_ref": "tc001",
+        "phase": "ended",
+        "status": "done"
+      }
+    },
+    {
+      "id": "e049",
+      "t_s": 97.647,
+      "type": "agent_state",
+      "data": {
+        "from": "thinking",
+        "to": "listening"
+      }
+    },
+    {
+      "id": "e050",
+      "t_s": 99.682,
+      "type": "session_close",
+      "data": {
+        "reason": "user_initiated",
+        "error": null
+      }
+    }
+  ],
+  "usage": []
+}

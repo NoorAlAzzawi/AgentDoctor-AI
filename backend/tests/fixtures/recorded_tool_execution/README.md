@@ -2,7 +2,9 @@
 
 `nano_premature.relative-report.json` is a privacy-minimized excerpt of a real
 LiveKit Agents 1.8.8 Nano recording, **not synthetic data**. It is test-only:
-it is outside the application session store and does not add an eighth demo session.
+it is outside the application session store and is never a separate demo session.
+The same underlying recording now supplies s08 in the 11-session application dataset;
+this excerpt is not counted as another recording or occurrence.
 
 This is a minimal importer-compatible projection, not a complete SDK export.
 All timestamps are seconds relative to recording start (zero origin). The existing
@@ -21,6 +23,6 @@ are omitted. No audio, audio paths, absolute dates, room/job identifiers, provid
 deployment metadata or free-text tool payloads are retained.
 
 Validation against the private source confirmed identical normalized events,
-configuration, models, statistics and premature_end_call findings. A later real
-Recommended recording was tested in memory as a negative control and is not retained.
+configuration, models, statistics and premature_end_call findings. The later real
+Recommended negative control is now separately sanitized as application session s10.
 Dispatch and done status establish tool execution, not immediate audible disconnection.

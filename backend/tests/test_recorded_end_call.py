@@ -97,10 +97,10 @@ def test_reimport_is_deterministic_and_does_not_mutate_session():
     assert first.model_dump_json() == before
 
 
-def test_real_excerpt_stays_outside_seven_session_product_dataset():
+def test_real_excerpt_stays_outside_application_dataset():
     session = load_excerpt()
     assert not session.synthetic and not session.source.synthetic
     assert DEFAULT_DATA_DIR not in FIXTURE.resolve().parents
     recorded = list(DEFAULT_DATA_DIR.glob("*.json"))
-    assert len(recorded) == 7
+    assert len(recorded) == 11
     assert session.id not in {json.loads(p.read_text())["id"] for p in recorded}

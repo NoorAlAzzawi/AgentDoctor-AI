@@ -1,8 +1,8 @@
 {
   "rule_version": "1",
-  "recorded_session_count": 7,
-  "finding_count": 34,
-  "grouped_finding_count": 28,
+  "recorded_session_count": 11,
+  "finding_count": 42,
+  "grouped_finding_count": 39,
   "excluded_synthetic_session_count": 0,
   "fingerprints": [
     {
@@ -207,28 +207,31 @@
         "Linked user-turn delay metrics reach the configured maximum within the detector's 0.05s tolerance.",
         "One occurrence is one session-level detector finding, not one timed-out turn."
       ],
-      "occurrence_count": 6,
-      "affected_session_count": 6,
+      "occurrence_count": 8,
+      "affected_session_count": 8,
       "session_ids": [
         "s01-workshop-improvised",
         "s02-workshop-structured",
         "s04-recommended-ab-script",
         "s05-workshop-headphones",
         "s06-hybrid-script",
-        "s07-workshop-persona-v2"
+        "s07-workshop-persona-v2",
+        "s08-nano-role-confounded-end-call",
+        "s10-recommended-correction-control"
       ],
       "pipelines": [
         "hybrid",
+        "nano",
         "recommended",
         "workshop"
       ],
       "severity_counts": {
         "high": 0,
-        "medium": 2,
+        "medium": 4,
         "low": 4
       },
       "status_counts": {
-        "confirmed": 6,
+        "confirmed": 8,
         "suspected": 0
       },
       "occurrences": [
@@ -668,6 +671,140 @@
               "kind": "metric",
               "label": "Agent response latency after these turns",
               "value": "median 3.086s (n=2)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s08-nano-role-confounded-end-call",
+          "session_title": "Nano pipeline \u00b7 role-confounded premature end_call",
+          "session_notes": "Role-confounded: the human spoke as a patient and the AI answered as a receptionist, contrary to its recorded patient role. Two premature end_call dispatches form one finding. This is not a normal baseline or evidence that Nano is generally worse. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "nano",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-nano",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s08-nano-role-confounded-end-call:endpointing_timeout:session",
+          "title": "1 of 2 user turns ended by the 2.5s endpointing timeout",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:28.1",
+              "value": "2.501s: \"Hi. I'm calling to schedule a follow-up appointment with Dr. Avery.\"",
+              "turn_id": "t001",
+              "event_id": null,
+              "t_s": 28.103
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 2.914s (n=1)",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s10-recommended-correction-control",
+          "session_title": "Recommended pipeline \u00b7 corrected readback and closing control",
+          "session_notes": "Correct conversational roles. Tuesday-to-Thursday correction is retained. Both goodbye messages are committed before dispatch, although assistant audio starts afterward. Large transcript-commit delays remain recorded; this is not a clean latency control. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s10-recommended-correction-control:endpointing_timeout:session",
+          "title": "5 of 10 user turns ended by the 2.5s endpointing timeout",
+          "severity": "medium",
+          "status": "confirmed",
+          "time_range": null,
+          "evidence": [
+            {
+              "kind": "config",
+              "label": "max_endpointing_delay",
+              "value": "2.5s",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:36.9",
+              "value": "6.877s: 'I have a Tuesday at eight AM, a'",
+              "turn_id": "t007",
+              "event_id": null,
+              "t_s": 36.886
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 0:58.6",
+              "value": "12.338s: \"Actually, I'm sorry. I'm in Thursday. Okay? I'm not\"",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": 58.583
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 1:29.1",
+              "value": "34.798s: 'Great. Could you repeat the appointment day and time back to me?'",
+              "turn_id": "t015",
+              "event_id": null,
+              "t_s": 89.083
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 2:27.0",
+              "value": "58.788s: 'Perfect. Is there anything else I can help you with today?'",
+              "turn_id": "t017",
+              "event_id": null,
+              "t_s": 146.986
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay at 3:36.4",
+              "value": "21.852s: 'Okay. Have a great day. Goodbye.'",
+              "turn_id": "t019",
+              "event_id": null,
+              "t_s": 216.388
+            },
+            {
+              "kind": "metric",
+              "label": "Agent response latency after these turns",
+              "value": "median 23.109s (n=5)",
               "turn_id": null,
               "event_id": null,
               "t_s": null
@@ -1522,6 +1659,570 @@
       "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
     },
     {
+      "id": "fp-v1-missing-time-number",
+      "name": "User transcript contains AM or PM without an hour",
+      "detector": "stt_missing_time_number",
+      "category": "speech_recognition",
+      "characteristics": [
+        "Linked user transcript matches the missing-time-number rule.",
+        "The transcript defect is visible; an STT error remains suspected without audio/reference ground truth."
+      ],
+      "occurrence_count": 4,
+      "affected_session_count": 2,
+      "session_ids": [
+        "s04-recommended-ab-script",
+        "s11-nano-correction-closing"
+      ],
+      "pipelines": [
+        "nano",
+        "recommended"
+      ],
+      "severity_counts": {
+        "high": 4,
+        "medium": 0,
+        "low": 0
+      },
+      "status_counts": {
+        "confirmed": 0,
+        "suspected": 4
+      },
+      "occurrences": [
+        {
+          "session_id": "s04-recommended-ab-script",
+          "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+          "session_notes": "Same receptionist script as s03. Audio setup not recorded.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t036",
+          "title": "Time of day transcribed without its number: 'at AM.'",
+          "severity": "high",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 216.464,
+            "end_s": 223.549
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User transcript",
+              "value": "I have a, uh, Thursday at AM. Two weeks from now. Would you like the appointment instead?",
+              "turn_id": "t036",
+              "event_id": null,
+              "t_s": 216.464
+            },
+            {
+              "kind": "transcript",
+              "label": "Time without a number",
+              "value": "at AM.",
+              "turn_id": "t036",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "1.00",
+              "turn_id": "t036",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent's next reply (what it understood)",
+              "value": "Thanks, but I really need to see Dr. Patel next week if possible. Could you check again for any other Tuesday morning openings?",
+              "turn_id": "t037",
+              "event_id": null,
+              "t_s": 224.547
+            },
+            {
+              "kind": "metric",
+              "label": "Same pattern in this session",
+              "value": "3 user turns",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s04-recommended-ab-script",
+          "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+          "session_notes": "Same receptionist script as s03. Audio setup not recorded.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t042",
+          "title": "Time of day transcribed without its number: 'at AM.'",
+          "severity": "high",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 262.959,
+            "end_s": 268.352
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User transcript",
+              "value": "Okay. Let's go with Thursday at AM. Two weeks from now.",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": 262.959
+            },
+            {
+              "kind": "transcript",
+              "label": "Time without a number",
+              "value": "at AM.",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "1.00",
+              "turn_id": "t042",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent's next reply (what it understood)",
+              "value": "That works for me. Thank you for scheduling it. Goodbye!",
+              "turn_id": "t043",
+              "event_id": null,
+              "t_s": 269.548
+            },
+            {
+              "kind": "metric",
+              "label": "Same pattern in this session",
+              "value": "3 user turns",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s04-recommended-ab-script",
+          "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
+          "session_notes": "Same receptionist script as s03. Audio setup not recorded.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t064",
+          "title": "Time of day transcribed without its number: 'at AM.'",
+          "severity": "high",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 378.864,
+            "end_s": 387.846
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User transcript",
+              "value": "Thank you, Maria. Your appointment is scheduled for Thursday at AM. Two weeks from now. Is there anything else I could help you with today?",
+              "turn_id": "t064",
+              "event_id": null,
+              "t_s": 378.864
+            },
+            {
+              "kind": "transcript",
+              "label": "Time without a number",
+              "value": "at AM.",
+              "turn_id": "t064",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "1.00",
+              "turn_id": "t064",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent's next reply (what it understood)",
+              "value": "No, that's all for now. Thank you very much. Goodbye!",
+              "turn_id": "t065",
+              "event_id": null,
+              "t_s": 388.948
+            },
+            {
+              "kind": "metric",
+              "label": "Same pattern in this session",
+              "value": "3 user turns",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            }
+          ]
+        },
+        {
+          "session_id": "s11-nano-correction-closing",
+          "session_title": "Nano pipeline \u00b7 corrected readback, closing-policy failure",
+          "session_notes": "Correct conversational roles. Thursday 8 AM readback succeeds; end_call follows only the human goodbye. The transcript contains both a complete time and a later missing-hour fragment; this does not prove an STT error or lost appointment state. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "nano",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-nano",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s11-nano-correction-closing:stt_missing_time_number:t010",
+          "title": "Time of day transcribed without its number: 'at AM.'",
+          "severity": "high",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 58.254,
+            "end_s": 67.139
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User transcript",
+              "value": "Actually, I'm sorry. I meant Thursday at eight AM, not Tuesday with that... With Thursday at AM. Works for you?",
+              "turn_id": "t010",
+              "event_id": null,
+              "t_s": 58.254
+            },
+            {
+              "kind": "transcript",
+              "label": "Time without a number",
+              "value": "at AM.",
+              "turn_id": "t010",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "metric",
+              "label": "STT transcript confidence",
+              "value": "0.94",
+              "turn_id": "t010",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent's next reply (what it understood)",
+              "value": "Yes, Thursday at eight AM works for me. Please go ahead and book that.",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": 69.043
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
+      "id": "fp-v1-premature-end-call-dispatch",
+      "name": "Premature end_call dispatch under the recorded closing policy",
+      "detector": "premature_end_call",
+      "category": "tool_execution",
+      "characteristics": [
+        "Linked end_call dispatch before the recognized recorded both-sides-goodbye policy was satisfied.",
+        "Dispatch timestamps and evidence match the source timeline; terminal outcomes are separate observations.",
+        "One occurrence is one finding, including any repeated dispatches; dispatch does not prove immediate audible disconnection."
+      ],
+      "occurrence_count": 3,
+      "affected_session_count": 3,
+      "session_ids": [
+        "s08-nano-role-confounded-end-call",
+        "s09-recommended-closing-policy",
+        "s11-nano-correction-closing"
+      ],
+      "pipelines": [
+        "nano",
+        "recommended"
+      ],
+      "severity_counts": {
+        "high": 3,
+        "medium": 0,
+        "low": 0
+      },
+      "status_counts": {
+        "confirmed": 3,
+        "suspected": 0
+      },
+      "occurrences": [
+        {
+          "session_id": "s08-nano-role-confounded-end-call",
+          "session_title": "Nano pipeline \u00b7 role-confounded premature end_call",
+          "session_notes": "Role-confounded: the human spoke as a patient and the AI answered as a receptionist, contrary to its recorded patient role. Two premature end_call dispatches form one finding. This is not a normal baseline or evidence that Nano is generally worse. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "nano",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-nano",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s08-nano-role-confounded-end-call:premature_end_call:e011",
+          "title": "end_call dispatched before the recorded closing condition",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 48.702,
+            "end_s": 48.708
+          },
+          "evidence": [
+            {
+              "kind": "event",
+              "label": "end_call dispatched",
+              "value": "call_ref=tc001; phase=started",
+              "turn_id": null,
+              "event_id": "e011",
+              "t_s": 48.702
+            },
+            {
+              "kind": "config",
+              "label": "Recorded end_call closing condition",
+              "value": "After you have both said goodbye, use the end_call tool to hang up.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch agent transcript (commit time)",
+              "value": "Hello, thank you for calling. Do you have a preferred day and time next week?",
+              "turn_id": "t002",
+              "event_id": null,
+              "t_s": 34.622
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch user transcript (commit time)",
+              "value": "Next week would be good.",
+              "turn_id": "t003",
+              "event_id": null,
+              "t_s": 47.496
+            },
+            {
+              "kind": "event",
+              "label": "Tool terminal status (not disconnection timing)",
+              "value": "call_ref=tc001; phase=ended; status=done",
+              "turn_id": null,
+              "event_id": "e013",
+              "t_s": 48.708
+            },
+            {
+              "kind": "event",
+              "label": "Repeated end_call dispatch",
+              "value": "call_ref=tc002; phase=started",
+              "turn_id": null,
+              "event_id": "e012",
+              "t_s": 48.708
+            },
+            {
+              "kind": "event",
+              "label": "Tool terminal status (not disconnection timing)",
+              "value": "call_ref=tc002; phase=ended; status=done",
+              "turn_id": null,
+              "event_id": "e014",
+              "t_s": 48.711
+            }
+          ]
+        },
+        {
+          "session_id": "s09-recommended-closing-policy",
+          "session_title": "Recommended pipeline \u00b7 readback success, closing-policy failure",
+          "session_notes": "Correct conversational roles. Thursday 9:15 AM readback succeeds; end_call follows the human goodbye without a recorded assistant goodbye. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": null
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s09-recommended-closing-policy:premature_end_call:e053",
+          "title": "end_call dispatched before the recorded closing condition",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 116.923,
+            "end_s": 116.923
+          },
+          "evidence": [
+            {
+              "kind": "event",
+              "label": "end_call dispatched",
+              "value": "call_ref=tc001; phase=started",
+              "turn_id": null,
+              "event_id": "e053",
+              "t_s": 116.923
+            },
+            {
+              "kind": "config",
+              "label": "Recorded end_call closing condition",
+              "value": "After you have both said goodbye, use the end_call tool to hang up.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch agent transcript (commit time)",
+              "value": "No, that\u2019s everything for now. Thanks a lot for your help, Taylor.",
+              "turn_id": "t017",
+              "event_id": null,
+              "t_s": 108.084
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch user transcript (commit time)",
+              "value": "Okay. Have a great day. Goodbye.",
+              "turn_id": "t018",
+              "event_id": null,
+              "t_s": 116.477
+            },
+            {
+              "kind": "event",
+              "label": "Tool terminal status (not disconnection timing)",
+              "value": "call_ref=tc001; phase=ended; status=done",
+              "turn_id": null,
+              "event_id": "e054",
+              "t_s": 116.929
+            }
+          ]
+        },
+        {
+          "session_id": "s11-nano-correction-closing",
+          "session_title": "Nano pipeline \u00b7 corrected readback, closing-policy failure",
+          "session_notes": "Correct conversational roles. Thursday 8 AM readback succeeds; end_call follows only the human goodbye. The transcript contains both a complete time and a later missing-hour fragment; this does not prove an STT error or lost appointment state. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "nano",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-nano",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s11-nano-correction-closing:premature_end_call:e047",
+          "title": "end_call dispatched before the recorded closing condition",
+          "severity": "high",
+          "status": "confirmed",
+          "time_range": {
+            "start_s": 97.619,
+            "end_s": 97.619
+          },
+          "evidence": [
+            {
+              "kind": "event",
+              "label": "end_call dispatched",
+              "value": "call_ref=tc001; phase=started",
+              "turn_id": null,
+              "event_id": "e047",
+              "t_s": 97.619
+            },
+            {
+              "kind": "config",
+              "label": "Recorded end_call closing condition",
+              "value": "After you have both said goodbye, use the end_call tool to hang up.",
+              "turn_id": null,
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch agent transcript (commit time)",
+              "value": "No, that's all. Thank you very much.",
+              "turn_id": "t015",
+              "event_id": null,
+              "t_s": 88.751
+            },
+            {
+              "kind": "transcript",
+              "label": "Pre-dispatch user transcript (commit time)",
+              "value": "Okay. Have a great day. Goodbye.",
+              "turn_id": "t016",
+              "event_id": null,
+              "t_s": 96.641
+            },
+            {
+              "kind": "event",
+              "label": "Tool terminal status (not disconnection timing)",
+              "value": "call_ref=tc001; phase=ended; status=done",
+              "turn_id": null,
+              "event_id": "e048",
+              "t_s": 97.624
+            }
+          ]
+        }
+      ],
+      "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
+    },
+    {
       "id": "fp-v1-premature-goodbye",
       "name": "Agent says goodbye before the user finishes the conversation",
       "detector": "premature_goodbye",
@@ -1749,23 +2450,25 @@
         "Linked user transcript matches the detector's unfinished-text heuristic and reaches the endpointing limit.",
         "A linked agent reply follows; unfinished speech is suspected, not proven without audio."
       ],
-      "occurrence_count": 5,
-      "affected_session_count": 2,
+      "occurrence_count": 7,
+      "affected_session_count": 3,
       "session_ids": [
         "s01-workshop-improvised",
-        "s02-workshop-structured"
+        "s02-workshop-structured",
+        "s10-recommended-correction-control"
       ],
       "pipelines": [
+        "recommended",
         "workshop"
       ],
       "severity_counts": {
         "high": 0,
-        "medium": 5,
+        "medium": 7,
         "low": 0
       },
       "status_counts": {
         "confirmed": 0,
-        "suspected": 5
+        "suspected": 7
       },
       "occurrences": [
         {
@@ -2037,6 +2740,114 @@
               "t_s": 107.627
             }
           ]
+        },
+        {
+          "session_id": "s10-recommended-correction-control",
+          "session_title": "Recommended pipeline \u00b7 corrected readback and closing control",
+          "session_notes": "Correct conversational roles. Tuesday-to-Thursday correction is retained. Both goodbye messages are committed before dispatch, although assistant audio starts afterward. Large transcript-commit delays remain recorded; this is not a clean latency control. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s10-recommended-correction-control:fragment_reply:t007",
+          "title": "Agent replied to an unfinished sentence: 'I have a Tuesday at eight AM, a'",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 36.886,
+            "end_s": 49.883
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "I have a Tuesday at eight AM, a",
+              "turn_id": "t007",
+              "event_id": null,
+              "t_s": 36.886
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "6.877s (= max 2.5s)",
+              "turn_id": "t007",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "Tuesday at 8 AM sounds good to",
+              "turn_id": "t008",
+              "event_id": null,
+              "t_s": 49.883
+            }
+          ]
+        },
+        {
+          "session_id": "s10-recommended-correction-control",
+          "session_title": "Recommended pipeline \u00b7 corrected readback and closing control",
+          "session_notes": "Correct conversational roles. Tuesday-to-Thursday correction is retained. Both goodbye messages are committed before dispatch, although assistant audio starts afterward. Large transcript-commit delays remain recorded; this is not a clean latency control. Identity/practice text is pseudonymized; DOB values are REDACTED and unrelated profile instructions omitted. Recorded wording, turn order and timing otherwise remain intact. Repeated/shared scheduling scripts are not independent trials. Audio setup is not established by the report.",
+          "pipeline_label": "recommended",
+          "models": {
+            "stt": "deepgram/nova-3",
+            "llm": "openai/gpt-4.1-mini",
+            "tts": "cartesia/sonic-3",
+            "turn_detector": "turn-detector-v1",
+            "interruption_detector": "adaptive interruption"
+          },
+          "config": {
+            "allow_interruptions": true,
+            "min_interruption_duration_s": 0.5,
+            "min_endpointing_delay_s": 0.3,
+            "max_endpointing_delay_s": 2.5,
+            "preemptive_generation": true
+          },
+          "finding_id": "s10-recommended-correction-control:fragment_reply:t011",
+          "title": "Agent replied to an unfinished sentence: \"Actually, I'm sorry. I'm in Thursday. Okay? I'm not\"",
+          "severity": "medium",
+          "status": "suspected",
+          "time_range": {
+            "start_s": 58.583,
+            "end_s": 78.783
+          },
+          "evidence": [
+            {
+              "kind": "transcript",
+              "label": "User turn (looks unfinished)",
+              "value": "Actually, I'm sorry. I'm in Thursday. Okay? I'm not",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": 58.583
+            },
+            {
+              "kind": "metric",
+              "label": "End-of-turn delay",
+              "value": "12.338s (= max 2.5s)",
+              "turn_id": "t011",
+              "event_id": null,
+              "t_s": null
+            },
+            {
+              "kind": "transcript",
+              "label": "Agent reply",
+              "value": "Thursday is okay too. What time on Thursday",
+              "turn_id": "t012",
+              "event_id": null,
+              "t_s": 78.783
+            }
+          ]
         }
       ],
       "caveat": "Recurring behavior does not prove a shared root cause. Pipeline, model and configuration associations are descriptive, not causal."
@@ -2075,39 +2886,6 @@
       "status": "confirmed",
       "reason": "no_rule",
       "explanation": "No supported observable grouping rule in version 1."
-    },
-    {
-      "session_id": "s04-recommended-ab-script",
-      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
-      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t036",
-      "detector": "stt_missing_time_number",
-      "category": "speech_recognition",
-      "severity": "high",
-      "status": "suspected",
-      "reason": "single_session",
-      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
-    },
-    {
-      "session_id": "s04-recommended-ab-script",
-      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
-      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t042",
-      "detector": "stt_missing_time_number",
-      "category": "speech_recognition",
-      "severity": "high",
-      "status": "suspected",
-      "reason": "single_session",
-      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
-    },
-    {
-      "session_id": "s04-recommended-ab-script",
-      "session_title": "Recommended pipeline \u00b7 A/B script (run B)",
-      "finding_id": "s04-recommended-ab-script:stt_missing_time_number:t064",
-      "detector": "stt_missing_time_number",
-      "category": "speech_recognition",
-      "severity": "high",
-      "status": "suspected",
-      "reason": "single_session",
-      "explanation": "This observable pattern occurs in fewer than two distinct recorded sessions."
     }
   ],
   "caveats": [

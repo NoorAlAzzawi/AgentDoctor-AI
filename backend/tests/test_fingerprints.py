@@ -16,7 +16,8 @@ from agentdoctor.store import DEFAULT_DATA_DIR
 
 @pytest.fixture
 def recorded():
-    return [Session.model_validate_json(p.read_text()) for p in sorted(DEFAULT_DATA_DIR.glob("*.json"))]
+    """Freeze original seven-session recurrence assertions; expanded coverage is separate."""
+    return [Session.model_validate_json(p.read_text()) for p in sorted(DEFAULT_DATA_DIR.glob("s0[1-7]-*.json"))]
 
 
 def test_recorded_fingerprint_counts_ids_and_distributions(recorded):
@@ -182,7 +183,7 @@ def test_api_matches_builder_and_saved_contract(recorded, monkeypatch):
     assert r.status_code == 200
     assert r.headers["access-control-allow-origin"] == "http://localhost:5173"
     response = FingerprintsResponse.model_validate(r.json())
-    assert response == build_fingerprints(recorded)
+    assert response == build_fingerprints([Session.model_validate_json(p.read_text()) for p in sorted(DEFAULT_DATA_DIR.glob("*.json"))])
     example = Path(__file__).resolve().parents[2] / "contracts" / "examples" / "fingerprints.json"
     assert response == FingerprintsResponse.model_validate_json(example.read_text())
 
