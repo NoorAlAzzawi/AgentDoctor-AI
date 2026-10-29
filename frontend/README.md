@@ -19,7 +19,7 @@ VITE_API_BASE=http://127.0.0.1:8000 npm run dev
 
 Environment variables are read by Vite at startup/build. Restart after changing them. No API keys are needed. There is no automatic mock fallback on API failure.
 
-Routes: `/`, `/sessions/:id` (also `/sessions?id=...`), `/compare?a=...&b=...`. Select two dashboard checkboxes to compare. Evidence links switch the conversation pane, focus and highlight the referenced turn or event. A theme toggle saves your preference locally.
+Routes: `/`, `/sessions/:id` (also `/sessions?id=...`), `/fingerprints`, `/compare?a=...&b=...`. Select two dashboard checkboxes to compare. Evidence links switch the conversation pane, focus and highlight the referenced turn or event. A theme toggle saves your preference locally.
 
 ## Validation
 
@@ -71,7 +71,7 @@ For manual browser inspection, open `http://localhost:5173`:
 3. **Compare:** select s03 and s04 from the dashboard, or open `http://localhost:5173/compare?a=s03-workshop-ab-script&b=s04-recommended-ab-script`. Confirm the pipeline/model differences, metrics, finding categories, comparison caveats and neutral ties. Model superiority must not be claimed.
 4. Check all four views at narrow/mobile widths and in both themes. Tab through controls and evidence links; check for clipping and visible keyboard focus. Check DevTools → Console for runtime or CORS errors.
 
-The integration run passed all backend tests (42), frontend tests (15), live tests (12), typechecking and production build. Browser automation was unavailable in the execution environment, so visual/browser QA remains a manual check.
+The integration run passed all backend tests (172), frontend tests (31), live tests (18), typechecking and production build. Manual browser/UI review of all four views has been completed.
 
 ## Final frontend polish
 
@@ -79,9 +79,9 @@ Findings start collapsed. Each card retains its original summary and shows statu
 
 The compact Findings controls are sticky only above 1000px wide and at least 700px tall. They remain in normal flow on narrow/short viewports to avoid consuming reading space. No new nested scrolling was added. Existing desktop layouts, typography, colors, conversation navigation and comparison caveats remain intact. Both comparison tables have named, keyboard-focusable overflow regions. Long source strings wrap within their columns.
 
-Source review covered the existing desktop/laptop/tablet/mobile breakpoints. Text palette checks passed 4.5:1 against the three main surfaces in both themes. The latest checks passed typecheck, 19 frontend tests, production build and 12 live API tests. No frontend robot/widget/overlay was found, so no unrelated tooling was removed. No data, metrics, findings, API logic or dependencies changed.
+Source review covered the existing desktop/laptop/tablet/mobile breakpoints. Text palette checks passed 4.5:1 against the three main surfaces in both themes. The latest checks passed typecheck, 31 frontend tests, production build and 18 live API tests. No frontend robot/widget/overlay was found, so no unrelated tooling was removed. No data, metrics, findings, API logic or dependencies changed.
 
-Browser automation was unavailable; rendered responsive behavior remains a manual check. Inspect **1440px**, **1280px**, **768px**, **390px** and **320px** widths:
+Manual browser/UI review is complete. For future responsive checks, inspect **1440px**, **1280px**, **768px**, **390px** and **320px** widths:
 
 - Sessions: keep the existing wide card grid; check narrow cards, search/compare controls and absence of page-level horizontal scrolling.
 - Investigation: check two columns above 1000px and stacked panes below; open/close a finding, follow transcript/event evidence, and confirm the desktop sticky controls never cover the focused content. Test a session with many findings, such as s01 or s02.
